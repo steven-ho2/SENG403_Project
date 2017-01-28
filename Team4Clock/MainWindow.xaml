@@ -7,7 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <Label x:Name="TImeLabel" Content="Label" HorizontalAlignment="Left" Margin="126,108,0,0" VerticalAlignment="Top" Height="116" Width="306" FontSize="48"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="36*"/>
+            <ColumnDefinition Width="11*"/>
+        </Grid.ColumnDefinitions>
+        <Label x:Name="TImeLabel" Content="Label" HorizontalAlignment="Left" Margin="126,108,0,0" VerticalAlignment="Top" Height="116" Width="306" FontSize="48" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>
