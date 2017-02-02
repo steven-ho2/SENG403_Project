@@ -47,5 +47,11 @@ namespace Team4Clock
         {
             this.TImeLabel.Content = clock.ShowTime;
         }
+
+        private void setAlarmBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SetAlarm setAlarm = new SetAlarm(this);
+            Main.Children.Add(setAlarm);
+        }
     }
 }

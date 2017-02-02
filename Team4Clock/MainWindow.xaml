@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:Team4Clock"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <Label x:Name="TImeLabel" Content="Label" HorizontalAlignment="Left" Margin="126,108,0,0" VerticalAlignment="Top" Height="116" Width="306" FontSize="48"/>
+    <Grid Name ="Main" Background="#FF994444">
+        <Label x:Name="TImeLabel" Content="Label" HorizontalAlignment="Center" VerticalAlignment="Center" Height="116" Width="306" FontSize="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Button x:Name="setAlarmBtn" Content="Set Alarm" HorizontalAlignment="Left" Margin="403,32,0,0" VerticalAlignment="Top" Width="75" Click="setAlarmBtn_Click"/>
 
     </Grid>
 </Window>
