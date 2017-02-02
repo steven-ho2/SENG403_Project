@@ -28,6 +28,15 @@ namespace Team4Clock
             InitializeComponent();
             clock = new SWClock();
             startClock();
+            this.KeyUp += MainWindow_KeyUp;
+        }
+
+        private void MainWindow_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Escape)
+            {
+                Application.Current.Shutdown();
+            }
         }
 
         //This is the main event handler for displaying the time
