@@ -11,7 +11,7 @@
             <ColumnDefinition Width="243*"/>
             <ColumnDefinition Width="274*"/>
         </Grid.ColumnDefinitions>
-        <Label x:Name="TImeLabel" Content="Label" HorizontalAlignment="Left" Margin="126,108,0,0" VerticalAlignment="Top" Height="116" Width="306" FontSize="48" Grid.ColumnSpan="2"/>
+        <Label x:Name="TImeLabel" Content="Label" HorizontalAlignment="Center" Margin="126,108,0,0" VerticalAlignment="Center" FontSize="150" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>
