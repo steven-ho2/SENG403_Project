@@ -7,30 +7,42 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="520">
     <Grid Background="White">
-        <Button x:Name="backBtn" Content="Back" HorizontalAlignment="Left" Margin="17,247,0,0" VerticalAlignment="Top" Width="75" Click="backBtn_Click" Height="37"/>
-        <Canvas Margin="113,53,337,74">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="109*"/>
+            <RowDefinition Height="191*"/>
+        </Grid.RowDefinitions>
+        <Button x:Name="backBtn" Content="Back" HorizontalAlignment="Left" Margin="17,137.602,0,0" VerticalAlignment="Top" Width="75" Click="backBtn_Click" Height="37" Grid.Row="1"/>
+        <Canvas Margin="113,53,337,74" Grid.RowSpan="2">
             <Button x:Name="hrBtnUp" Content="+" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="32                     " FontSize="18.667" Click="hrBtnUp_Click"/>
-            <Label x:Name="hrLbl" Content="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="96" Width="75" Canvas.Top="37" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Label x:Name="hrLbl" Content="12" HorizontalAlignment="Left" VerticalAlignment="Top" Height="96" Width="75" Canvas.Top="37" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             <Button x:Name="hrDownBtn" Content="-" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Top="138" Height="32
                     " FontSize="18.667" Click="hrDownBtn_Click"/>
         </Canvas>
-        <Canvas Margin="213,53,237,74">
+        <Canvas Margin="213,53,237,74" Grid.RowSpan="2">
             <Button x:Name="min1BtnUp" Content="+" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="32" Click="min1BtnUp_Click"/>
             <Label x:Name="min1Lbl" Content="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="95" Width="75" Canvas.Top="37" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             <Button x:Name="min1DownBtn" Content="-" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Top="137" Height="32
                     " Click="min1DownBtn_Click"/>
         </Canvas>
-        <Canvas Margin="288,53,162,74">
+        <Canvas Margin="288,53,162,74" Grid.RowSpan="2">
             <Button x:Name="min2BtnUp" Content="+" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="32
                     " Click="min2BtnUp_Click"/>
             <Label x:Name="min2Lbl" Content="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="95" Width="75" Canvas.Top="37" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             <Button x:Name="min2BtnDown" Content="-" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Top="137" Height="32
                     " Click="min2BtnDown_Click"/>
         </Canvas>
-        <Canvas Margin="418,87,32,99">
-            <Button x:Name="pmBtn" Content="PM" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="37" Canvas.Top="15" Click="pmBtn_Click"/>
-            <Button x:Name="amBtn" Content="AM" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Top="67" Height="37" Click="amBtn_Click"/>
+        <Canvas Margin="418,87,32,99" Grid.RowSpan="2">
+            <Button x:Name="pmBtn" Content="PM" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="37" Canvas.Top="22" Click="pmBtn_Click"/>
+            <Button x:Name="amBtn" Content="AM" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Top="59" Height="37" Click="amBtn_Click"/>
         </Canvas>
-        <Button x:Name="doneBtn" Content="Done" HorizontalAlignment="Left" Margin="418,247,0,0" VerticalAlignment="Top" Width="75" Height="37" Click="doneBtn_Click"/>
+        <Button x:Name="doneBtn" Content="Done" HorizontalAlignment="Left" Margin="418,137.602,0,0" VerticalAlignment="Top" Width="75" Height="37" Click="doneBtn_Click" Grid.Row="1"/>
+        <Button x:Name="sunBtn" Content="Su" HorizontalAlignment="Left" Margin="45,10,0,0" VerticalAlignment="Top" Width="60" Click="sunBtn_Click"/>
+        <Button x:Name="monBtn" Content="Mo" HorizontalAlignment="Left" Margin="105,10,0,0" VerticalAlignment="Top" Width="60" Click="monBtn_Click"/>
+        <Button x:Name="tueBtn" Content="Tu" HorizontalAlignment="Left" Margin="165,10,0,0" VerticalAlignment="Top" Width="60" Click="tueBtn_Click"/>
+        <Button x:Name="wedBtn" Content="We" HorizontalAlignment="Left" Margin="225,10,0,0" VerticalAlignment="Top" Width="60" RenderTransformOrigin="0.001,0.571" Click="wedBtn_Click"/>
+        <Button x:Name="thuBtn" Content="Th" HorizontalAlignment="Left" Margin="285,10,0,0" VerticalAlignment="Top" Width="60" Click="thuBtn_Click"/>
+        <Button x:Name="friBtn" Content="Fr" HorizontalAlignment="Left" Margin="345,10,0,0" VerticalAlignment="Top" Width="60" RenderTransformOrigin="-0.284,0.91" Click="friBtn_Click"/>
+        <Button x:Name="satBtn" Content="Sa" HorizontalAlignment="Left" Margin="405,10,0,0" VerticalAlignment="Top" Width="60" Click="satBtn_Click"/>
+        <Label x:Name="errLbl" Content="" HorizontalAlignment="Left" Margin="115,142.602,0,0" VerticalAlignment="Top" Width="262" Background="White" Foreground="Red" Grid.Row="1"/>
     </Grid>
 </UserControl>

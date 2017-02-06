@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Collections;
 
 namespace Team4Clock
 {
@@ -22,6 +23,7 @@ namespace Team4Clock
     public partial class MainWindow : Window
     {
         private SWClock clock;
+        private ArrayList list = new ArrayList();
 
         public MainWindow()
         {
@@ -52,6 +54,12 @@ namespace Team4Clock
         {
             SetAlarm setAlarm = new SetAlarm(this);
             Main.Children.Add(setAlarm);
+        }
+
+        public void setList(Object alarm)
+        {
+            list.Add(alarm);
+            Console.WriteLine("----> " + list.Count);
         }
     }
 }
