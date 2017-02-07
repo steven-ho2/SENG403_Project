@@ -56,11 +56,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Alarm.cs" />
-    <Compile Include="AlarmGUI.xaml.cs">
-      <DependentUpon>AlarmGUI.xaml</DependentUpon>
+    <Compile Include="AlarmUI.xaml.cs">
+      <DependentUpon>AlarmUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="SWClock.cs" />
-    <Page Include="AlarmGUI.xaml">
+    <Page Include="AlarmUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

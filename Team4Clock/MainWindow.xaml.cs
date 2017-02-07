@@ -22,6 +22,9 @@ namespace Team4Clock
     public partial class MainWindow : Window
     {
         private SWClock clock;
+        private int snoozeDelay;
+        private int setDelay = 3;
+
 
         public MainWindow()
         {
@@ -29,6 +32,12 @@ namespace Team4Clock
             clock = new SWClock();
             startClock();
             this.KeyUp += MainWindow_KeyUp;
+
+            activateSnooze();   //Testing snooze function
+
+
+
+
         }
 
         private void MainWindow_KeyUp(object sender, KeyEventArgs e)
@@ -43,10 +52,9 @@ namespace Team4Clock
         private void startClock()
         {
             this.TImeLabel.Content = clock.ShowTime; //display the inital time to label
-
             DispatcherTimer time = new DispatcherTimer(); //This is the timer to a handle the ticking
             time.Tick += new EventHandler(time_tick);
-            time.Interval = new TimeSpan(0, 1, 0); //Set the wait time to 1 min
+            time.Interval = new TimeSpan(0, 0, 1); //Set the wait time to 1 min //I changed it to 1 sec to check snooze
             time.Start();
 
         }
@@ -55,6 +63,61 @@ namespace Team4Clock
         private void time_tick(object sender, EventArgs e)
         {
             this.TImeLabel.Content = clock.ShowTime;
+            snoozeTick();
+
+        }
+
+        private void awake_Click(object sender, RoutedEventArgs e)
+        {
+            awakeButton.Visibility = Visibility.Hidden;
+            snoozeButton.Visibility = Visibility.Hidden;
+
+            snoozeDelay = -1;
+
+        }
+
+        // Activate snooze and wake up buttons, set snooze delay
+        private void snooze_Click(object sender, RoutedEventArgs e)
+        {
+           snoozeButton.Visibility = Visibility.Hidden;
+           awakeButton.Visibility = Visibility.Hidden;
+           snoozeDelay = setDelay;
+        }
+        
+        //Activate the snooze buttons
+        public void activateSnooze()
+        {
+            snoozeButton.Visibility = Visibility.Visible;
+            awakeButton.Visibility = Visibility.Visible;
+        }
+        
+        // Check whether to activate buttons or keep snoozing
+        private void snoozeTick()
+        {
+            if (snoozeDelay > 0)
+            {
+                snoozeDelay--;
+            }
+            else if(snoozeDelay == -1)
+            {
+                snoozeButton.Visibility = Visibility.Hidden;
+                awakeButton.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                activateSnooze();
+            }
+            
+        }
+        // Set snooze delay
+        public void setSnoozeDelay(int delay)
+        {
+            setDelay = delay;
+        }
+        // Get snooze delay
+        public int getSnoozeDelay()
+        {
+            return snoozeDelay;
         }
 
     }
