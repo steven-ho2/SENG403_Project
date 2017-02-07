@@ -56,5 +56,6 @@ namespace Team4Clock
         {
             this.TImeLabel.Content = clock.ShowTime;
         }
+
     }
 }
