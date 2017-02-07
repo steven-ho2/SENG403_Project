@@ -167,6 +167,13 @@ namespace Team4Clock
             {
                 Alarm myAlarm = new Alarm(Convert.ToInt32(hrLbl.Content), Convert.ToInt32(min1Lbl.Content),
                                          Convert.ToInt32(min2Lbl.Content), day, amOrPm);
+
+                // Get repeat days and update the alarm with these days
+                List<DayOfWeek> rptDays = GetCheckboxDays();
+                foreach (DayOfWeek rptDay in rptDays)
+                {
+                    myAlarm.SetRepeat(rptDay, true);
+                }
                 (this.Parent as Panel).Children.Remove(this);
                 mw.setList(myAlarm);
             }
@@ -254,6 +261,19 @@ namespace Team4Clock
             thuBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
             friBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
             satBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070"));
+        }
+
+        private List<DayOfWeek> GetCheckboxDays()
+        {
+            List<DayOfWeek> retList = new List<DayOfWeek>();
+            if ((bool)rptBoxSun.IsChecked) retList.Add(DayOfWeek.Sunday);
+            if ((bool)rptBoxMon.IsChecked) retList.Add(DayOfWeek.Monday);
+            if ((bool)rptBoxTue.IsChecked) retList.Add(DayOfWeek.Tuesday);
+            if ((bool)rptBoxWed.IsChecked) retList.Add(DayOfWeek.Wednesday);
+            if ((bool)rptBoxThu.IsChecked) retList.Add(DayOfWeek.Thursday);
+            if ((bool)rptBoxFri.IsChecked) retList.Add(DayOfWeek.Friday);
+            if ((bool)rptBoxSat.IsChecked) retList.Add(DayOfWeek.Saturday);
+            return retList;
         }
     }
 }
