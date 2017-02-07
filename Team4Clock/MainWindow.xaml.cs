@@ -120,6 +120,5 @@ namespace Team4Clock
             return snoozeDelay;
         }
 
-
     }
 }
