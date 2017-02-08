@@ -1,14 +1,21 @@
-﻿<Window x:Class="Team4Clock.MainWindow"
+<Window x:Class="Team4Clock.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Team4Clock"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid Name ="Main" Background="#FF994444">
-        <Label x:Name="TImeLabel" Content="Label" HorizontalAlignment="Center" VerticalAlignment="Center" Height="116" Width="306" FontSize="48" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        Title="Dope Clock" ResizeMode="NoResize" WindowState="Maximized" WindowStyle="None" WindowStartupLocation="Manual" Height="534">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="243*"/>
+            <ColumnDefinition Width="274*"/>
+        </Grid.ColumnDefinitions>
+        <Label x:Name="TImeLabel" Content="Label" HorizontalAlignment="Center" Margin="126,108,0,0" VerticalAlignment="Center" FontSize="150" Grid.ColumnSpan="2"/>
+        <Button x:Name="snoozeButton" Content="Snooze" HorizontalAlignment="Left" Margin="201,426,0,0" VerticalAlignment="Top" Width="75" Click="snooze_Click" x:FieldModifier ="public" Visibility="Hidden"/>
+        <Button x:Name="awakeButton" Content="Wake Up" HorizontalAlignment="Left" Margin="201,460,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="awake_Click" Visibility="Hidden"/>
         <Button x:Name="setAlarmBtn" Content="Set Alarm" HorizontalAlignment="Left" Margin="403,32,0,0" VerticalAlignment="Top" Width="75" Click="setAlarmBtn_Click"/>
+
 
     </Grid>
 </Window>

@@ -8,7 +8,7 @@ namespace Team4Clock
 {
     class Alarm
     {
-        private bool on = false;
+        private bool on;
         private DateTime time;
         private Object ringtone;
         private int hour;   // (->12<-):55
@@ -32,10 +32,39 @@ namespace Team4Clock
             this.amOrPm = amOrPm;
         }
 
-        //This return whether the alarm is set on or off
-        public bool alarmOn()
+        public Alarm(int hour, int min1, int min2, int day, int amOrPm)
         {
-            return this.on;
+            this.hour   = hour;
+            this.min1   = min1;
+            this.min2   = min2;
+            this.day    = day;
+            this.amOrPm = amOrPm;
+            this.on = true;
+        }
+
+        //This return whether the alarm is set on or off
+        public bool toggleAlarmOn()
+        {
+            if(this.on)
+            {
+                this.on = false;
+                return this.on;
+            }
+            else
+            {
+                this.on = true;
+                return this.on;
+            }
+        }
+
+        public void editAlarm()
+        {
+            // should call the set alarm GUI and change time accordingly
+        }
+
+        public void deleteAlarm()
+        {
+            // should call delete from the alarm list
         }
 
         //This gets the time the alarm is set to
@@ -44,17 +73,12 @@ namespace Team4Clock
             return time;
         }
 
-        //This gets the ringtone the is set to this alarm
-        public Object getRingtone()
+        //Displays the time the alarm is set to
+        public String displayTime()
         {
-            return ringtone;
+            return time.ToString("hh:mm tt");
         }
 
-        //This is to set the ringtone for the alarm
-        public void setRingtone(Object obj)
-        {
-            this.ringtone = obj;
-        }
         public int getHour()
         {
             return this.hour;
@@ -74,6 +98,18 @@ namespace Team4Clock
         public int getAmorPm()
         {
             return this.amOrPm;
+        }
+
+        //This gets the ringtone the is set to this alarm
+        public Object getRingtone()
+        {
+            return ringtone;
+        }
+
+        //This is to set the ringtone for the alarm
+        public void setRingtone(Object obj)
+        {
+            this.ringtone = obj;
         }
     }
 }
