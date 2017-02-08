@@ -20,9 +20,19 @@ namespace Team4Clock
     /// </summary>
     public partial class ListOfAlarms : UserControl
     {
+
+       
         public ListOfAlarms()
         {
             InitializeComponent();
+            
+
+        }
+
+        private void List_Back_Click(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Hidden;
+           
         }
     }
 }

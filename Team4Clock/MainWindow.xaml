@@ -5,13 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Team4Clock"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
+        Title="MainWindow" Height="350" Width="525" Background="#FFF12727">
+    <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="36*"/>
             <ColumnDefinition Width="11*"/>
         </Grid.ColumnDefinitions>
-        <Label x:Name="TImeLabel" Content="Label" HorizontalAlignment="Left" Margin="126,108,0,0" VerticalAlignment="Top" Height="116" Width="306" FontSize="48" Grid.ColumnSpan="2"/>
-
+        <Label x:Name="TImeLabel" Content="Label" HorizontalAlignment="Left" Margin="156.818,110.201,0,0" VerticalAlignment="Top" Height="116" Width="306" FontSize="48" Grid.ColumnSpan="2"/>
+        <Button x:Name="List_Button" Content="List" Grid.Column="1" Margin="36,10,10,0" VerticalAlignment="Top" Click="List_Click"/>
+        <Grid x:Name="RightCanvas" Width="151.818" HorizontalAlignment="Left">
+            <ContentControl x:Name="listCanvas" Content="{Binding Path=ChildView}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+        </Grid>
     </Grid>
+
 </Window>
