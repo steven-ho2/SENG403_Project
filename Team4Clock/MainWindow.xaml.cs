@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Collections;
 
 namespace Team4Clock
 {
@@ -22,9 +23,9 @@ namespace Team4Clock
     public partial class MainWindow : Window
     {
         private SWClock clock;
+        private ArrayList list = new ArrayList();
         private int snoozeDelay;
         private int setDelay = 3;
-
 
         public MainWindow()
         {
@@ -34,9 +35,6 @@ namespace Team4Clock
             this.KeyUp += MainWindow_KeyUp;
 
             activateSnooze();   //Testing snooze function
-
-
-
 
         }
 
@@ -89,6 +87,18 @@ namespace Team4Clock
         {
             snoozeButton.Visibility = Visibility.Visible;
             awakeButton.Visibility = Visibility.Visible;
+        }
+
+        private void setAlarmBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SetAlarm setAlarm = new SetAlarm(this);
+            Main.Children.Add(setAlarm);
+        }
+
+        public void setList(Object alarm)
+        {
+            list.Add(alarm);
+            Console.WriteLine("----> " + list.Count);
         }
         
         // Check whether to activate buttons or keep snoozing

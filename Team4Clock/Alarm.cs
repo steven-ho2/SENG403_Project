@@ -12,7 +12,7 @@ namespace Team4Clock
         private DateTime time;
         private Object ringtone;
         private int hour;   // (->12<-):55
-        private int min1;   // 12:-(>5<-)5    <--idk why there's min1 and min2 -- Abi
+        private int min1;   // 12:-(>5<-)5
         private int min2;   // 12:5(->5<-)
         private int day;    // SUN = 7 MON = 1 TUE = 2 WED = 3 THU = 4 FRI = 5 SAT = 6
         private int amOrPm; // pm = 1 and am = 2
@@ -23,7 +23,6 @@ namespace Team4Clock
             this.time = time;
             this.on = true;
         }
-
         public Alarm(int hour, int min1, int min2, int day, int amOrPm)
         {
             this.hour   = hour;
@@ -31,7 +30,6 @@ namespace Team4Clock
             this.min2   = min2;
             this.day    = day;
             this.amOrPm = amOrPm;
-            this.on = true;
         }
 
         //This return whether the alarm is set on or off
@@ -103,6 +101,5 @@ namespace Team4Clock
         {
             this.ringtone = obj;
         }
-
     }
 }
