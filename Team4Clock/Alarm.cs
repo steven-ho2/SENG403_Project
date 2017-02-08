@@ -11,11 +11,6 @@ namespace Team4Clock
         private bool on;
         private DateTime time;
         private Object ringtone;
-        private int hour;   // (->12<-):55
-        private int min1;   // 12:-(>5<-)5
-        private int min2;   // 12:5(->5<-)
-        private int day;    // SUN = 7 MON = 1 TUE = 2 WED = 3 THU = 4 FRI = 5 SAT = 6
-        private int amOrPm; // pm = 1 and am = 2
 
         //This is the contructor for the Alarm Class
         public Alarm(DateTime time)
@@ -23,16 +18,6 @@ namespace Team4Clock
             this.time = time;
             this.on = true;
         }
-        public Alarm(int hour, int min1, int min2, int day, int amOrPm)
-        {
-            this.hour   = hour;
-            this.min1   = min1;
-            this.min2   = min2;
-            this.day    = day;
-            this.amOrPm = amOrPm;
-            this.on = true;
-        }
-
         //This return whether the alarm is set on or off
         public bool toggleAlarmOn()
         {
@@ -68,27 +53,6 @@ namespace Team4Clock
         public String displayTime()
         {
             return time.ToString("hh:mm tt");
-        }
-
-        public int getHour()
-        {
-            return this.hour;
-        }
-        public int getMin1()
-        {
-            return this.min1;
-        }
-        public int getMin2()
-        {
-            return this.min2;
-        }
-        public int getDay()
-        {
-            return this.day;
-        }
-        public int getAmorPm()
-        {
-            return this.amOrPm;
         }
 
         //This gets the ringtone the is set to this alarm

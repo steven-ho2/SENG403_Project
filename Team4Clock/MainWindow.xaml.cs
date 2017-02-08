@@ -95,10 +95,11 @@ namespace Team4Clock
             Main.Children.Add(setAlarm);
         }
 
-        public void setList(Object alarm)
+        public void setList(DateTime alarm)
         {
             list.Add(alarm);
-            Console.WriteLine("----> " + list.Count);
+            Console.WriteLine("----> List Count: " + list.Count + " Day: " + alarm.Day + " Time: " + 
+                                alarm.Hour + ":" + alarm.Minute + " PM(1) AM(2): " + alarm.Second);
         }
         
         // Check whether to activate buttons or keep snoozing
