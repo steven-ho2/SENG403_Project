@@ -30,6 +30,7 @@ namespace Team4Clock
             this.min2   = min2;
             this.day    = day;
             this.amOrPm = amOrPm;
+            this.on = true;
         }
 
         //This return whether the alarm is set on or off
