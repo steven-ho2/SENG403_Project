@@ -20,7 +20,7 @@ namespace Team4Clock
         {
             get
             {
-                return DateTime.Now.ToString("hh:mm tt");
+                return DateTime.Now.ToString("hh:mm:ss tt");
             }
         }
 
