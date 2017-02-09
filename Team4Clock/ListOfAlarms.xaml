@@ -10,7 +10,7 @@
              HorizontalAlignment="Stretch">
     <Grid Background="#FF0F90EA" OpacityMask="#FF933333">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Height="Auto" Margin="50,0,0,0"/>
+            <StackPanel x:Name="listStack" Height="Auto" Margin="50,0,0,0"/>
         </ScrollViewer>
         <Button x:Name="Back_Button" Content="Back" Canvas.Left="10" Canvas.Bottom="10" Click="List_Back_Click" Canvas.Top="318.04" Width="30" Height="25" HorizontalAlignment="Left" Margin="10,0,0,10" d:LayoutOverrides="Width, Height" VerticalAlignment="Bottom"/>
     </Grid>
