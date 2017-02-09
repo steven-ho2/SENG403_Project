@@ -19,7 +19,7 @@ namespace Team4Clock
     {
         private bool pmClicked = false;  // checks if the pm button has been pressed
         private bool amClicked = false;  // checks if the am button has been pressed
-        private int day = 0;            // SUN = 7 MON = 1 TUE = 2 WED = 3 THU = 4 FRI = 5 SAT = 6
+        private int day = 0;            // SUN = 0 MON = 1 TUE = 2 WED = 3 THU = 4 FRI = 5 SAT = 6
         private int amOrPm = 0;         // pm = 1 and am = 2
         private MainWindow mw = new MainWindow(); // The parent view object
 
@@ -165,23 +165,30 @@ namespace Team4Clock
             }
             else
             {
-                Alarm myAlarm = new Alarm(Convert.ToInt32(hrLbl.Content), Convert.ToInt32(min1Lbl.Content),
-                                         Convert.ToInt32(min2Lbl.Content), day, amOrPm);
-
+                String min = Convert.ToString(min1Lbl.Content) + Convert.ToString(min2Lbl.Content);
+                /*
+                    DateTime(year,month,day,hour,min,sec)
+                    *day is being used for now from SUN - SAT (0 - 6)
+                    *hour is being used as hour (1 - 12)
+                    *min is being used as min (0 - 59)
+                    *seconds is being used for now for AM and PM
+                */
+                DateTime test = new DateTime(2017, 2, day, Convert.ToInt32(hrLbl.Content), Convert.ToInt32(min), amOrPm);
+                (this.Parent as Panel).Children.Remove(this);
+                mw.setList(test);
                 // Get repeat days and update the alarm with these days
-                List<DayOfWeek> rptDays = GetCheckboxDays();
+                // This is temporarily disabled -- do we even instantiate Alarms anymore?
+                /*List<DayOfWeek> rptDays = GetCheckboxDays();
                 foreach (DayOfWeek rptDay in rptDays)
                 {
                     myAlarm.SetRepeat(rptDay, true);
-                }
-                (this.Parent as Panel).Children.Remove(this);
-                mw.setList(myAlarm);
+                }*/
             }
         }
 
         private void sunBtn_Click(object sender, RoutedEventArgs e)
         {
-            day = 7;
+            day = 0;
             sunBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070"));
             monBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
             tueBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
