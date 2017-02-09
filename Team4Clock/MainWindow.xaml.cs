@@ -69,7 +69,7 @@ namespace Team4Clock
 
         public Grid getGrid
         {
-            get { return MainGrid; }
+            get { return Main; }
         }
 
         //Update the label with the current time
