@@ -28,6 +28,14 @@
             <Button x:Name="friBtn" Content="Fr" Margin="335,10,98,275" Width="60" RenderTransformOrigin="-0.284,0.91" Click="friBtn_Click"/>
             <Button x:Name="satBtn" Content="Sa" Margin="395,10,38,275" Width="60" Click="satBtn_Click"/>
             <Label x:Name="errLbl" Content="" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="113,262,118,15" Width="262" Background="White" Foreground="Red"/>
+            <Label Content="Repeat?" HorizontalAlignment="Left" Margin="0,29,0,0" VerticalAlignment="Top"/>
+            <CheckBox x:Name="rptBoxSun" Content="" HorizontalAlignment="Left" Margin="68,35,0,0" VerticalAlignment="Top"/>
+            <CheckBox x:Name="rptBoxMon" Content="" HorizontalAlignment="Left" Margin="127,35,0,0" VerticalAlignment="Top"/>
+            <CheckBox x:Name="rptBoxTue" Content="" HorizontalAlignment="Left" Margin="188,35,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.6,0.462"/>
+            <CheckBox x:Name="rptBoxWed" Content="" HorizontalAlignment="Left" Margin="250,35,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.6,0.462"/>
+            <CheckBox x:Name="rptBoxThu" Content="" HorizontalAlignment="Left" Margin="309,35,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.6,0.462"/>
+            <CheckBox x:Name="rptBoxFri" Content="" HorizontalAlignment="Left" Margin="367,35,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.6,0.462"/>
+            <CheckBox x:Name="rptBoxSat" Content="" HorizontalAlignment="Left" Margin="428,35,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.6,0.462"/>
         </Grid>
     </Grid>
 </UserControl>

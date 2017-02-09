@@ -58,6 +58,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Alarm.cs" />
+    <Compile Include="AlarmRepeats.cs" />
     <Compile Include="ListOfAlarms.xaml.cs">
       <DependentUpon>ListOfAlarms.xaml</DependentUpon>
     </Compile>
