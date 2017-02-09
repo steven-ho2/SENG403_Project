@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="Team4Clock.SetAlarm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Team4Clock" >
+
+    <Grid Background="White">
+        <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button x:Name="hrBtnUp" Content="+" FontSize="18.667" Click="hrBtnUp_Click" Margin="35,60,383,213"/>
+            <Label x:Name="hrLbl" Content="12" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="35,92,383,117"/>
+            <Button x:Name="hrDownBtn" Content="-" FontSize="18.667" Click="hrDownBtn_Click" Margin="35,188,383,85"/>
+            <Button x:Name="min1BtnUp" Content="+" Click="min1BtnUp_Click" Margin="158,60,260,213"/>
+            <Label x:Name="min1Lbl" Content="0" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="158,92,260,118"/>
+            <Button x:Name="min1DownBtn" Content="-" Click="min1DownBtn_Click" Margin="158,187,260,86"/>
+            <Button x:Name="min2BtnUp" Content="+" Click="min2BtnUp_Click" Margin="233,60,185,213"/>
+            <Label x:Name="min2Lbl" Content="0" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="233,92,185,118"/>
+            <Button x:Name="min2BtnDown" Content="-" Click="min2BtnDown_Click" Margin="233,187,185,86"/>
+            <Button x:Name="backBtn" Content="Back" Margin="35,253,383,15"  Width="75" Click="backBtn_Click" Height="37"/>
+            <Button x:Name="pmBtn" Content="PM" Width="75" Height="37" Canvas.Top="22" Click="pmBtn_Click" Margin="380,112,38,156"/>
+            <Button x:Name="amBtn" Content="AM" Width="75" Canvas.Top="59" Height="37" Click="amBtn_Click" Margin="380,149,38,119"/>
+            <Button x:Name="doneBtn" Content="Done" Margin="380,253,38,15"  Width="75" Height="37" Click="doneBtn_Click"/>
+            <Button x:Name="sunBtn" Content="Su"  Margin="35,10,398,275"  Width="60" Click="sunBtn_Click"/>
+            <Button x:Name="monBtn" Content="Mo" Margin="95,10,338,275"  Width="60" Click="monBtn_Click"/>
+            <Button x:Name="tueBtn" Content="Tu"  Margin="155,10,278,275"  Width="60" Click="tueBtn_Click"/>
+            <Button x:Name="wedBtn" Content="We"  Margin="215,10,218,275" Width="60" RenderTransformOrigin="0.001,0.571" Click="wedBtn_Click"/>
+            <Button x:Name="thuBtn" Content="Th" Margin="275,10,158,275" Width="60" Click="thuBtn_Click" RenderTransformOrigin="0.983,-5.642"/>
+            <Button x:Name="friBtn" Content="Fr" Margin="335,10,98,275" Width="60" RenderTransformOrigin="-0.284,0.91" Click="friBtn_Click"/>
+            <Button x:Name="satBtn" Content="Sa" Margin="395,10,38,275" Width="60" Click="satBtn_Click"/>
+            <Label x:Name="errLbl" Content="" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="113,262,118,15" Width="262" Background="White" Foreground="Red"/>
+        </Grid>
+    </Grid>
+</UserControl>

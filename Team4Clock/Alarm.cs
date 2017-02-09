@@ -8,7 +8,7 @@ namespace Team4Clock
 {
     class Alarm
     {
-        private bool on = false;
+        private bool on;
         private DateTime time;
         private Object ringtone;
 
@@ -18,17 +18,41 @@ namespace Team4Clock
             this.time = time;
             this.on = true;
         }
-
         //This return whether the alarm is set on or off
-        public bool alarmOn()
+        public bool toggleAlarmOn()
         {
-            return this.on;
+            if(this.on)
+            {
+                this.on = false;
+                return this.on;
+            }
+            else
+            {
+                this.on = true;
+                return this.on;
+            }
+        }
+
+        public void editAlarm()
+        {
+            // should call the set alarm GUI and change time accordingly
+        }
+
+        public void deleteAlarm()
+        {
+            // should call delete from the alarm list
         }
 
         //This gets the time the alarm is set to
         public DateTime getTime()
         {
             return time;
+        }
+
+        //Displays the time the alarm is set to
+        public String displayTime()
+        {
+            return time.ToString("hh:mm tt");
         }
 
         //This gets the ringtone the is set to this alarm
