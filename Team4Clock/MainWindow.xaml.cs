@@ -23,8 +23,8 @@ namespace Team4Clock
     public partial class MainWindow : Window
     {
         private SWClock clock;
-        private UserControl u1;
-        private ArrayList list = new ArrayList();
+   
+        private List<DateTime> list = new List<DateTime>();
         private int snoozeDelay;
         private int setDelay = 3;
 
@@ -33,10 +33,9 @@ namespace Team4Clock
             InitializeComponent();
 
 
-            u1 = new ListOfAlarms();
-            listCanvas.Content = u1;
+           
 
-            u1.Visibility = Visibility.Hidden;
+     
 
 
             clock = new SWClock();
@@ -100,11 +99,10 @@ namespace Team4Clock
         //Event for when "list of alarm" button is clicked
         private void List_Click(object sender, RoutedEventArgs e)
         {
-            u1.Visibility = Visibility.Visible;
-            //MainGrid.Visibility = Visibility.Hidden;
-            //u1.Visibility = Visibility.Visible;
+            ListOfAlarms listAlarm = new ListOfAlarms(this, list);
+            Main.Children.Add(listAlarm);
 
-            
+
 
         }
         

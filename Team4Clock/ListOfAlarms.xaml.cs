@@ -20,7 +20,8 @@ namespace Team4Clock
     /// </summary>
     public partial class ListOfAlarms : UserControl
     {
-
+        private MainWindow mw = new MainWindow();
+        private List<DateTime> alarmList;
        
         public ListOfAlarms()
         {
@@ -29,10 +30,31 @@ namespace Team4Clock
 
         }
 
+        public ListOfAlarms(MainWindow mw, List<DateTime> list)
+        {
+            
+            this.mw = mw;
+            this.alarmList = list;
+            Console.WriteLine(list.Count);
+            
+            InitializeComponent();
+            addAlarms();
+        }
+
         private void List_Back_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Hidden;
-           
+            (this.Parent as Panel).Children.Remove(this);
+
         }
+
+        private void addAlarms()
+        {
+            foreach(DateTime i in alarmList)
+            {
+                AlarmUI alarm = new AlarmUI(i);  
+               this.listStack.Children.Add(alarm);
+            }
+        }
+        
     }
 }
