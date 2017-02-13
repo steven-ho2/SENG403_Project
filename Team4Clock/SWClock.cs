@@ -24,6 +24,13 @@ namespace Team4Clock
             }
         }
 
+        public DateTime getCurrentTime()
+        {
+            DateTime dt = DateTime.Now;
+            DateTime now = new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute,0);
+            return now;
+        }
+
         //this is to set an alarm
         public void setAlarm(Object obj)
         {

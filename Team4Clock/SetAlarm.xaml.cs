@@ -173,9 +173,16 @@ namespace Team4Clock
                     *min is being used as min (0 - 59)
                     *seconds is being used for now for AM and PM
                 */
-                DateTime test = new DateTime(2017, 2, day, Convert.ToInt32(hrLbl.Content), Convert.ToInt32(min), amOrPm);
+                //DateTime test = new DateTime(2017, 2, day, Convert.ToInt32(hrLbl.Content), Convert.ToInt32(min), amOrPm);
                 (this.Parent as Panel).Children.Remove(this);
-                mw.setList(test);
+
+                int hours = Convert.ToInt32(hrLbl.Content);
+                hours = (amOrPm == 1) ? (hours + 12) : hours;
+                hours = (hours == 24) ? 0 : hours;
+                DateTime dt = DateTime.Now;
+                DateTime alarm = new DateTime(dt.Year,dt.Month,dt.Day,hours,Convert.ToInt32(min),0);
+                mw.setList(alarm);
+
                 // Get repeat days and update the alarm with these days
                 // This is temporarily disabled -- do we even instantiate Alarms anymore?
                 /*List<DayOfWeek> rptDays = GetCheckboxDays();

@@ -76,7 +76,13 @@ namespace Team4Clock
         {
             this.TImeLabel.Content = clock.ShowTime;
             snoozeTick();
-
+            foreach (DateTime alarm in list)
+            {
+                if(DateTime.Compare(clock.getCurrentTime(), alarm) == 0)
+                {
+                    Console.Beep();
+                }
+            }
         }
 
         private void awake_Click(object sender, RoutedEventArgs e)
@@ -122,8 +128,7 @@ namespace Team4Clock
         public void setList(DateTime alarm)
         {
             list.Add(alarm);
-            Console.WriteLine("----> List Count: " + list.Count + " Day: " + alarm.Day + " Time: " + 
-                                alarm.Hour + ":" + alarm.Minute + " PM(1) AM(2): " + alarm.Second);
+            Console.WriteLine(alarm);
         }
         
         // Check whether to activate buttons or keep snoozing
