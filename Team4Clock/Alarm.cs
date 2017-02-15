@@ -109,12 +109,9 @@ namespace Team4Clock
             DateTime alarmTime = DateTime.Now.Date;
             if (currTime >= newTime)
             {
-                Console.WriteLine("Time has already passed, incrementing day...");
                 alarmTime = alarmTime.AddDays(1);
             }
-            Console.WriteLine("NewTime: " +newTime);
             alarmTime += newTime;
-            Console.WriteLine("AlarmTime: " + alarmTime);
             this.time = alarmTime;
         }
 
@@ -129,7 +126,7 @@ namespace Team4Clock
         {
             DateTime newTime = date.Date;        // new date, with time reset to midnight
             TimeSpan alarmTime = time.TimeOfDay;
-            newTime.Add(alarmTime);
+            newTime += alarmTime;
             this.time = newTime;
         }
 
