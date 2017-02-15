@@ -19,7 +19,7 @@ namespace Team4Clock
     {
         private bool pmClicked = false;  // checks if the pm button has been pressed
         private bool amClicked = false;  // checks if the am button has been pressed
-        private int day = 0;            // SUN = 0 MON = 1 TUE = 2 WED = 3 THU = 4 FRI = 5 SAT = 6
+        private DayOfWeek day = DayOfWeek.Sunday;
         private int amOrPm = 0;         // pm = 1 and am = 2
         private MainWindow mw = new MainWindow(); // The parent view object
 
@@ -27,6 +27,8 @@ namespace Team4Clock
         {
             this.mw = newMW; // The parent view is set 
             InitializeComponent();
+            // initialize the Sunday button to "pressed" state (null-day state is not possible)
+            sunBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070"));
         }
 
         // Removes the current set alarm view from the stack allowing
@@ -159,43 +161,32 @@ namespace Team4Clock
             {
                 errLbl.Content = "Please select AM or PM";
             }
-            else if(day == 0)
-            {
-                errLbl.Content = "Please select a day (MON - SUN)";
-            }
             else
             {
                 String min = Convert.ToString(min1Lbl.Content) + Convert.ToString(min2Lbl.Content);
-                /*
-                    DateTime(year,month,day,hour,min,sec)
-                    *day is being used for now from SUN - SAT (0 - 6)
-                    *hour is being used as hour (1 - 12)
-                    *min is being used as min (0 - 59)
-                    *seconds is being used for now for AM and PM
-                */
-                //DateTime test = new DateTime(2017, 2, day, Convert.ToInt32(hrLbl.Content), Convert.ToInt32(min), amOrPm);
                 (this.Parent as Panel).Children.Remove(this);
 
                 int hours = Convert.ToInt32(hrLbl.Content);
                 hours = (amOrPm == 1) ? (hours + 12) : hours;
                 hours = (hours == 24) ? 0 : hours;
-                DateTime dt = DateTime.Now;
-                DateTime alarm = new DateTime(dt.Year,dt.Month,dt.Day,hours,Convert.ToInt32(min),0);
-                mw.setList(alarm);
+                TimeSpan alarmTime = new TimeSpan(hours, Convert.ToInt32(min), 0);
+                Alarm alarm = new Alarm(alarmTime);
 
                 // Get repeat days and update the alarm with these days
-                // This is temporarily disabled -- do we even instantiate Alarms anymore?
-                /*List<DayOfWeek> rptDays = GetCheckboxDays();
+                // Todo: update for variable repeats (i.e. different times for different days)
+                List<DayOfWeek> rptDays = GetCheckboxDays();
                 foreach (DayOfWeek rptDay in rptDays)
                 {
-                    myAlarm.SetRepeat(rptDay, true);
-                }*/
+                    alarm.SetRepeat(rptDay, true);
+                }
+
+                mw.setList(alarm);
             }
         }
 
         private void sunBtn_Click(object sender, RoutedEventArgs e)
         {
-            day = 0;
+            day = DayOfWeek.Sunday;
             sunBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070"));
             monBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
             tueBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
@@ -207,7 +198,7 @@ namespace Team4Clock
 
         private void monBtn_Click(object sender, RoutedEventArgs e)
         {
-            day = 1;
+            day = DayOfWeek.Monday;
             sunBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
             monBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070"));
             tueBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
@@ -219,7 +210,7 @@ namespace Team4Clock
 
         private void tueBtn_Click(object sender, RoutedEventArgs e)
         {
-            day = 2;
+            day = DayOfWeek.Tuesday;
             sunBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
             monBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
             tueBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070"));
@@ -231,7 +222,7 @@ namespace Team4Clock
 
         private void wedBtn_Click(object sender, RoutedEventArgs e)
         {
-            day = 3;
+            day = DayOfWeek.Wednesday;
             sunBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
             monBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
             tueBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
@@ -243,7 +234,7 @@ namespace Team4Clock
 
         private void thuBtn_Click(object sender, RoutedEventArgs e)
         {
-            day = 4;
+            day = DayOfWeek.Thursday;
             sunBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
             monBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
             tueBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
@@ -255,7 +246,7 @@ namespace Team4Clock
 
         private void friBtn_Click(object sender, RoutedEventArgs e)
         {
-            day = 5;
+            day = DayOfWeek.Friday;
             sunBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
             monBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
             tueBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
@@ -267,7 +258,7 @@ namespace Team4Clock
 
         private void satBtn_Click(object sender, RoutedEventArgs e)
         {
-            day = 6;
+            day = DayOfWeek.Saturday;
             sunBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
             monBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
             tueBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));

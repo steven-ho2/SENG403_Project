@@ -6,11 +6,19 @@ using System.Threading.Tasks;
 
 namespace Team4Clock
 {
-    class Alarm
+    public class Alarm
     {
         private bool on;
-        private DateTime time;
-        private Object ringtone;
+        public DateTime time
+        {
+            get;
+            private set;
+        }
+        public Object ringtone
+        {
+            get;
+            set;
+        }
         private AlarmRepeats repeatDays = new AlarmRepeats();  // Wrapper for repeat days
 
         //This is the contructor for the Alarm Class
@@ -19,6 +27,15 @@ namespace Team4Clock
             this.time = time;
             this.on = true;
         }
+        
+        // Alternate constructor which takes a TimeSpan reference,
+        // and calls SetAlarmTime().
+        public Alarm(TimeSpan timeSpan)
+        {
+            SetAlarmTime(timeSpan);
+            this.on = true;
+        }
+
         //This return whether the alarm is set on or off
         public bool toggleAlarmOn()
         {
@@ -44,7 +61,8 @@ namespace Team4Clock
             // should call delete from the alarm list
         }
 
-        //This gets the time the alarm is set to
+        // This gets the time the alarm is set to
+        // *DEPRECATED* Prefer the use of C# style getter.
         public DateTime getTime()
         {
             return time;
@@ -62,12 +80,14 @@ namespace Team4Clock
         }
 
         //This gets the ringtone the is set to this alarm
+        // *DEPRECATED* Prefer the use of C# style getter.
         public Object getRingtone()
         {
             return ringtone;
         }
 
         //This is to set the ringtone for the alarm
+        // *DEPRECATED* Prefer the use of C# style setter.
         public void setRingtone(Object obj)
         {
             this.ringtone = obj;
@@ -89,9 +109,12 @@ namespace Team4Clock
             DateTime alarmTime = DateTime.Now.Date;
             if (currTime >= newTime)
             {
-                alarmTime.AddDays(1);
+                Console.WriteLine("Time has already passed, incrementing day...");
+                alarmTime = alarmTime.AddDays(1);
             }
-            alarmTime.Add(newTime);
+            Console.WriteLine("NewTime: " +newTime);
+            alarmTime += newTime;
+            Console.WriteLine("AlarmTime: " + alarmTime);
             this.time = alarmTime;
         }
 
