@@ -30,6 +30,11 @@ namespace Team4Clock
             alarmTime.Content = a.displayTime();
         }
 
+        public object getAlarm()
+        {
+            return this.a;
+        }
+
         private void cancelBtn_Click(object sender, RoutedEventArgs e)
         {
             a.deleteAlarm();

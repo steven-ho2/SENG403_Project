@@ -50,6 +50,11 @@ namespace Team4Clock
             return time;
         }
 
+        public bool checkAlarm(DateTime cur)
+        {
+            return this.time.Equals(cur);
+        }
+
         //Displays the time the alarm is set to
         public String displayTime()
         {
