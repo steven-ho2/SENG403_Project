@@ -23,14 +23,23 @@ namespace Team4Clock
     public partial class MainWindow : Window
     {
         private SWClock clock;
-        private ArrayList list = new ArrayList();
+   
+        private List<DateTime> list = new List<DateTime>();
         private int snoozeDelay;
         private int setDelay = 3;
 
         public MainWindow()
         {
             InitializeComponent();
+
+
+           
+
+     
+
+
             clock = new SWClock();
+            
             startClock();
             this.KeyUp += MainWindow_KeyUp;
 
@@ -57,12 +66,23 @@ namespace Team4Clock
 
         }
 
+        public Grid getGrid
+        {
+            get { return Main; }
+        }
+
         //Update the label with the current time
         private void time_tick(object sender, EventArgs e)
         {
             this.TImeLabel.Content = clock.ShowTime;
             snoozeTick();
-
+            foreach (DateTime alarm in list)
+            {
+                if(DateTime.Compare(clock.getCurrentTime(), alarm) == 0)
+                {
+                    Console.Beep();
+                }
+            }
         }
 
         private void awake_Click(object sender, RoutedEventArgs e)
@@ -81,6 +101,16 @@ namespace Team4Clock
            awakeButton.Visibility = Visibility.Hidden;
            snoozeDelay = setDelay;
         }
+
+        //Event for when "list of alarm" button is clicked
+        private void List_Click(object sender, RoutedEventArgs e)
+        {
+            ListOfAlarms listAlarm = new ListOfAlarms(this, list);
+            Main.Children.Add(listAlarm);
+
+
+
+        }
         
         //Activate the snooze buttons
         public void activateSnooze()
@@ -98,8 +128,7 @@ namespace Team4Clock
         public void setList(DateTime alarm)
         {
             list.Add(alarm);
-            Console.WriteLine("----> List Count: " + list.Count + " Day: " + alarm.Day + " Time: " + 
-                                alarm.Hour + ":" + alarm.Minute + " PM(1) AM(2): " + alarm.Second);
+            Console.WriteLine(alarm);
         }
         
         // Check whether to activate buttons or keep snoozing
@@ -130,6 +159,5 @@ namespace Team4Clock
         {
             return snoozeDelay;
         }
-
     }
 }

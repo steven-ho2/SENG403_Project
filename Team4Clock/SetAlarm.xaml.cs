@@ -165,7 +165,6 @@ namespace Team4Clock
             }
             else
             {
-                
                 String min = Convert.ToString(min1Lbl.Content) + Convert.ToString(min2Lbl.Content);
                 /*
                     DateTime(year,month,day,hour,min,sec)
@@ -174,9 +173,23 @@ namespace Team4Clock
                     *min is being used as min (0 - 59)
                     *seconds is being used for now for AM and PM
                 */
-                DateTime test = new DateTime(2017, 2, day, Convert.ToInt32(hrLbl.Content), Convert.ToInt32(min), amOrPm);
+                //DateTime test = new DateTime(2017, 2, day, Convert.ToInt32(hrLbl.Content), Convert.ToInt32(min), amOrPm);
                 (this.Parent as Panel).Children.Remove(this);
-                mw.setList(test);
+
+                int hours = Convert.ToInt32(hrLbl.Content);
+                hours = (amOrPm == 1) ? (hours + 12) : hours;
+                hours = (hours == 24) ? 0 : hours;
+                DateTime dt = DateTime.Now;
+                DateTime alarm = new DateTime(dt.Year,dt.Month,dt.Day,hours,Convert.ToInt32(min),0);
+                mw.setList(alarm);
+
+                // Get repeat days and update the alarm with these days
+                // This is temporarily disabled -- do we even instantiate Alarms anymore?
+                /*List<DayOfWeek> rptDays = GetCheckboxDays();
+                foreach (DayOfWeek rptDay in rptDays)
+                {
+                    myAlarm.SetRepeat(rptDay, true);
+                }*/
             }
         }
 
@@ -262,6 +275,19 @@ namespace Team4Clock
             thuBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
             friBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
             satBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070"));
+        }
+
+        private List<DayOfWeek> GetCheckboxDays()
+        {
+            List<DayOfWeek> retList = new List<DayOfWeek>();
+            if ((bool)rptBoxSun.IsChecked) retList.Add(DayOfWeek.Sunday);
+            if ((bool)rptBoxMon.IsChecked) retList.Add(DayOfWeek.Monday);
+            if ((bool)rptBoxTue.IsChecked) retList.Add(DayOfWeek.Tuesday);
+            if ((bool)rptBoxWed.IsChecked) retList.Add(DayOfWeek.Wednesday);
+            if ((bool)rptBoxThu.IsChecked) retList.Add(DayOfWeek.Thursday);
+            if ((bool)rptBoxFri.IsChecked) retList.Add(DayOfWeek.Friday);
+            if ((bool)rptBoxSat.IsChecked) retList.Add(DayOfWeek.Saturday);
+            return retList;
         }
     }
 }

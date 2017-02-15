@@ -23,11 +23,16 @@ namespace Team4Clock
 
         private Alarm a;
 
-        AlarmUI(Alarm inputAlarm)
+        public AlarmUI(DateTime inputAlarm)
         {
             InitializeComponent();
-            this.a = inputAlarm;
+            this.a = new Alarm(inputAlarm);
             alarmTime.Content = a.displayTime();
+        }
+
+        public object getAlarm()
+        {
+            return this.a;
         }
 
         private void cancelBtn_Click(object sender, RoutedEventArgs e)

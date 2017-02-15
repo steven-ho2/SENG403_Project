@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Team4Clock"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Canvas Margin="-95,0,0,175" Background="WhiteSmoke">
+             d:DesignHeight="300" Width="445.571">
+    <Canvas Margin="0,0,-0.4,175" Background="WhiteSmoke">
 
         <Label x:Name="alarmTime" Height="70" Canvas.Left="10" Canvas.Top="10" Width="303"/>
         <Button x:Name="cancelBtn" Content="X" Background="Red" Height="39" Canvas.Left="338" Canvas.Top="10" Width="47" Click="cancelBtn_Click"/>
