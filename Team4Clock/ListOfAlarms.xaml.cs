@@ -21,7 +21,7 @@ namespace Team4Clock
     public partial class ListOfAlarms : UserControl
     {
         private MainWindow mw = new MainWindow();
-        private List<DateTime> alarmList;
+        private List<Alarm> alarmList;
        
         public ListOfAlarms()
         {
@@ -30,7 +30,7 @@ namespace Team4Clock
 
         }
 
-        public ListOfAlarms(MainWindow mw, List<DateTime> list)
+        public ListOfAlarms(MainWindow mw, List<Alarm> list)
         {
             
             this.mw = mw;
@@ -49,7 +49,7 @@ namespace Team4Clock
 
         private void addAlarms()
         {
-            foreach(DateTime i in alarmList)
+            foreach(Alarm i in alarmList)
             {
                 AlarmUI alarm = new AlarmUI(i);  
                this.listStack.Children.Add(alarm);
