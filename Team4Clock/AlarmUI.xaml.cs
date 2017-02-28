@@ -20,14 +20,16 @@ namespace Team4Clock
     /// </summary>
     public partial class AlarmUI : UserControl
     {
-
         private Alarm a;
+        public int id;
+        private MainWindow mw = new MainWindow();
 
-        public AlarmUI(Alarm inputAlarm)
+        public AlarmUI(Alarm inputAlarm, MainWindow mw)
         {
             InitializeComponent();
             //this.a = new Alarm(inputAlarm);
             this.a = inputAlarm;
+            this.mw = mw;
             alarmTime.Content = a.displayTime();
         }
 
@@ -39,6 +41,7 @@ namespace Team4Clock
         private void cancelBtn_Click(object sender, RoutedEventArgs e)
         {
             a.deleteAlarm();
+            mw.deleteFromListAlarm(this);
         }
 
         private void editBtn_Click(object sender, RoutedEventArgs e)

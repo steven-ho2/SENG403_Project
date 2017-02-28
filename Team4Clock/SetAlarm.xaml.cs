@@ -40,7 +40,7 @@ namespace Team4Clock
         /* Initializes dictionaries used by this class.
          * 
          * This provides fast lookup between days of the week and their corresponding buttons.
-         */ 
+         */
         private void initDictionaries()
         {
             // Button->Day mappings
@@ -203,9 +203,10 @@ namespace Team4Clock
         {
             foreach (var child in DayButtons.Children)
             {
-                RadioButton btn = (RadioButton) child;
-                if (btn != null) {
-                    btn.Background = (bool) btn.IsChecked ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070")) :
+                RadioButton btn = (RadioButton)child;
+                if (btn != null)
+                {
+                    btn.Background = (bool)btn.IsChecked ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070")) :
                                                             new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
                 }
             }
