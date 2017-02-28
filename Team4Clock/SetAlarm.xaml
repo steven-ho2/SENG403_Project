@@ -17,16 +17,20 @@
             <Label x:Name="min2Lbl" Content="0" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="233,92,185,118"/>
             <Button x:Name="min2BtnDown" Content="-" Click="min2BtnDown_Click" Margin="233,187,185,86"/>
             <Button x:Name="backBtn" Content="Back" Margin="35,253,383,15"  Width="75" Click="backBtn_Click" Height="37"/>
-            <Button x:Name="pmBtn" Content="PM" Width="75" Height="37" Canvas.Top="22" Click="pmBtn_Click" Margin="380,112,38,156"/>
-            <Button x:Name="amBtn" Content="AM" Width="75" Canvas.Top="59" Height="37" Click="amBtn_Click" Margin="380,149,38,119"/>
+            <Grid Name="AmPmButtons">
+                <RadioButton x:Name="amBtn" Content="AM" Width="75" Height="37" Canvas.Top="22" Click="amBtn_Click" Margin="380,112,38,156" IsChecked="True"/>
+                <RadioButton x:Name="pmBtn" Content="PM" Width="75" Canvas.Top="59" Height="37" Click="pmBtn_Click" Margin="380,149,38,119"/>
+            </Grid>
             <Button x:Name="doneBtn" Content="Done" Margin="380,253,38,15"  Width="75" Height="37" Click="doneBtn_Click"/>
-            <Button x:Name="sunBtn" Content="Su"  Margin="35,10,398,275"  Width="60" Click="sunBtn_Click"/>
-            <Button x:Name="monBtn" Content="Mo" Margin="95,10,338,275"  Width="60" Click="monBtn_Click"/>
-            <Button x:Name="tueBtn" Content="Tu"  Margin="155,10,278,275"  Width="60" Click="tueBtn_Click"/>
-            <Button x:Name="wedBtn" Content="We"  Margin="215,10,218,275" Width="60" RenderTransformOrigin="0.001,0.571" Click="wedBtn_Click"/>
-            <Button x:Name="thuBtn" Content="Th" Margin="275,10,158,275" Width="60" Click="thuBtn_Click" RenderTransformOrigin="0.983,-5.642"/>
-            <Button x:Name="friBtn" Content="Fr" Margin="335,10,98,275" Width="60" RenderTransformOrigin="-0.284,0.91" Click="friBtn_Click"/>
-            <Button x:Name="satBtn" Content="Sa" Margin="395,10,38,275" Width="60" Click="satBtn_Click"/>
+            <Grid Name="DayButtons"> <!-- using this as a container for day-of-week buttons -->
+                <RadioButton x:Name="sunBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Su"  Margin="35,10,398,275"  Width="60" Click="btn_Click"/>
+                <RadioButton x:Name="monBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Mo" Margin="95,10,338,275"  Width="60" Click="btn_Click"/>
+                <RadioButton x:Name="tueBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Tu"  Margin="155,10,278,275"  Width="60" Click="btn_Click"/>
+                <RadioButton x:Name="wedBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="We"  Margin="215,10,218,275" Width="60" RenderTransformOrigin="0.001,0.571" Click="btn_Click"/>
+                <RadioButton x:Name="thuBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Th" Margin="275,10,158,275" Width="60" Click="btn_Click" RenderTransformOrigin="0.983,-5.642"/>
+                <RadioButton x:Name="friBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Fr" Margin="335,10,98,275" Width="60" RenderTransformOrigin="-0.284,0.91" Click="btn_Click"/>
+                <RadioButton x:Name="satBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Sa" Margin="395,10,38,275" Width="60" Click="btn_Click"/>
+            </Grid>
             <Label x:Name="errLbl" Content="" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="113,262,118,15" Width="262" Background="White" Foreground="Red"/>
             <Label Content="Repeat?" HorizontalAlignment="Left" Margin="0,29,0,0" VerticalAlignment="Top"/>
             <CheckBox x:Name="rptBoxSun" Content="" HorizontalAlignment="Left" Margin="68,35,0,0" VerticalAlignment="Top"/>

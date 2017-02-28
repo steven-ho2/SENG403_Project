@@ -24,7 +24,7 @@ namespace Team4Clock
     {
         private SWClock clock;
    
-        private List<DateTime> list = new List<DateTime>();
+        private List<Alarm> list = new List<Alarm>();
         private int snoozeDelay;
         private int setDelay = 3;
 
@@ -76,9 +76,9 @@ namespace Team4Clock
         {
             this.TImeLabel.Content = clock.ShowTime;
             snoozeTick();
-            foreach (DateTime alarm in list)
+            foreach (Alarm alarm in list)
             {
-                if(DateTime.Compare(clock.getCurrentTime(), alarm) == 0)
+                if(DateTime.Compare(clock.getCurrentTime(), alarm.time) == 0)
                 {
                     Console.Beep();
                 }
@@ -125,7 +125,7 @@ namespace Team4Clock
             Main.Children.Add(setAlarm);
         }
 
-        public void setList(DateTime alarm)
+        public void setList(Alarm alarm)
         {
             list.Add(alarm);
             Console.WriteLine(alarm);

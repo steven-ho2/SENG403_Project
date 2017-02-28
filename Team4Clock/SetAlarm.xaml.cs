@@ -17,16 +17,49 @@ namespace Team4Clock
 {
     public partial class SetAlarm : UserControl
     {
-        private bool pmClicked = false;  // checks if the pm button has been pressed
-        private bool amClicked = false;  // checks if the am button has been pressed
-        private int day = 0;            // SUN = 0 MON = 1 TUE = 2 WED = 3 THU = 4 FRI = 5 SAT = 6
-        private int amOrPm = 0;         // pm = 1 and am = 2
+        private DayOfWeek day = DayOfWeek.Sunday;
+        private bool isPm = false;        // default to AM
         private MainWindow mw = new MainWindow(); // The parent view object
+
+        // Mappings between buttons and days of week to simplify event handling
+        private Dictionary<RadioButton, DayOfWeek> buttonToDay;
+        private Dictionary<DayOfWeek, RadioButton> dayToButton;
 
         public SetAlarm(MainWindow newMW)
         {
             this.mw = newMW; // The parent view is set 
             InitializeComponent();
+            initDictionaries();
+
+            DayOfWeek curDay = DateTime.Now.DayOfWeek;
+            RadioButton curDayBtn = dayToButton[curDay];
+            curDayBtn.IsChecked = true;
+            ResolveDayClick(curDayBtn);
+        }
+
+        /* Initializes dictionaries used by this class.
+         * 
+         * This provides fast lookup between days of the week and their corresponding buttons.
+         */ 
+        private void initDictionaries()
+        {
+            // Button->Day mappings
+            buttonToDay = new Dictionary<RadioButton, DayOfWeek> {
+                {sunBtn, DayOfWeek.Sunday},
+                {monBtn, DayOfWeek.Monday},
+                {tueBtn, DayOfWeek.Tuesday},
+                {wedBtn, DayOfWeek.Wednesday},
+                {thuBtn, DayOfWeek.Thursday},
+                {friBtn, DayOfWeek.Friday},
+                {satBtn, DayOfWeek.Saturday}
+            };
+
+            // Day->Button mappings
+            dayToButton = new Dictionary<DayOfWeek, RadioButton>();
+            foreach (var entry in buttonToDay)
+            {
+                dayToButton.Add(entry.Value, entry.Key);
+            }
         }
 
         // Removes the current set alarm view from the stack allowing
@@ -122,159 +155,60 @@ namespace Team4Clock
 
         private void pmBtn_Click(object sender, RoutedEventArgs e)
         {
-            amOrPm = 1;
-            pmBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070"));
-            pmClicked = true;
-
-            if (amClicked)
-            {
-                amBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-                amClicked = false;
-            }
+            isPm = true;
         }
 
         private void amBtn_Click(object sender, RoutedEventArgs e)
         {
-            amOrPm = 2;
-            amBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070"));
-            amClicked = true;
-
-            if (pmClicked)
-            {
-                pmBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-                pmClicked = false;
-            }
+            isPm = false;
         }
         /*
-            - Error handling is done is PM or AM and day is missed
+            - Error handling is currently not done as there is no need (it should be impossible to not set AM/PM or day of week)
             - Alarm object with data is set and passed to the MainWindow class to be used
         */
         private void doneBtn_Click(object sender, RoutedEventArgs e)
         {
-            if ((!(amClicked || pmClicked)) && day == 0)
+            String min = Convert.ToString(min1Lbl.Content) + Convert.ToString(min2Lbl.Content);
+            (this.Parent as Panel).Children.Remove(this);
+
+            int hours = Convert.ToInt32(hrLbl.Content);
+            hours = (!isPm) ? (hours + 12) : hours;
+            hours = (hours == 24) ? 0 : hours;
+            TimeSpan alarmTime = new TimeSpan(hours, Convert.ToInt32(min), 0);
+            Alarm alarm = new Alarm(alarmTime);
+
+            // Get repeat days and update the alarm with these days
+            // Todo: update for variable repeats (i.e. different times for different days)
+            List<DayOfWeek> rptDays = GetCheckboxDays();
+            foreach (DayOfWeek rptDay in rptDays)
             {
-                errLbl.Content = "Please select a day (MON - SUN) and AM or PM";
+                alarm.SetRepeat(rptDay, true);
             }
-            else if(!(amClicked || pmClicked))
+
+            mw.setList(alarm);
+        }
+
+        private void btn_Click(object sender, RoutedEventArgs e)
+        {
+            ResolveDayClick((RadioButton)sender);
+        }
+
+        private void ResolveDayClick(RadioButton btn)
+        {
+            day = buttonToDay[btn];
+            UpdateDayButtonColours();
+        }
+
+        private void UpdateDayButtonColours()
+        {
+            foreach (var child in DayButtons.Children)
             {
-                errLbl.Content = "Please select AM or PM";
+                RadioButton btn = (RadioButton) child;
+                if (btn != null) {
+                    btn.Background = (bool) btn.IsChecked ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070")) :
+                                                            new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
+                }
             }
-            else if(day == 0)
-            {
-                errLbl.Content = "Please select a day (MON - SUN)";
-            }
-            else
-            {
-                String min = Convert.ToString(min1Lbl.Content) + Convert.ToString(min2Lbl.Content);
-                /*
-                    DateTime(year,month,day,hour,min,sec)
-                    *day is being used for now from SUN - SAT (0 - 6)
-                    *hour is being used as hour (1 - 12)
-                    *min is being used as min (0 - 59)
-                    *seconds is being used for now for AM and PM
-                */
-                //DateTime test = new DateTime(2017, 2, day, Convert.ToInt32(hrLbl.Content), Convert.ToInt32(min), amOrPm);
-                (this.Parent as Panel).Children.Remove(this);
-
-                int hours = Convert.ToInt32(hrLbl.Content);
-                hours = (amOrPm == 1) ? (hours + 12) : hours;
-                hours = (hours == 24) ? 0 : hours;
-                DateTime dt = DateTime.Now;
-                DateTime alarm = new DateTime(dt.Year,dt.Month,dt.Day,hours,Convert.ToInt32(min),0);
-                mw.setList(alarm);
-
-                // Get repeat days and update the alarm with these days
-                // This is temporarily disabled -- do we even instantiate Alarms anymore?
-                /*List<DayOfWeek> rptDays = GetCheckboxDays();
-                foreach (DayOfWeek rptDay in rptDays)
-                {
-                    myAlarm.SetRepeat(rptDay, true);
-                }*/
-            }
-        }
-
-        private void sunBtn_Click(object sender, RoutedEventArgs e)
-        {
-            day = 0;
-            sunBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070"));
-            monBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            tueBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            wedBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            thuBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            friBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            satBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-        }
-
-        private void monBtn_Click(object sender, RoutedEventArgs e)
-        {
-            day = 1;
-            sunBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            monBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070"));
-            tueBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            wedBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            thuBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            friBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            satBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-        }
-
-        private void tueBtn_Click(object sender, RoutedEventArgs e)
-        {
-            day = 2;
-            sunBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            monBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            tueBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070"));
-            wedBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            thuBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            friBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            satBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-        }
-
-        private void wedBtn_Click(object sender, RoutedEventArgs e)
-        {
-            day = 3;
-            sunBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            monBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            tueBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            wedBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070"));
-            thuBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            friBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            satBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-        }
-
-        private void thuBtn_Click(object sender, RoutedEventArgs e)
-        {
-            day = 4;
-            sunBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            monBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            tueBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            wedBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            thuBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070"));
-            friBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            satBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-        }
-
-        private void friBtn_Click(object sender, RoutedEventArgs e)
-        {
-            day = 5;
-            sunBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            monBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            tueBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            wedBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            thuBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            friBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070"));
-            satBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-        }
-
-        private void satBtn_Click(object sender, RoutedEventArgs e)
-        {
-            day = 6;
-            sunBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            monBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            tueBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            wedBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            thuBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            friBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-            satBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070"));
         }
 
         private List<DayOfWeek> GetCheckboxDays()
