@@ -172,8 +172,27 @@ namespace Team4Clock
             (this.Parent as Panel).Children.Remove(this);
 
             int hours = Convert.ToInt32(hrLbl.Content);
-            hours = (!isPm) ? (hours + 12) : hours;
-            hours = (hours == 24) ? 0 : hours;
+            if(isPm == true)
+            {
+                if(hours == 12)
+                {
+                    hours = hours + 24;
+                }
+                else
+                {
+                    hours = hours + 12;
+                }
+                Console.WriteLine("Inside PM");
+            }
+            else
+            {
+                if (hours == 12)
+                {
+                    hours = hours + 12;
+                }
+            }
+            //hours = (!isPm) ? (hours + 12) : hours;
+            //hours = (hours == 24) ? 0 : hours;
             TimeSpan alarmTime = new TimeSpan(hours, Convert.ToInt32(min), 0);
             Alarm alarm = new Alarm(alarmTime);
 

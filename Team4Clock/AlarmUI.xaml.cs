@@ -41,7 +41,7 @@ namespace Team4Clock
         private void cancelBtn_Click(object sender, RoutedEventArgs e)
         {
             a.deleteAlarm();
-            mw.deleteFromListAlarm(this);
+            mw.deleteFromListAlarm(this,a);
         }
 
         private void editBtn_Click(object sender, RoutedEventArgs e)
