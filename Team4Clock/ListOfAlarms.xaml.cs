@@ -26,8 +26,6 @@ namespace Team4Clock
         public ListOfAlarms()
         {
             InitializeComponent();
-            
-
         }
 
         public ListOfAlarms(MainWindow mw, List<Alarm> list)
@@ -44,17 +42,15 @@ namespace Team4Clock
         private void List_Back_Click(object sender, RoutedEventArgs e)
         {
             (this.Parent as Panel).Children.Remove(this);
-
         }
 
         private void addAlarms()
         {
             foreach(Alarm i in alarmList)
             {
-                AlarmUI alarm = new AlarmUI(i);  
-               this.listStack.Children.Add(alarm);
+                //AlarmUI alarm = new AlarmUI(i);  
+               //this.listStack.Children.Add(alarm);
             }
         }
-        
     }
 }

@@ -14,37 +14,51 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Collections;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace Team4Clock
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         private SWClock clock;
-   
         private List<Alarm> list = new List<Alarm>();
+        private ObservableCollection<AlarmUI> collecton = new ObservableCollection<AlarmUI>();
         private int snoozeDelay;
         private int setDelay = 3;
+        private int alarmID = 0;
 
         public MainWindow()
         {
             InitializeComponent();
 
-
-           
-
-     
-
-
             clock = new SWClock();
             
             startClock();
             this.KeyUp += MainWindow_KeyUp;
-
+            collecton.CollectionChanged += HandleChange;
+            listTemp.ItemsSource = collecton;
             activateSnooze();   //Testing snooze function
 
+        }
+
+        private void HandleChange(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                // do something  
+            }
+           
+            else if(e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                
+                // do something
+            }
         }
 
         private void MainWindow_KeyUp(object sender, KeyEventArgs e)
@@ -63,7 +77,6 @@ namespace Team4Clock
             time.Tick += new EventHandler(time_tick);
             time.Interval = new TimeSpan(0, 0, 1); //Set the wait time to 1 min //I changed it to 1 sec to check snooze
             time.Start();
-
         }
 
         public Grid getGrid
@@ -105,11 +118,9 @@ namespace Team4Clock
         //Event for when "list of alarm" button is clicked
         private void List_Click(object sender, RoutedEventArgs e)
         {
-            ListOfAlarms listAlarm = new ListOfAlarms(this, list);
-            Main.Children.Add(listAlarm);
-
-
-
+            // ListOfAlarms listAlarm = new ListOfAlarms(this, list);
+            // Main.Children.Add(listAlarm);
+           
         }
         
         //Activate the snooze buttons
@@ -122,13 +133,15 @@ namespace Team4Clock
         private void setAlarmBtn_Click(object sender, RoutedEventArgs e)
         {
             SetAlarm setAlarm = new SetAlarm(this);
+            setAlarm.RenderTransform = new ScaleTransform(2.8, 2.5);
             Main.Children.Add(setAlarm);
         }
 
         public void setList(Alarm alarm)
         {
             list.Add(alarm);
-            Console.WriteLine(alarm);
+            AlarmUI alarmUI = new AlarmUI(alarm, this);
+            collecton.Add(alarmUI);
         }
         
         // Check whether to activate buttons or keep snoozing
@@ -158,6 +171,12 @@ namespace Team4Clock
         public int getSnoozeDelay()
         {
             return snoozeDelay;
+        }
+        public void deleteFromListAlarm(AlarmUI a)
+        {
+            collecton.Remove(a);
+            
+            //this.listStack.Children.RemoveAt(id);
         }
     }
 }
