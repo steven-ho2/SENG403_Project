@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Media;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Reflection;
 
 namespace Team4Clock
 {
@@ -31,20 +33,22 @@ namespace Team4Clock
         private ObservableCollection<AlarmUI> collecton = new ObservableCollection<AlarmUI>();
         private int snoozeDelay;
         private int setDelay = 3;
-        private int alarmID = 0;
+        private bool alarmOn = false;
+        private SoundPlayer player = new SoundPlayer();
+        string path = Assembly.GetExecutingAssembly().Location;
+        private String soundLocation =  @"PoliceSound.wav";
 
         public MainWindow()
         {
             InitializeComponent();
-
             clock = new SWClock();
-            
             startClock();
             this.KeyUp += MainWindow_KeyUp;
             collecton.CollectionChanged += HandleChange;
             listTemp.ItemsSource = collecton;
-            activateSnooze();   //Testing snooze function
-
+            snoozeDelay = -1;
+            
+            //activateSnooze();   //Testing snooze function
         }
 
         private void HandleChange(object sender, NotifyCollectionChangedEventArgs e)
@@ -93,13 +97,23 @@ namespace Team4Clock
             {
                 if(DateTime.Compare(clock.getCurrentTime(), alarm.time) == 0)
                 {
-                    Console.Beep();
+                    if (alarmOn == false)
+                    {
+                        this.player.SoundLocation = soundLocation;
+                        this.player.Play();
+                        Console.WriteLine("Time" + alarm.time);
+                        alarmOn = true;
+                        snoozeDelay = -2;
+                        activateSnooze();
+                    }
                 }
             }
         }
 
         private void awake_Click(object sender, RoutedEventArgs e)
         {
+            player.Stop();
+
             awakeButton.Visibility = Visibility.Hidden;
             snoozeButton.Visibility = Visibility.Hidden;
 
@@ -153,11 +167,14 @@ namespace Team4Clock
             }
             else if(snoozeDelay == -1)
             {
+                player.Stop();
                 snoozeButton.Visibility = Visibility.Hidden;
                 awakeButton.Visibility = Visibility.Hidden;
             }
             else
             {
+                player.SoundLocation = soundLocation;
+                player.PlayLooping();
                 activateSnooze();
             }
             
@@ -172,10 +189,10 @@ namespace Team4Clock
         {
             return snoozeDelay;
         }
-        public void deleteFromListAlarm(AlarmUI a)
+        public void deleteFromListAlarm(AlarmUI alarmUI,Alarm alarm)
         {
-            collecton.Remove(a);
-            
+            collecton.Remove(alarmUI);
+            list.Remove(alarm);
             //this.listStack.Children.RemoveAt(id);
         }
     }
