@@ -137,7 +137,7 @@ namespace Team4Clock
          */
         public void SetRepeat(DayOfWeek day, bool repeats)
         {
-            repeatDays.SetRepeat(day, repeats);
+            //repeatDays.SetRepeat(day, repeats);
         }
 
         /* Updates the alarm's time to the next instance of the repeat.

@@ -22,8 +22,8 @@ namespace Team4Clock
         private MainWindow mw = new MainWindow(); // The parent view object
 
         // Mappings between buttons and days of week to simplify event handling
-        private Dictionary<RadioButton, DayOfWeek> buttonToDay;
-        private Dictionary<DayOfWeek, RadioButton> dayToButton;
+        private Dictionary<CheckBox, DayOfWeek> buttonToDay;
+        private Dictionary<DayOfWeek, CheckBox> dayToButton;
 
         public SetAlarm(MainWindow newMW)
         {
@@ -32,7 +32,7 @@ namespace Team4Clock
             initDictionaries();
 
             DayOfWeek curDay = DateTime.Now.DayOfWeek;
-            RadioButton curDayBtn = dayToButton[curDay];
+            CheckBox curDayBtn = dayToButton[curDay];
             curDayBtn.IsChecked = true;
             ResolveDayClick(curDayBtn);
         }
@@ -44,7 +44,7 @@ namespace Team4Clock
         private void initDictionaries()
         {
             // Button->Day mappings
-            buttonToDay = new Dictionary<RadioButton, DayOfWeek> {
+            buttonToDay = new Dictionary<CheckBox, DayOfWeek> {
                 {sunBtn, DayOfWeek.Sunday},
                 {monBtn, DayOfWeek.Monday},
                 {tueBtn, DayOfWeek.Tuesday},
@@ -55,7 +55,7 @@ namespace Team4Clock
             };
 
             // Day->Button mappings
-            dayToButton = new Dictionary<DayOfWeek, RadioButton>();
+            dayToButton = new Dictionary<DayOfWeek, CheckBox>();
             foreach (var entry in buttonToDay)
             {
                 dayToButton.Add(entry.Value, entry.Key);
@@ -212,10 +212,10 @@ namespace Team4Clock
 
         private void btn_Click(object sender, RoutedEventArgs e)
         {
-            ResolveDayClick((RadioButton)sender);
+            ResolveDayClick((CheckBox)sender);
         }
 
-        private void ResolveDayClick(RadioButton btn)
+        private void ResolveDayClick(CheckBox btn)
         {
             day = buttonToDay[btn];
             UpdateDayButtonColours();
@@ -223,27 +223,11 @@ namespace Team4Clock
 
         private void UpdateDayButtonColours()
         {
-            foreach (var child in DayButtons.Children)
-            {
-                RadioButton btn = (RadioButton)child;
-                if (btn != null)
-                {
-                    btn.Background = (bool)btn.IsChecked ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070")) :
-                                                            new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-                }
-            }
         }
 
         private List<DayOfWeek> GetCheckboxDays()
         {
             List<DayOfWeek> retList = new List<DayOfWeek>();
-            if ((bool)rptBoxSun.IsChecked) retList.Add(DayOfWeek.Sunday);
-            if ((bool)rptBoxMon.IsChecked) retList.Add(DayOfWeek.Monday);
-            if ((bool)rptBoxTue.IsChecked) retList.Add(DayOfWeek.Tuesday);
-            if ((bool)rptBoxWed.IsChecked) retList.Add(DayOfWeek.Wednesday);
-            if ((bool)rptBoxThu.IsChecked) retList.Add(DayOfWeek.Thursday);
-            if ((bool)rptBoxFri.IsChecked) retList.Add(DayOfWeek.Friday);
-            if ((bool)rptBoxSat.IsChecked) retList.Add(DayOfWeek.Saturday);
             return retList;
         }
     }
