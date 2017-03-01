@@ -149,7 +149,7 @@ namespace Team4Clock
         private void setAlarmBtn_Click(object sender, RoutedEventArgs e)
         {
             SetAlarm setAlarm = new SetAlarm(this);
-            setAlarm.RenderTransform = new ScaleTransform(2.8, 2.5);
+            //setAlarm.RenderTransform = new ScaleTransform(2.8, 2.5);
             Main.Children.Add(setAlarm);
         }
 
