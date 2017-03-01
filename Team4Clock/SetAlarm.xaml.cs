@@ -271,12 +271,7 @@ namespace Team4Clock
             Alarm alarm = new Alarm(alarmTime);
 
             // Get repeat days and update the alarm with these days
-            // Todo: update for variable repeats (i.e. different times for different days)
-            List<DayOfWeek> rptDays = GetCheckboxDays();
-            foreach (DayOfWeek rptDay in rptDays)
-            {
-                alarm.SetRepeat(rptDay, true);
-            }
+            setAlarmRepeats(alarm);
 
             mw.setList(alarm);
         }
@@ -285,6 +280,55 @@ namespace Team4Clock
         {
             List<DayOfWeek> retList = new List<DayOfWeek>();
             return retList;
+        }
+
+        private TimeSpan parseRepeatBoxes(ComboBox hoursBox, ComboBox minsBox, ComboBox amPm)
+        {
+            bool setPm = amPm.SelectedItem.ToString() == "PM";
+            string hoursStr = hoursBox.SelectedItem.ToString();
+            int hours = (hoursStr == "12") ? 0 : Int32.Parse(hoursBox.SelectedItem.ToString());
+            hours += setPm ? 12 : 0;
+            int mins = Int32.Parse(minsBox.SelectedItem.ToString());
+            return new TimeSpan(hours, mins, 0);
+        }
+
+        private void setAlarmRepeats(Alarm alarm)
+        {
+            TimeSpan time;
+            if ((bool) sunBtn.IsChecked) {
+                time = parseRepeatBoxes(sunHrs, sunMins, sunAmPm);
+                alarm.SetRepeat(DayOfWeek.Sunday, /*repeats*/ true, time);
+            }
+            if ((bool)monBtn.IsChecked)
+            {
+                time = parseRepeatBoxes(monHrs, monMins, monAmPm);
+                alarm.SetRepeat(DayOfWeek.Monday, /*repeats*/ true, time);
+            }
+            if ((bool)tueBtn.IsChecked)
+            {
+                time = parseRepeatBoxes(tueHrs, tueMins, tueAmPm);
+                alarm.SetRepeat(DayOfWeek.Tuesday, /*repeats*/ true, time);
+            }
+            if ((bool)wedBtn.IsChecked)
+            {
+                time = parseRepeatBoxes(wedHrs, wedMins, wedAmPm);
+                alarm.SetRepeat(DayOfWeek.Wednesday, /*repeats*/ true, time);
+            }
+            if ((bool)thuBtn.IsChecked)
+            {
+                time = parseRepeatBoxes(thuHrs, thuMins, thuAmPm);
+                alarm.SetRepeat(DayOfWeek.Thursday, /*repeats*/ true, time);
+            }
+            if ((bool)friBtn.IsChecked)
+            {
+                time = parseRepeatBoxes(friHrs, friMins, friAmPm);
+                alarm.SetRepeat(DayOfWeek.Friday, /*repeats*/ true, time);
+            }
+            if ((bool)satBtn.IsChecked)
+            {
+                time = parseRepeatBoxes(satHrs, satMins, satAmPm);
+                alarm.SetRepeat(DayOfWeek.Saturday, /*repeats*/ true, time);
+            }
         }
     }
 }

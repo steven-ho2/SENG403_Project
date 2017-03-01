@@ -84,6 +84,11 @@ namespace Team4Clock
             return repeatDays[day].repeats;
         }
 
+        public TimeSpan GetRepeatForDay(DayOfWeek day)
+        {
+            return repeatDays[day].time;
+        }
+
         /* Predicate to determine whether or not any repeats are set.
          * 
          * Runs in O(n) time, so not especially efficient.

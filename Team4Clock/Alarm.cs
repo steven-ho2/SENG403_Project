@@ -135,9 +135,9 @@ namespace Team4Clock
          * day:     The DayOfWeek for which to modify repeat behaviour.
          * repeats: Whether to repeat for this day (true: repeat for this day).
          */
-        public void SetRepeat(DayOfWeek day, bool repeats)
+        public void SetRepeat(DayOfWeek day, bool repeats, TimeSpan time)
         {
-            //repeatDays.SetRepeat(day, repeats);
+            repeatDays.SetRepeat(day, repeats, time);
         }
 
         /* Updates the alarm's time to the next instance of the repeat.
@@ -178,6 +178,19 @@ namespace Team4Clock
                     }
                 }
             }
+        }
+
+        public string ListRepeatDaysAndTimes()
+        {
+            string retStr = "";
+
+            List<DayOfWeek> days = repeatDays.GetRepeats();
+            foreach (DayOfWeek day in days) {
+                TimeSpan time = repeatDays.GetRepeatForDay(day);
+                retStr += day + ": " + time + "\n";
+            }
+
+            return retStr;
         }
     }
 }
