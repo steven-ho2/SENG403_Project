@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,16 +26,19 @@ namespace Team4Clock
         private Dictionary<CheckBox, DayOfWeek> buttonToDay;
         private Dictionary<DayOfWeek, CheckBox> dayToButton;
 
+        // Collections of strings for use in ComboBoxes for alarm repeats. Set by initComboBoxes() function.
+        private ObservableCollection<string> hrsList = new ObservableCollection<string>();
+        private ObservableCollection<string> minsList = new ObservableCollection<string>();
+        private ObservableCollection<string> amPmList = new ObservableCollection<string>();
+
+
         public SetAlarm(MainWindow newMW)
         {
             this.mw = newMW; // The parent view is set 
             InitializeComponent();
             initDictionaries();
 
-            DayOfWeek curDay = DateTime.Now.DayOfWeek;
-            CheckBox curDayBtn = dayToButton[curDay];
-            curDayBtn.IsChecked = true;
-            ResolveDayClick(curDayBtn);
+            initComboBoxes();
         }
 
         /* Initializes dictionaries used by this class.
@@ -60,6 +64,73 @@ namespace Team4Clock
             {
                 dayToButton.Add(entry.Value, entry.Key);
             }
+        }
+
+        private void initComboBoxes()
+        {
+            // Set up shared string collections for combo boxes
+            for (int i = 1; i <= 12; i++)
+            {
+                hrsList.Add(i.ToString());
+            }
+            for (int i = 0; i < 60; i++)
+            {
+                minsList.Add(i.ToString("D2"));
+            }
+            amPmList.Add("AM");
+            amPmList.Add("PM");
+
+            // Set combo boxes to use shared sources (there's gotta be a better way to do this...)
+            this.sunHrs.ItemsSource = hrsList;
+            this.sunMins.ItemsSource = minsList;
+            this.sunAmPm.ItemsSource = amPmList;
+            this.monHrs.ItemsSource = hrsList;
+            this.monMins.ItemsSource = minsList;
+            this.monAmPm.ItemsSource = amPmList;
+            this.tueHrs.ItemsSource = hrsList;
+            this.tueMins.ItemsSource = minsList;
+            this.tueAmPm.ItemsSource = amPmList;
+            this.wedHrs.ItemsSource = hrsList;
+            this.wedMins.ItemsSource = minsList;
+            this.wedAmPm.ItemsSource = amPmList;
+            this.thuHrs.ItemsSource = hrsList;
+            this.thuMins.ItemsSource = minsList;
+            this.thuAmPm.ItemsSource = amPmList;
+            this.friHrs.ItemsSource = hrsList;
+            this.friMins.ItemsSource = minsList;
+            this.friAmPm.ItemsSource = amPmList;
+            this.satHrs.ItemsSource = hrsList;
+            this.satMins.ItemsSource = minsList;
+            this.satAmPm.ItemsSource = amPmList;
+
+            // Set up defaults
+            sunHrs.SelectedItem = "12";
+            sunMins.SelectedIndex = 0;
+            sunAmPm.SelectedIndex = 0;
+
+            monHrs.SelectedItem = "12";
+            monMins.SelectedIndex = 0;
+            monAmPm.SelectedIndex = 0;
+
+            tueHrs.SelectedItem = "12";
+            tueMins.SelectedIndex = 0;
+            tueAmPm.SelectedIndex = 0;
+
+            wedHrs.SelectedItem = "12";
+            wedMins.SelectedIndex = 0;
+            wedAmPm.SelectedIndex = 0;
+
+            thuHrs.SelectedItem = "12";
+            thuMins.SelectedIndex = 0;
+            thuAmPm.SelectedIndex = 0;
+
+            friHrs.SelectedItem = "12";
+            friMins.SelectedIndex = 0;
+            friAmPm.SelectedIndex = 0;
+
+            satHrs.SelectedItem = "12";
+            satMins.SelectedIndex = 0;
+            satAmPm.SelectedIndex = 0;
         }
 
         // Removes the current set alarm view from the stack allowing
@@ -208,21 +279,6 @@ namespace Team4Clock
             }
 
             mw.setList(alarm);
-        }
-
-        private void btn_Click(object sender, RoutedEventArgs e)
-        {
-            ResolveDayClick((CheckBox)sender);
-        }
-
-        private void ResolveDayClick(CheckBox btn)
-        {
-            day = buttonToDay[btn];
-            UpdateDayButtonColours();
-        }
-
-        private void UpdateDayButtonColours()
-        {
         }
 
         private List<DayOfWeek> GetCheckboxDays()
