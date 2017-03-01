@@ -36,7 +36,8 @@ namespace Team4Clock
         private bool alarmOn = false;
         private SoundPlayer player = new SoundPlayer();
         string path = Assembly.GetExecutingAssembly().Location;
-        private String soundLocation =  @"PoliceSound.wav";
+        private String soundLocation = @"PoliceSound.wav";
+        bool playing = false;
 
         public MainWindow()
         {
@@ -47,8 +48,9 @@ namespace Team4Clock
             collecton.CollectionChanged += HandleChange;
             listTemp.ItemsSource = collecton;
             snoozeDelay = -1;
-            
+        
             //activateSnooze();   //Testing snooze function
+
         }
 
         private void HandleChange(object sender, NotifyCollectionChangedEventArgs e)
@@ -98,9 +100,9 @@ namespace Team4Clock
                 if(DateTime.Compare(clock.getCurrentTime(), alarm.time) == 0)
                 {
                     if (alarmOn == false)
-                    {
+                    { 
                         this.player.SoundLocation = soundLocation;
-                        this.player.Play();
+                        this.player.PlayLooping();
                         Console.WriteLine("Time" + alarm.time);
                         alarmOn = true;
                         snoozeDelay = -2;
@@ -163,18 +165,25 @@ namespace Team4Clock
         {
             if (snoozeDelay > 0)
             {
+                if (alarmOn == true)
+                {
+                    player.Stop();
+                    alarmOn = false;
+                }
                 snoozeDelay--;
             }
             else if(snoozeDelay == -1)
             {
-                player.Stop();
+               
+
                 snoozeButton.Visibility = Visibility.Hidden;
                 awakeButton.Visibility = Visibility.Hidden;
             }
             else
             {
                 player.SoundLocation = soundLocation;
-                player.PlayLooping();
+                this.player.PlayLooping();
+                alarmOn = true;
                 activateSnooze();
             }
             
