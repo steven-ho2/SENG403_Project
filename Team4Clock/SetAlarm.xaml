@@ -6,42 +6,116 @@
              xmlns:local="clr-namespace:Team4Clock" >
 
     <Grid Background="White" >
-        <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Button x:Name="hrBtnUp" Content="+" FontSize="18.667" Click="hrBtnUp_Click" Margin="102,89,316,184"/>
-            <Label x:Name="hrLbl" Content="12" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="102,121,316,88"/>
-            <Button x:Name="hrDownBtn" Content="-" FontSize="18.667" Click="hrDownBtn_Click" Margin="102,217,316,56"/>
-            <Button x:Name="min1BtnUp" Content="+" Click="min1BtnUp_Click" Margin="225,89,193,184"/>
-            <Label x:Name="min1Lbl" Content="0" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="225,121,193,89"/>
-            <Button x:Name="min1DownBtn" Content="-" Click="min1DownBtn_Click" Margin="225,216,193,57"/>
-            <Button x:Name="min2BtnUp" Content="+" Click="min2BtnUp_Click" Margin="300,89,118,184"/>
-            <Label x:Name="min2Lbl" Content="0" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="300,121,118,89"/>
-            <Button x:Name="min2BtnDown" Content="-" Click="min2BtnDown_Click" Margin="300,216,118,57"/>
-            <Button x:Name="backBtn" Content="Back" Width="75" Click="backBtn_Click" Height="73" Style="{DynamicResource MetroCircleButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,417,20" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
-
-            <Grid Name="AmPmButtons" Margin="0,-1,0,1">
-                <RadioButton x:Name="amBtn" Content="AM" Width="75" Height="37" Canvas.Top="22" Click="amBtn_Click" Margin="408,122,10,154" IsChecked="True"/>
-                <RadioButton x:Name="pmBtn" Content="PM" Width="75" Canvas.Top="59" Height="37" Click="pmBtn_Click" Margin="408,159,10,117"/>
-            </Grid>
-            <Button x:Name="doneBtn" Content="Done" Margin="408,224,10,18"  Width="75" Style="{DynamicResource MetroCircleButtonStyle}" Click="doneBtn_Click"/>
-            <Grid Name="DayButtons" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <!-- using this as a container for day-of-week buttons -->
-                <RadioButton x:Name="sunBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Su"  Margin="38,10,395,275"  Width="60" Click="btn_Click" HorizontalContentAlignment="Center"/>
-                <RadioButton x:Name="monBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Mo" Margin="98,10,335,275"  Width="60" Click="btn_Click" HorizontalContentAlignment="Center"/>
-                <RadioButton x:Name="tueBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Tu"  Margin="158,10,275,275"  Width="60" Click="btn_Click" HorizontalContentAlignment="Center"/>
-                <RadioButton x:Name="wedBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="We"  Margin="218,10,215,275" Width="60" RenderTransformOrigin="0.001,0.571" Click="btn_Click" HorizontalContentAlignment="Center"/>
-                <RadioButton x:Name="thuBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Th" Margin="278,10,155,275" Width="60" Click="btn_Click" RenderTransformOrigin="0.983,-5.642" HorizontalContentAlignment="Center"/>
-                <RadioButton x:Name="friBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Fr" Margin="338,10,95,275" Width="60" RenderTransformOrigin="-0.284,0.91" Click="btn_Click" HorizontalContentAlignment="Center"/>
-                <RadioButton x:Name="satBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Sa" Margin="398,10,35,275" Width="60" Click="btn_Click" HorizontalContentAlignment="Center"/>
-            </Grid>
-            <Label x:Name="errLbl" Content="" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="102,261,129,16" Width="262" Background="White" Foreground="Red" RenderTransformOrigin="0.275,0.028"/>
-            <Label Content="Repeat?" HorizontalAlignment="Left" Margin="0,45,0,0" VerticalAlignment="Top"/>
-            <CheckBox x:Name="rptBoxSun" Content="" HorizontalAlignment="Left" Margin="59,49,0,0" VerticalAlignment="Top"/>
-            <CheckBox x:Name="rptBoxMon" Content="" HorizontalAlignment="Left" Margin="117,50,0,0" VerticalAlignment="Top"/>
-            <CheckBox x:Name="rptBoxTue" Content="" HorizontalAlignment="Left" Margin="180,50,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.6,0.462"/>
-            <CheckBox x:Name="rptBoxWed" Content="" HorizontalAlignment="Left" Margin="242,50,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.6,0.462"/>
-            <CheckBox x:Name="rptBoxThu" Content="" HorizontalAlignment="Left" Margin="299,50,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.6,0.462"/>
-            <CheckBox x:Name="rptBoxFri" Content="" HorizontalAlignment="Left" Margin="358,50,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.6,0.462"/>
-            <CheckBox x:Name="rptBoxSat" Content="" HorizontalAlignment="Left" Margin="418,50,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.6,0.462"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="4*" />
+        </Grid.ColumnDefinitions>
+        <!-- Main Grid -->
+        <Viewbox Grid.Column="0" VerticalAlignment="Top">
+        <Grid Margin="10,10,10,10" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+                <Label Content="Set Alarm" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Grid.Row="0" Grid.ColumnSpan="6"/>
+                <Button x:Name="hrBtnUp" Content="+" FontSize="18.667" Click="hrBtnUp_Click" Grid.Row="1" Grid.Column="1"/>
+                <Label x:Name="hrLbl" Content="12" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Row="2" Grid.Column="1"/>
+                <Button x:Name="hrDownBtn" Content="-" FontSize="18.667" Click="hrDownBtn_Click" Grid.Row="3" Grid.Column="1"/>
+                <Button x:Name="min1BtnUp" Content="+" FontSize="18.667" Click="min1BtnUp_Click" Grid.Row="1" Grid.Column="3"/>
+                <Label x:Name="min1Lbl" Content="0" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Row="2" Grid.Column="3"/>
+                <Button x:Name="min1DownBtn" Content="-" FontSize="18.667" Click="min1DownBtn_Click" Grid.Row="3" Grid.Column="3"/>
+                <Button x:Name="min2BtnUp" Content="+" FontSize="18.667" Click="min2BtnUp_Click" Grid.Row="1" Grid.Column="4"/>
+                <Label x:Name="min2Lbl" Content="0" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Row="2" Grid.Column="4"/>
+                <Button x:Name="min2BtnDown" Content="-" FontSize="18.667" Click="min2BtnDown_Click" Grid.Row="3" Grid.Column="4"/>
+                <Button x:Name="backBtn" Content="Back" Width="75" Click="backBtn_Click" Height="73" Style="{DynamicResource MetroCircleButtonStyle}" 
+                        HorizontalAlignment="Right" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
+                        Grid.Column="0" Grid.Row="3" Grid.RowSpan="2"/>
+                <StackPanel Name="AmPmButtons" Grid.Row="2" Grid.Column="5">
+                    <RadioButton x:Name="amBtn" Content="AM" Width="75" Height="37" Canvas.Top="22" Click="amBtn_Click" IsChecked="True"/>
+                    <RadioButton x:Name="pmBtn" Content="PM" Width="75" Canvas.Top="59" Height="37" Click="pmBtn_Click"/>
+                </StackPanel>
+                <Button x:Name="doneBtn" Content="Done"   Style="{DynamicResource MetroCircleButtonStyle}" Click="doneBtn_Click"
+                        Width="75" Height="73" Grid.Column="5" Grid.Row="3" Grid.RowSpan="2"/>
         </Grid>
+        </Viewbox>
+
+       <!-- Uncomment the line below to enable proportionate resizing of the two grids. -->
+        <!--<GridSplitter Grid.Column="1" Width="5" Grid.RowSpan="5" HorizontalAlignment="Stretch" />-->
+        
+        <!-- Repeats Grid -->
+        <Viewbox Grid.Column="2" VerticalAlignment="Top">
+            <Grid Margin="10,10,10,10" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Label Content="Repeat Alarm" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Grid.ColumnSpan="6"/>
+                <CheckBox x:Name="sunBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Sun" Width="60" Margin="0,0,5,5" Grid.Row="1"/>
+                <CheckBox x:Name="monBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Mon" Width="60" Margin="0,0,5,5" Grid.Row="2"/>
+                <CheckBox x:Name="tueBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Tue"  Width="60" Margin="0,0,5,5" Grid.Row="3"/>
+                <CheckBox x:Name="wedBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Wed" Width="60" Margin="0,0,5,5" Grid.Row="4"/>
+                <CheckBox x:Name="thuBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Thu" Width="60" Margin="0,0,5,5" Grid.Row="5"/>
+                <CheckBox x:Name="friBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Fri" Width="60" Margin="0,0,5,5" Grid.Row="6"/>
+                <CheckBox x:Name="satBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Sat"  Width="60" Margin="0,0,5,5" Grid.Row="7"/>
+                <ComboBox x:Name="sunHrs" IsEnabled="{Binding ElementName=sunBtn, Path=IsChecked}" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top"/>
+                <Label Grid.Column="2" Grid.Row="1">:</Label>
+                <ComboBox x:Name="sunMins" IsEnabled="{Binding ElementName=sunBtn, Path=IsChecked}" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="sunAmPm" IsEnabled="{Binding ElementName=sunBtn, Path=IsChecked}" Grid.Row="1" Grid.Column="4" Margin="5,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="monHrs" IsEnabled="{Binding ElementName=monBtn, Path=IsChecked}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label Grid.Column="2" Grid.Row="2">:</Label>
+                <ComboBox x:Name="monMins" IsEnabled="{Binding ElementName=monBtn, Path=IsChecked}" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="monAmPm" IsEnabled="{Binding ElementName=monBtn, Path=IsChecked}" Grid.Row="2" Grid.Column="4" Margin="5,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="tueHrs" IsEnabled="{Binding ElementName=tueBtn, Path=IsChecked}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label Grid.Column="2" Grid.Row="3">:</Label>
+                <ComboBox x:Name="tueMins" IsEnabled="{Binding ElementName=tueBtn, Path=IsChecked}" Grid.Row="3" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="tueAmPm" IsEnabled="{Binding ElementName=tueBtn, Path=IsChecked}" Grid.Row="3" Grid.Column="4" Margin="5,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="wedHrs" IsEnabled="{Binding ElementName=wedBtn, Path=IsChecked}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label Grid.Column="2" Grid.Row="4">:</Label>
+                <ComboBox x:Name="wedMins" IsEnabled="{Binding ElementName=wedBtn, Path=IsChecked}" Grid.Row="4" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="wedAmPm" IsEnabled="{Binding ElementName=wedBtn, Path=IsChecked}" Grid.Row="4" Grid.Column="4" Margin="5,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="thuHrs" IsEnabled="{Binding ElementName=thuBtn, Path=IsChecked}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label Grid.Column="2" Grid.Row="5">:</Label>
+                <ComboBox x:Name="thuMins" IsEnabled="{Binding ElementName=thuBtn, Path=IsChecked}" Grid.Row="5" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="thuAmPm" IsEnabled="{Binding ElementName=thuBtn, Path=IsChecked}" Grid.Row="5" Grid.Column="4" Margin="5,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="friHrs" IsEnabled="{Binding ElementName=friBtn, Path=IsChecked}" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label Grid.Column="2" Grid.Row="6">:</Label>
+                <ComboBox x:Name="friMins" IsEnabled="{Binding ElementName=friBtn, Path=IsChecked}" Grid.Row="6" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="friAmPm" IsEnabled="{Binding ElementName=friBtn, Path=IsChecked}" Grid.Row="6" Grid.Column="4" Margin="5,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="satHrs" IsEnabled="{Binding ElementName=satBtn, Path=IsChecked}" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label Grid.Column="2" Grid.Row="7">:</Label>
+                <ComboBox x:Name="satMins" IsEnabled="{Binding ElementName=satBtn, Path=IsChecked}" Grid.Row="7" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="satAmPm" IsEnabled="{Binding ElementName=satBtn, Path=IsChecked}" Grid.Row="7" Grid.Column="4" Margin="5,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+            </Grid>
+        </Viewbox>
     </Grid>
 </UserControl>

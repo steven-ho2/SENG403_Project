@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,8 +23,14 @@ namespace Team4Clock
         private MainWindow mw = new MainWindow(); // The parent view object
 
         // Mappings between buttons and days of week to simplify event handling
-        private Dictionary<RadioButton, DayOfWeek> buttonToDay;
-        private Dictionary<DayOfWeek, RadioButton> dayToButton;
+        private Dictionary<CheckBox, DayOfWeek> buttonToDay;
+        private Dictionary<DayOfWeek, CheckBox> dayToButton;
+
+        // Collections of strings for use in ComboBoxes for alarm repeats. Set by initComboBoxes() function.
+        private ObservableCollection<string> hrsList = new ObservableCollection<string>();
+        private ObservableCollection<string> minsList = new ObservableCollection<string>();
+        private ObservableCollection<string> amPmList = new ObservableCollection<string>();
+
 
         public SetAlarm(MainWindow newMW)
         {
@@ -31,10 +38,7 @@ namespace Team4Clock
             InitializeComponent();
             initDictionaries();
 
-            DayOfWeek curDay = DateTime.Now.DayOfWeek;
-            RadioButton curDayBtn = dayToButton[curDay];
-            curDayBtn.IsChecked = true;
-            ResolveDayClick(curDayBtn);
+            initComboBoxes();
         }
 
         /* Initializes dictionaries used by this class.
@@ -44,7 +48,7 @@ namespace Team4Clock
         private void initDictionaries()
         {
             // Button->Day mappings
-            buttonToDay = new Dictionary<RadioButton, DayOfWeek> {
+            buttonToDay = new Dictionary<CheckBox, DayOfWeek> {
                 {sunBtn, DayOfWeek.Sunday},
                 {monBtn, DayOfWeek.Monday},
                 {tueBtn, DayOfWeek.Tuesday},
@@ -55,11 +59,78 @@ namespace Team4Clock
             };
 
             // Day->Button mappings
-            dayToButton = new Dictionary<DayOfWeek, RadioButton>();
+            dayToButton = new Dictionary<DayOfWeek, CheckBox>();
             foreach (var entry in buttonToDay)
             {
                 dayToButton.Add(entry.Value, entry.Key);
             }
+        }
+
+        private void initComboBoxes()
+        {
+            // Set up shared string collections for combo boxes
+            for (int i = 1; i <= 12; i++)
+            {
+                hrsList.Add(i.ToString());
+            }
+            for (int i = 0; i < 60; i++)
+            {
+                minsList.Add(i.ToString("D2"));
+            }
+            amPmList.Add("AM");
+            amPmList.Add("PM");
+
+            // Set combo boxes to use shared sources (there's gotta be a better way to do this...)
+            this.sunHrs.ItemsSource = hrsList;
+            this.sunMins.ItemsSource = minsList;
+            this.sunAmPm.ItemsSource = amPmList;
+            this.monHrs.ItemsSource = hrsList;
+            this.monMins.ItemsSource = minsList;
+            this.monAmPm.ItemsSource = amPmList;
+            this.tueHrs.ItemsSource = hrsList;
+            this.tueMins.ItemsSource = minsList;
+            this.tueAmPm.ItemsSource = amPmList;
+            this.wedHrs.ItemsSource = hrsList;
+            this.wedMins.ItemsSource = minsList;
+            this.wedAmPm.ItemsSource = amPmList;
+            this.thuHrs.ItemsSource = hrsList;
+            this.thuMins.ItemsSource = minsList;
+            this.thuAmPm.ItemsSource = amPmList;
+            this.friHrs.ItemsSource = hrsList;
+            this.friMins.ItemsSource = minsList;
+            this.friAmPm.ItemsSource = amPmList;
+            this.satHrs.ItemsSource = hrsList;
+            this.satMins.ItemsSource = minsList;
+            this.satAmPm.ItemsSource = amPmList;
+
+            // Set up defaults
+            sunHrs.SelectedItem = "12";
+            sunMins.SelectedIndex = 0;
+            sunAmPm.SelectedIndex = 0;
+
+            monHrs.SelectedItem = "12";
+            monMins.SelectedIndex = 0;
+            monAmPm.SelectedIndex = 0;
+
+            tueHrs.SelectedItem = "12";
+            tueMins.SelectedIndex = 0;
+            tueAmPm.SelectedIndex = 0;
+
+            wedHrs.SelectedItem = "12";
+            wedMins.SelectedIndex = 0;
+            wedAmPm.SelectedIndex = 0;
+
+            thuHrs.SelectedItem = "12";
+            thuMins.SelectedIndex = 0;
+            thuAmPm.SelectedIndex = 0;
+
+            friHrs.SelectedItem = "12";
+            friMins.SelectedIndex = 0;
+            friAmPm.SelectedIndex = 0;
+
+            satHrs.SelectedItem = "12";
+            satMins.SelectedIndex = 0;
+            satAmPm.SelectedIndex = 0;
         }
 
         // Removes the current set alarm view from the stack allowing
@@ -171,80 +242,71 @@ namespace Team4Clock
             String min = Convert.ToString(min1Lbl.Content) + Convert.ToString(min2Lbl.Content);
             (this.Parent as Panel).Children.Remove(this);
 
-            int hours = Convert.ToInt32(hrLbl.Content);
-
-            hours = (isPm) ? ((hours == 12) ? hours : hours + 12) : (hours == 12) ? 0: hours;
-
-            //if(isPm == true)
-            //{
-            //    if(hours == 12)
-            //    {
-            //        hours = hours + 24;
-            //    }
-            //    else
-            //    {
-            //        hours = hours + 12;
-            //    }
-            //    Console.WriteLine("Inside PM");
-            //}
-            //else
-            //{
-            //    if (hours == 12)
-            //    {
-            //        hours = hours + 12;
-            //    }
-            //}
-            //hours = (!isPm) ? (hours + 12) : hours;
-            //hours = (hours == 24) ? 0 : hours;
+            int hours = Convert.ToInt32(hrLbl.Content) % 12;
+            hours = (isPm) ? (hours + 12) : hours;
+            hours = (hours == 24) ? 0 : hours;
             TimeSpan alarmTime = new TimeSpan(hours, Convert.ToInt32(min), 0);
             Alarm alarm = new Alarm(alarmTime);
 
             // Get repeat days and update the alarm with these days
-            // Todo: update for variable repeats (i.e. different times for different days)
-            List<DayOfWeek> rptDays = GetCheckboxDays();
-            foreach (DayOfWeek rptDay in rptDays)
-            {
-                alarm.SetRepeat(rptDay, true);
-            }
+            setAlarmRepeats(alarm);
 
             mw.setList(alarm);
-        }
-
-        private void btn_Click(object sender, RoutedEventArgs e)
-        {
-            ResolveDayClick((RadioButton)sender);
-        }
-
-        private void ResolveDayClick(RadioButton btn)
-        {
-            day = buttonToDay[btn];
-            UpdateDayButtonColours();
-        }
-
-        private void UpdateDayButtonColours()
-        {
-            foreach (var child in DayButtons.Children)
-            {
-                RadioButton btn = (RadioButton)child;
-                if (btn != null)
-                {
-                    btn.Background = (bool)btn.IsChecked ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF707070")) :
-                                                            new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDDDDDD"));
-                }
-            }
         }
 
         private List<DayOfWeek> GetCheckboxDays()
         {
             List<DayOfWeek> retList = new List<DayOfWeek>();
-            if ((bool)rptBoxSun.IsChecked) retList.Add(DayOfWeek.Sunday);
-            if ((bool)rptBoxMon.IsChecked) retList.Add(DayOfWeek.Monday);
-            if ((bool)rptBoxTue.IsChecked) retList.Add(DayOfWeek.Tuesday);
-            if ((bool)rptBoxWed.IsChecked) retList.Add(DayOfWeek.Wednesday);
-            if ((bool)rptBoxThu.IsChecked) retList.Add(DayOfWeek.Thursday);
-            if ((bool)rptBoxFri.IsChecked) retList.Add(DayOfWeek.Friday);
-            if ((bool)rptBoxSat.IsChecked) retList.Add(DayOfWeek.Saturday);
             return retList;
+        }
+
+        private TimeSpan parseRepeatBoxes(ComboBox hoursBox, ComboBox minsBox, ComboBox amPm)
+        {
+            bool setPm = amPm.SelectedItem.ToString() == "PM";
+            string hoursStr = hoursBox.SelectedItem.ToString();
+            int hours = (hoursStr == "12") ? 0 : Int32.Parse(hoursBox.SelectedItem.ToString());
+            hours += setPm ? 12 : 0;
+            int mins = Int32.Parse(minsBox.SelectedItem.ToString());
+            return new TimeSpan(hours, mins, 0);
+        }
+
+        private void setAlarmRepeats(Alarm alarm)
+        {
+            TimeSpan time;
+            if ((bool) sunBtn.IsChecked) {
+                time = parseRepeatBoxes(sunHrs, sunMins, sunAmPm);
+                alarm.SetRepeat(DayOfWeek.Sunday, /*repeats*/ true, time);
+            }
+            if ((bool)monBtn.IsChecked)
+            {
+                time = parseRepeatBoxes(monHrs, monMins, monAmPm);
+                alarm.SetRepeat(DayOfWeek.Monday, /*repeats*/ true, time);
+            }
+            if ((bool)tueBtn.IsChecked)
+            {
+                time = parseRepeatBoxes(tueHrs, tueMins, tueAmPm);
+                alarm.SetRepeat(DayOfWeek.Tuesday, /*repeats*/ true, time);
+            }
+            if ((bool)wedBtn.IsChecked)
+            {
+                time = parseRepeatBoxes(wedHrs, wedMins, wedAmPm);
+                alarm.SetRepeat(DayOfWeek.Wednesday, /*repeats*/ true, time);
+            }
+            if ((bool)thuBtn.IsChecked)
+            {
+                time = parseRepeatBoxes(thuHrs, thuMins, thuAmPm);
+                alarm.SetRepeat(DayOfWeek.Thursday, /*repeats*/ true, time);
+            }
+            if ((bool)friBtn.IsChecked)
+            {
+                time = parseRepeatBoxes(friHrs, friMins, friAmPm);
+                alarm.SetRepeat(DayOfWeek.Friday, /*repeats*/ true, time);
+            }
+            if ((bool)satBtn.IsChecked)
+            {
+                time = parseRepeatBoxes(satHrs, satMins, satAmPm);
+                alarm.SetRepeat(DayOfWeek.Saturday, /*repeats*/ true, time);
+            }
         }
     }
 }

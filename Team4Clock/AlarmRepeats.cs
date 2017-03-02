@@ -19,7 +19,7 @@ namespace Team4Clock
 
     class AlarmRepeats
     {
-        private Dictionary<DayOfWeek, bool> repeatDays;
+        private Dictionary<DayOfWeek, Repeat> repeatDays;
 
         /* Default (and only) constructor.
          * Initializes dictionary of weekdays and sets all days to false -- no repeats 
@@ -28,11 +28,12 @@ namespace Team4Clock
         public AlarmRepeats()
         {
             // initialize all days to false in the default ctor (no repeats)
-            repeatDays = new Dictionary<DayOfWeek, bool>();
+            repeatDays = new Dictionary<DayOfWeek, Repeat>();
             var enumeratedDays = Enum.GetValues(typeof(DayOfWeek));
             foreach (DayOfWeek day in enumeratedDays)
             {
-                repeatDays[day] = false;
+                TimeSpan blankSpan = new TimeSpan();
+                repeatDays[day] = new Repeat(false, blankSpan);
             }
         }
 
@@ -43,10 +44,11 @@ namespace Team4Clock
          * repeats: new value of the repeat.
          *              true -> repeat on this day
          *              false -> do not repeat on this day
+         * time:    TimeSpan representing the time to set this repeat for.
          */
-        public void SetRepeat(DayOfWeek day, bool repeats)
+        public void SetRepeat(DayOfWeek day, bool repeats, TimeSpan time)
         {
-            repeatDays[day] = repeats;
+            repeatDays[day] = new Repeat(repeats, time);
         }
 
 
@@ -64,7 +66,7 @@ namespace Team4Clock
             List<DayOfWeek> repeatDaysList = new List<DayOfWeek>();
             foreach (var pair in repeatDays)
             {
-                if (pair.Value)
+                if (pair.Value.repeats)
                     repeatDaysList.Add(pair.Key);
             }
 
@@ -79,7 +81,12 @@ namespace Team4Clock
          */
         public bool RepeatsOn(DayOfWeek day)
         {
-            return repeatDays[day];
+            return repeatDays[day].repeats;
+        }
+
+        public TimeSpan GetRepeatForDay(DayOfWeek day)
+        {
+            return repeatDays[day].time;
         }
 
         /* Predicate to determine whether or not any repeats are set.
@@ -88,12 +95,24 @@ namespace Team4Clock
          */
         public bool Repeats()
         {
-            foreach (bool val in repeatDays.Values)
+            foreach (Repeat val in repeatDays.Values)
             {
-                if (val) return true;
+                if (val.repeats) return true;
             }
 
             return false;
+        }
+
+        /* Basic struct to hold repeat information, allowing for variable repeats.
+         */ 
+        protected struct Repeat
+        {
+            public bool repeats;
+            public TimeSpan time;
+            public Repeat(bool repeats, TimeSpan time) {
+                this.repeats = repeats;
+                this.time = time;
+            }
         }
     }
 }
