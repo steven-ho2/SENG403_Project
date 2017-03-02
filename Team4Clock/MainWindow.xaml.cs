@@ -110,10 +110,6 @@ namespace Team4Clock
                         activateSnooze();
                     }
                 }
-                else
-                {
-                    alarmOn = false;
-                }
             }
         }
 
