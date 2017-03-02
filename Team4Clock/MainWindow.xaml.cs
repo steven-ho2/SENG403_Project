@@ -32,12 +32,12 @@ namespace Team4Clock
         private List<Alarm> list = new List<Alarm>();
         private ObservableCollection<AlarmUI> collecton = new ObservableCollection<AlarmUI>();
         private int snoozeDelay;
-        private int setDelay = 3;
+        private int setDelay = 5;
         private bool alarmOn = false;
         private SoundPlayer player = new SoundPlayer();
         string path = Assembly.GetExecutingAssembly().Location;
         private String soundLocation = @"PoliceSound.wav";
-        bool playing = false;
+        private bool played = false;
 
         public MainWindow()
         {
@@ -47,7 +47,7 @@ namespace Team4Clock
             this.KeyUp += MainWindow_KeyUp;
             collecton.CollectionChanged += HandleChange;
             listTemp.ItemsSource = collecton;
-            snoozeDelay = -1;
+            snoozeDelay = -2;
         
             //activateSnooze();   //Testing snooze function
 
@@ -97,17 +97,22 @@ namespace Team4Clock
             snoozeTick();
             foreach (Alarm alarm in list)
             {
-                if(DateTime.Compare(clock.getCurrentTime(), alarm.time) == 0)
+                if (DateTime.Compare(clock.getCurrentTime(), alarm.time) == 0)
                 {
-                    if (alarmOn == false)
-                    { 
+                    if (alarmOn == false && played == false)
+                    {
+                        played = true;
                         this.player.SoundLocation = soundLocation;
+                        player.Load();
                         this.player.PlayLooping();
                         Console.WriteLine("Time" + alarm.time);
                         alarmOn = true;
-                        snoozeDelay = -2;
                         activateSnooze();
                     }
+                }
+                else
+                {
+                    alarmOn = false;
                 }
             }
         }
@@ -115,11 +120,11 @@ namespace Team4Clock
         private void awake_Click(object sender, RoutedEventArgs e)
         {
             player.Stop();
-
+            played = false;
+            snoozeDelay = -2;
+            
             awakeButton.Visibility = Visibility.Hidden;
             snoozeButton.Visibility = Visibility.Hidden;
-
-            snoozeDelay = -1;
 
         }
 
@@ -163,27 +168,24 @@ namespace Team4Clock
         // Check whether to activate buttons or keep snoozing
         private void snoozeTick()
         {
-            if (snoozeDelay > 0)
+            if (snoozeDelay >= 0)
             {
                 if (alarmOn == true)
                 {
                     player.Stop();
                     alarmOn = false;
+                    snoozeButton.Visibility = Visibility.Hidden;
+                    awakeButton.Visibility = Visibility.Hidden;
                 }
                 snoozeDelay--;
             }
-            else if(snoozeDelay == -1)
-            {
-               
-
-                snoozeButton.Visibility = Visibility.Hidden;
-                awakeButton.Visibility = Visibility.Hidden;
-            }
-            else
+            else if (snoozeDelay == -1)
             {
                 player.SoundLocation = soundLocation;
+                player.Load();
                 this.player.PlayLooping();
                 alarmOn = true;
+                snoozeDelay = -2;
                 activateSnooze();
             }
             
