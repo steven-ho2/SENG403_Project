@@ -8,7 +8,11 @@ namespace Team4Clock
 {
     public class Alarm
     {
-        private bool on;
+        public bool on
+        {
+            get;
+            set;
+        }
         public DateTime time
         {
             get;
@@ -130,6 +134,15 @@ namespace Team4Clock
             this.time = newTime;
         }
 
+        /* Sets this alarm to a specific date and time.
+         * 
+         * dateTime: the date and time to set the alarm for
+         */ 
+        private void SetAlarm(DateTime dateTime)
+        {
+            this.time = dateTime;
+        }
+
         /* Set or unset a repeat for a particular day.
          * 
          * day:     The DayOfWeek for which to modify repeat behaviour.
@@ -147,7 +160,7 @@ namespace Team4Clock
          * 
          * Does nothing if no repeats are set.
          */ 
-        private void UpdateRepeat()
+        public void UpdateRepeat()
         {
             if ((repeatDays != null) && (repeatDays.Repeats()))
             {
@@ -157,9 +170,12 @@ namespace Team4Clock
                 // not yet passed for the alarm
                 if (repeatDays.RepeatsOn(now.DayOfWeek))
                 {
-                    if (now.TimeOfDay < time.TimeOfDay)
+                    TimeSpan repeatTime = repeatDays.GetRepeatForDay(now.DayOfWeek);
+                    if (now.TimeOfDay < repeatTime)
                     {
-                        SetAlarmDate(now);
+                        DateTime newTime = now.Date;
+                        newTime.Add(repeatTime);
+                        SetAlarm(newTime);
                         return;
                     }
                 }
@@ -173,7 +189,10 @@ namespace Team4Clock
                     DayOfWeek day = then.DayOfWeek;
                     if (repeatDays.RepeatsOn(day))
                     {
-                        SetAlarmDate(then);
+                        DateTime newTime = then.Date;
+                        TimeSpan repeatTime = repeatDays.GetRepeatForDay(day);
+                        then.Add(repeatTime);
+                        SetAlarm(then);
                         return;
                     }
                 }

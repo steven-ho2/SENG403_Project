@@ -97,7 +97,8 @@ namespace Team4Clock
             snoozeTick();
             foreach (Alarm alarm in list)
             {
-                if(DateTime.Compare(clock.getCurrentTime(), alarm.time) == 0)
+                if((DateTime.Compare(clock.getCurrentTime(), alarm.time) == 0)
+                    && (alarm.on))
                 {
                     if (alarmOn == false)
                     { 
