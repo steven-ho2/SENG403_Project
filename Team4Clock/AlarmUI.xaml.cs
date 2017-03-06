@@ -20,7 +20,8 @@ namespace Team4Clock
     /// </summary>
     public partial class AlarmUI : UserControl
     {
-        private Alarm a;
+        //private Alarm a;
+        public Alarm a {get; private set;}
         public int id;
         private MainWindow mw = new MainWindow();
 

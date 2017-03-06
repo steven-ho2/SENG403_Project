@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Team4Clock
 {
-    public class Alarm
+    public class Alarm : IComparable
     {
         public bool on
         {
@@ -199,6 +199,8 @@ namespace Team4Clock
             }
         }
 
+        // Debug method to list out all repeat days with the times for each repeat.
+        // Returns a string with this information.
         public string ListRepeatDaysAndTimes()
         {
             string retStr = "";
@@ -210,6 +212,59 @@ namespace Team4Clock
             }
 
             return retStr;
+        }
+
+        public DateTime GetNextAlarmTime()
+        {
+            DateTime now = DateTime.Now;
+            DateTime today = DateTime.Today;
+
+            // Alarm is repeating.
+            // Return the time of the next repeat, regardless of whether the alarm is enabled.
+            if (repeatDays.Repeats())
+            {
+                // first check if there's a repeat for today, and if we've passed it or not
+                if (repeatDays.RepeatsOn(now.DayOfWeek))
+                {
+                    TimeSpan rptTime = repeatDays.GetRepeatForDay(now.DayOfWeek);
+                    if (now.TimeOfDay < rptTime) {
+                        return today.Add(rptTime);
+                    }
+                }
+
+                // otherwise find the next repeat
+                for (int i = 1; i <= 7; i++)
+                {
+                    DateTime nextDay = today.AddDays(i);
+                    if (repeatDays.RepeatsOn(nextDay.DayOfWeek))
+                    {
+                        return nextDay.Add(repeatDays.GetRepeatForDay(nextDay.DayOfWeek));
+                    }
+                }
+
+                // failing that (should be impossible), just return the "default" time
+                return time;
+            }
+            // Alarm is non-repeating, and enabled.
+            // Return whatever date/time is set for the alarm.
+            else if (this.on)
+            {
+                return time;
+            }
+            // Alarm is non-repeating, and disabled.
+            // Return the alarm's time for the next day the time will occur (either today or tomorrow).
+            else
+            {
+                return today.Add(time.TimeOfDay);
+            } 
+
+        }
+
+        // Comparator. Compares next time of alarm for both alarms (see GetNextAlarmTime() above).
+        int IComparable.CompareTo(object obj)
+        {
+            Alarm a = (Alarm)obj;
+            return DateTime.Compare(this.GetNextAlarmTime(), a.GetNextAlarmTime());
         }
     }
 }

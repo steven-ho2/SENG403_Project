@@ -29,8 +29,10 @@ namespace Team4Clock
     public partial class MainWindow : MetroWindow
     {
         private SWClock clock;
-        private List<Alarm> list = new List<Alarm>();
-        private ObservableCollection<AlarmUI> collecton = new ObservableCollection<AlarmUI>();
+        //private List<Alarm> list = new List<Alarm>();
+        //private SortedList<Alarm, bool> list = new SortedList<Alarm, bool>();
+        private SortedList<Alarm, AlarmUI> list = new SortedList<Alarm, AlarmUI>();
+        public ObservableCollection<AlarmUI> collecton { get; set; }
         private int snoozeDelay;
         private int setDelay = 5;
         private bool alarmOn = false;
@@ -41,12 +43,12 @@ namespace Team4Clock
 
         public MainWindow()
         {
+            collecton = new ObservableCollection<AlarmUI>();
             InitializeComponent();
             clock = new SWClock();
             startClock();
             this.KeyUp += MainWindow_KeyUp;
             collecton.CollectionChanged += HandleChange;
-            listTemp.ItemsSource = collecton;
             snoozeDelay = -2;
         
             //activateSnooze();   //Testing snooze function
@@ -95,7 +97,7 @@ namespace Team4Clock
         {
             this.TImeLabel.Content = clock.ShowTime;
             snoozeTick();
-            foreach (Alarm alarm in list)
+            foreach (Alarm alarm in list.Keys)
             {
                 if (DateTime.Compare(clock.getCurrentTime(), alarm.time) == 0)
                 {
@@ -159,9 +161,14 @@ namespace Team4Clock
 
         public void setList(Alarm alarm)
         {
-            list.Add(alarm);
+            //list.Add(alarm, false);
             AlarmUI alarmUI = new AlarmUI(alarm, this);
+            list.Add(alarm, alarmUI);
             collecton.Add(alarmUI);
+            foreach (Alarm al in list.Keys) {
+                Console.WriteLine(al.GetNextAlarmTime());
+            }
+            
         }
         
         // Check whether to activate buttons or keep snoozing
@@ -204,6 +211,11 @@ namespace Team4Clock
             collecton.Remove(alarmUI);
             list.Remove(alarm);
             //this.listStack.Children.RemoveAt(id);
+        }
+
+        private void listTemp_SourceUpdated(object sender, DataTransferEventArgs e)
+        {
+
         }
     }
 }
