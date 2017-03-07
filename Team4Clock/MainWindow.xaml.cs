@@ -30,8 +30,9 @@ namespace Team4Clock
     {
         private SWClock clock;
         //private List<Alarm> list = new List<Alarm>();
+        private SortedSet<Alarm> alarmSet = new SortedSet<Alarm>();
         //private SortedList<Alarm, bool> list = new SortedList<Alarm, bool>();
-        private SortedList<Alarm, AlarmUI> list = new SortedList<Alarm, AlarmUI>();
+        //private SortedList<Alarm, AlarmUI> list = new SortedList<Alarm, AlarmUI>();
         public ObservableCollection<AlarmUI> collecton { get; set; }
         private int snoozeDelay;
         private int setDelay = 5;
@@ -97,19 +98,19 @@ namespace Team4Clock
         {
             this.TImeLabel.Content = clock.ShowTime;
             snoozeTick();
-            foreach (Alarm alarm in list.Keys)
+            foreach (Alarm alarm in alarmSet)
             {
                 if (DateTime.Compare(clock.getCurrentTime(), alarm.time) == 0)
                 {
-                    if (alarmOn == false && played == false)
+                    if (alarm.on && alarmOn == false && played == false)
                     {
                         played = true;
                         this.player.SoundLocation = soundLocation;
                         player.Load();
                         this.player.PlayLooping();
-                        Console.WriteLine("Time" + alarm.time);
                         alarmOn = true;
                         activateSnooze();
+                        
                     }
                 }
                 else
@@ -163,12 +164,8 @@ namespace Team4Clock
         {
             //list.Add(alarm, false);
             AlarmUI alarmUI = new AlarmUI(alarm, this);
-            list.Add(alarm, alarmUI);
+            alarmSet.Add(alarm);
             collecton.Add(alarmUI);
-            foreach (Alarm al in list.Keys) {
-                Console.WriteLine(al.GetNextAlarmTime());
-            }
-            
         }
         
         // Check whether to activate buttons or keep snoozing
@@ -209,7 +206,7 @@ namespace Team4Clock
         public void deleteFromListAlarm(AlarmUI alarmUI,Alarm alarm)
         {
             collecton.Remove(alarmUI);
-            list.Remove(alarm);
+            alarmSet.Remove(alarm);
             //this.listStack.Children.RemoveAt(id);
         }
 

@@ -14,6 +14,7 @@
         <Button x:Name="cancelBtn" Content="X" Background="Red" Height="39" Canvas.Left="338" Canvas.Top="10" Width="47" Click="cancelBtn_Click" Margin="389,10,10.4,76"/>
         <Button x:Name="editBtn" Content="Edit" Background="DimGray" Height="41" Canvas.Left="338" Canvas.Top="63" Width="47" Click="editBtn_Click" Margin="389,74,10.4,10"/>
         <Button x:Name="onOffBtn" Content="ON" Background="DimGray" Height="22" Canvas.Left="10" Canvas.Top="93" Width="49" Click="onOffBtn_Click" Margin="10,90,387.4,10"/>
+        <CheckBox x:Name="testBox" IsChecked="{Binding Path=a.on, Mode=TwoWay}"/>
 
 
     </Grid>

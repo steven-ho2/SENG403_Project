@@ -21,13 +21,14 @@ namespace Team4Clock
     public partial class AlarmUI : UserControl
     {
         //private Alarm a;
-        public Alarm a {get; private set;}
+        public Alarm a {get; set;}
         public int id;
         private MainWindow mw = new MainWindow();
 
         public AlarmUI(Alarm inputAlarm, MainWindow mw)
         {
             InitializeComponent();
+            testBox.DataContext = this;
             //this.a = new Alarm(inputAlarm);
             this.a = inputAlarm;
             this.mw = mw;
