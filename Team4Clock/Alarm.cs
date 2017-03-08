@@ -22,6 +22,14 @@ namespace Team4Clock
             get;
             set;
         }
+        public string display
+        {
+            get { return displayTime(); }
+        }
+        public string info
+        {
+            get { return infoString(); }
+        }
 
         //This return whether the alarm is set on or off
         public bool toggleAlarmOn()

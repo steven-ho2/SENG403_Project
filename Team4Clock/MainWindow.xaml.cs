@@ -23,16 +23,10 @@ using System.Reflection;
 
 namespace Team4Clock
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : MetroWindow
     {
         private SWClock clock;
-        //private List<Alarm> list = new List<Alarm>();
         private SortedSet<Alarm> alarmSet = new SortedSet<Alarm>();
-        //private SortedList<Alarm, bool> list = new SortedList<Alarm, bool>();
-        //private SortedList<Alarm, AlarmUI> list = new SortedList<Alarm, AlarmUI>();
         public ObservableCollection<AlarmUI> collecton { get; set; }
         private int snoozeDelay;
         private int setDelay = 5;

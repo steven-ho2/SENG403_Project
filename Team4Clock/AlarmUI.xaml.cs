@@ -21,26 +21,13 @@ namespace Team4Clock
         public int id;
         private MainWindow mw = new MainWindow();
 
-        protected Brush color;
-        public Brush labelColor
-        {
-            get { return color; }
-            set
-            {
-                color = value;
-            }
-        }
-
         public AlarmUI(Alarm inputAlarm, MainWindow mw)
         {
             InitializeComponent();
 
             DataContext = this;
-            labelColor = Brushes.White;
             this.a = inputAlarm;
             this.mw = mw;
-            alarmTime.Content = a.displayTime();
-            infoString.Content = a.infoString();
             UpdateLabelColours();
         }
 
