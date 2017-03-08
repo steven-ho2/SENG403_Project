@@ -160,6 +160,12 @@ namespace Team4Clock
             Main.Children.Add(setAlarm);
         }
 
+        private void rptAlarmBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SetRepeatAlarm setRptAlarm = new SetRepeatAlarm(this);
+            Main.Children.Add(setRptAlarm);
+        }
+
         public void setList(Alarm alarm)
         {
             //list.Add(alarm, false);

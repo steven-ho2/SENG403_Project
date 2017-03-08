@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="Team4Clock.SetRepeatAlarm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Team4Clock" >
+
+    <Grid Background="White" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <!-- Main Grid -->
+        <Viewbox Grid.Column="0" VerticalAlignment="Top">
+            <Grid Margin="10,10,10,10" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Label Content="Set Repeating Alarm" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Grid.ColumnSpan="6"/>
+                <CheckBox x:Name="sunBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Sun" Width="60" Margin="0,0,5,5" Grid.Row="1"/>
+                <CheckBox x:Name="monBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Mon" Width="60" Margin="0,0,5,5" Grid.Row="2"/>
+                <CheckBox x:Name="tueBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Tue"  Width="60" Margin="0,0,5,5" Grid.Row="3"/>
+                <CheckBox x:Name="wedBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Wed" Width="60" Margin="0,0,5,5" Grid.Row="4"/>
+                <CheckBox x:Name="thuBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Thu" Width="60" Margin="0,0,5,5" Grid.Row="5"/>
+                <CheckBox x:Name="friBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Fri" Width="60" Margin="0,0,5,5" Grid.Row="6"/>
+                <CheckBox x:Name="satBtn" Style="{StaticResource {x:Type ToggleButton}}" Content="Sat"  Width="60" Margin="0,0,5,5" Grid.Row="7"/>
+                <ComboBox x:Name="sunHrs" IsEnabled="{Binding ElementName=sunBtn, Path=IsChecked}" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top"/>
+                <Label Grid.Column="2" Grid.Row="1">:</Label>
+                <ComboBox x:Name="sunMins" IsEnabled="{Binding ElementName=sunBtn, Path=IsChecked}" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="sunAmPm" IsEnabled="{Binding ElementName=sunBtn, Path=IsChecked}" Grid.Row="1" Grid.Column="4" Margin="5,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="monHrs" IsEnabled="{Binding ElementName=monBtn, Path=IsChecked}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label Grid.Column="2" Grid.Row="2">:</Label>
+                <ComboBox x:Name="monMins" IsEnabled="{Binding ElementName=monBtn, Path=IsChecked}" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="monAmPm" IsEnabled="{Binding ElementName=monBtn, Path=IsChecked}" Grid.Row="2" Grid.Column="4" Margin="5,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="tueHrs" IsEnabled="{Binding ElementName=tueBtn, Path=IsChecked}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label Grid.Column="2" Grid.Row="3">:</Label>
+                <ComboBox x:Name="tueMins" IsEnabled="{Binding ElementName=tueBtn, Path=IsChecked}" Grid.Row="3" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="tueAmPm" IsEnabled="{Binding ElementName=tueBtn, Path=IsChecked}" Grid.Row="3" Grid.Column="4" Margin="5,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="wedHrs" IsEnabled="{Binding ElementName=wedBtn, Path=IsChecked}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label Grid.Column="2" Grid.Row="4">:</Label>
+                <ComboBox x:Name="wedMins" IsEnabled="{Binding ElementName=wedBtn, Path=IsChecked}" Grid.Row="4" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="wedAmPm" IsEnabled="{Binding ElementName=wedBtn, Path=IsChecked}" Grid.Row="4" Grid.Column="4" Margin="5,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="thuHrs" IsEnabled="{Binding ElementName=thuBtn, Path=IsChecked}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label Grid.Column="2" Grid.Row="5">:</Label>
+                <ComboBox x:Name="thuMins" IsEnabled="{Binding ElementName=thuBtn, Path=IsChecked}" Grid.Row="5" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="thuAmPm" IsEnabled="{Binding ElementName=thuBtn, Path=IsChecked}" Grid.Row="5" Grid.Column="4" Margin="5,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="friHrs" IsEnabled="{Binding ElementName=friBtn, Path=IsChecked}" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label Grid.Column="2" Grid.Row="6">:</Label>
+                <ComboBox x:Name="friMins" IsEnabled="{Binding ElementName=friBtn, Path=IsChecked}" Grid.Row="6" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="friAmPm" IsEnabled="{Binding ElementName=friBtn, Path=IsChecked}" Grid.Row="6" Grid.Column="4" Margin="5,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="satHrs" IsEnabled="{Binding ElementName=satBtn, Path=IsChecked}" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label Grid.Column="2" Grid.Row="7">:</Label>
+                <ComboBox x:Name="satMins" IsEnabled="{Binding ElementName=satBtn, Path=IsChecked}" Grid.Row="7" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox x:Name="satAmPm" IsEnabled="{Binding ElementName=satBtn, Path=IsChecked}" Grid.Row="7" Grid.Column="4" Margin="5,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Button x:Name="backBtn" Content="Back" Width="75" Click="backBtn_Click" Height="73" Style="{DynamicResource MetroCircleButtonStyle}" 
+                         BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
+                         Grid.Row="8" />
+                <Button x:Name="doneBtn" Content="Done"   Style="{DynamicResource MetroCircleButtonStyle}" Click="doneBtn_Click"
+                        HorizontalAlignment="Right" Width="75" Height="73" Grid.Column="3" Grid.Row="8" Grid.ColumnSpan="2"/>
+                <Label x:Name="errLabel" Content="Please set at least one repeat." Visibility="Hidden" Grid.Column="1" HorizontalAlignment="Left" Margin="0,25,5,0" 
+                       Grid.Row="8" Grid.ColumnSpan="3" VerticalAlignment="Top" Foreground="#FFF30909"/>
+            </Grid>
+        </Viewbox>
+    </Grid>
+</UserControl>
