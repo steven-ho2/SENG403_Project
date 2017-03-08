@@ -10,6 +10,11 @@ namespace Team4Clock
     {
         private AlarmRepeats repeatDays = new AlarmRepeats();  // Wrapper for repeat days
 
+        public RepeatingAlarm()
+        {
+            this.on = true;
+        }
+
         /* Set or unset a repeat for a particular day.
          * 
          * day:     The DayOfWeek for which to modify repeat behaviour.
@@ -75,6 +80,26 @@ namespace Team4Clock
         public bool HasRepeats()
         {
             return repeatDays.Repeats();
+        }
+
+        public override String displayTime()
+        {
+            return time.ToString("ddd hh:mm tt");
+        }
+
+        public override string infoString()
+        {
+            string rptString = "Repeats: ";
+
+            foreach (DayOfWeek dwk in Enum.GetValues(typeof(DayOfWeek)))
+            {
+                if (repeatDays.RepeatsOn(dwk))
+                {
+                    rptString += dwk.ToString().Substring(0, 2) + " ";
+                }
+            }
+
+            return rptString;
         }
     }
 }

@@ -76,6 +76,16 @@ namespace Team4Clock
             this.alarmTime = dateTime;
         }
 
+        public override String displayTime()
+        {
+            return time.ToString("hh:mm tt");
+        }
+
+        public override string infoString()
+        {
+            return "";  // no additional info needed for a basic alarm at this time
+        }
+
         public override DateTime GetNextAlarmTime()
         {
             DateTime now = DateTime.Now;

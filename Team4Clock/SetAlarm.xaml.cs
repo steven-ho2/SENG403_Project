@@ -18,7 +18,6 @@ namespace Team4Clock
 {
     public partial class SetAlarm : UserControl
     {
-        private DayOfWeek day = DayOfWeek.Sunday;
         private bool isPm = false;        // default to AM
         private MainWindow mw = new MainWindow(); // The parent view object
 

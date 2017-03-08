@@ -57,10 +57,10 @@ namespace Team4Clock
         }
 
         //Displays the time the alarm is set to
-        public String displayTime()
-        {
-            return time.ToString("hh:mm tt");
-        }
+        public abstract String displayTime();
+
+        // Returns some secondary information about the alarm
+        public abstract String infoString();
 
         public abstract DateTime GetNextAlarmTime();
 
