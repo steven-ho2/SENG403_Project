@@ -101,5 +101,11 @@ namespace Team4Clock
 
             return rptString;
         }
+
+        public override void WakeUp()
+        {
+            ringing = false;
+            
+        }
     }
 }

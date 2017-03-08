@@ -105,5 +105,12 @@ namespace Team4Clock
             }
         }
 
+        public override void WakeUp()
+        {
+            this.on = false;
+            this.alarmTime = this.alarmTime.AddHours(1);
+            Console.WriteLine("New time: " + alarmTime);
+            ringing = false;
+        }
     }
 }

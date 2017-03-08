@@ -31,6 +31,12 @@ namespace Team4Clock
             get { return infoString(); }
         }
 
+        public bool ringing
+        {
+            get;
+            protected set;
+        }
+
         //This return whether the alarm is set on or off
         public bool toggleAlarmOn()
         {
@@ -78,6 +84,13 @@ namespace Team4Clock
         {
             Alarm a = (Alarm)obj;
             return DateTime.Compare(this.GetNextAlarmTime(), a.GetNextAlarmTime());
+        }
+
+        public abstract void WakeUp();
+
+        public void Ring()
+        {
+            this.ringing = true;
         }
     }
 }

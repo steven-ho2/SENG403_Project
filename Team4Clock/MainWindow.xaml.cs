@@ -36,6 +36,8 @@ namespace Team4Clock
         private String soundLocation = @"PoliceSound.wav";
         private bool played = false;
 
+        private Alarm activeAlarm;
+
         public MainWindow()
         {
             collecton = new ObservableCollection<AlarmUI>();
@@ -104,7 +106,7 @@ namespace Team4Clock
                         this.player.PlayLooping();
                         alarmOn = true;
                         activateSnooze();
-                        
+                        alarm.Ring();
                     }
                 }
                 else
@@ -123,6 +125,11 @@ namespace Team4Clock
             awakeButton.Visibility = Visibility.Hidden;
             snoozeButton.Visibility = Visibility.Hidden;
 
+            foreach (Alarm alarm in alarmSet)
+            {
+                if (alarm.ringing) 
+                    alarm.WakeUp();
+            }
         }
 
         // Activate snooze and wake up buttons, set snooze delay
