@@ -20,10 +20,12 @@ namespace Team4Clock
     {
         private bool isPm = false;        // default to AM
         private MainWindow mw = new MainWindow(); // The parent view object
+        private int flag = 0; // flag is edit alarm or create new alarm
 
-        public SetAlarm(MainWindow newMW)
+        public SetAlarm(MainWindow newMW, int setFlag)
         {
-            this.mw = newMW; // The parent view is set 
+            this.mw = newMW; // The parent view is set
+            this.flag = setFlag; 
             InitializeComponent();
         }
 
@@ -142,7 +144,14 @@ namespace Team4Clock
             TimeSpan alarmTime = new TimeSpan(hours, Convert.ToInt32(min), 0);
             BasicAlarm alarm = new BasicAlarm(alarmTime);
 
-            mw.setList(alarm);
+            if (mw.getFlag() == 0)
+            {
+                mw.setList(alarm);
+            }
+            else if (mw.getFlag() == 1)
+            {
+                mw.editChanges(alarm);
+            }
         }
 
         private List<DayOfWeek> GetCheckboxDays()
