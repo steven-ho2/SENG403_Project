@@ -90,6 +90,8 @@ namespace Team4Clock
             get { return Main; }
         }
 
+        public object Children { get; internal set; }
+
         //Update the label with the current time
         private void time_tick(object sender, EventArgs e)
         {
@@ -159,7 +161,13 @@ namespace Team4Clock
             AlarmUI alarmUI = new AlarmUI(alarm, this);
             collecton.Add(alarmUI);
         }
-        
+
+        private void toggleBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Analog analog = new Analog(this);
+            Main.Children.Add(analog);
+        }
+
         // Check whether to activate buttons or keep snoozing
         private void snoozeTick()
         {

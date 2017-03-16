@@ -12,7 +12,9 @@
 
     <Grid Name="Main">
         <!--<Grid x:Name="RightCanvas" Width="151.818" HorizontalAlignment="Left"> -->
-        <ContentControl x:Name="listCanvas" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+        <ContentControl x:Name="listCanvas" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+            <Button x:Name="analogBtn" Content="Analog" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="87" Click="toggleBtn_Click" Height="44" d:LayoutOverrides="LeftPosition, RightPosition"/>
+        </ContentControl>
         <Label x:Name="TImeLabel" Content="Label" FontSize="150" VerticalAlignment="Center" Canvas.Left="201" Canvas.Top="157" Foreground="Black" Margin="0,154,0,170" HorizontalAlignment="Center" />
         <Button x:Name="snoozeButton" Content="Snooze" Visibility="Hidden" HorizontalAlignment="Center" Margin="272,369,409,121" VerticalAlignment="Center" Width="87"  Height="44" Click="snooze_Click" x:FieldModifier ="public" RenderTransformOrigin="-0.719,0.732" />
         <Button x:Name="awakeButton" Content="Wake Up" Visibility="Hidden" HorizontalAlignment="Center" Margin="381,369,300,121" VerticalAlignment="Center" Width="87" Height="44" Click="awake_Click" />
@@ -22,7 +24,7 @@
             <ItemsControl Name="listTemp">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-      
+
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
