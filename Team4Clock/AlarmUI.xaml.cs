@@ -36,6 +36,11 @@ namespace Team4Clock
             return this.a;
         }
 
+        public void setAlarm(Alarm test)
+        {
+            this.a = test;
+        }
+
         private void cancelBtn_Click(object sender, RoutedEventArgs e)
         {
             a.deleteAlarm();
@@ -44,7 +49,8 @@ namespace Team4Clock
 
         private void editBtn_Click(object sender, RoutedEventArgs e)
         {
-            a.editAlarm();
+            //a.editAlarm();
+            mw.editFromListAlarm(this, a);
         }
 
         private void toggle_Click(object sender, RoutedEventArgs e)
@@ -54,6 +60,16 @@ namespace Team4Clock
 
         private void UpdateLabelColours()
         {
+            Console.WriteLine("ffffffffffffffffffffffffffffffffffffffff");
+            // Call the Alarms toggle
+            if (a.toggleAlarmOn())
+            {
+                onOffBtn.Content = "OFF";
+            }
+            else
+            {
+                onOffBtn.Content = "ON";
+            }
             Brush color = a.on ? Brushes.White : Brushes.DimGray;
             alarmTime.Foreground = color;
             infoString.Foreground = color;

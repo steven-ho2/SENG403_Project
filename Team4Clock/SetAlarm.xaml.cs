@@ -20,10 +20,21 @@ namespace Team4Clock
     {
         private bool isPm = false;        // default to AM
         private MainWindow mw = new MainWindow(); // The parent view object
+        private int flag = 0; // flag is edit alarm or create new alarm
+        // Mappings between buttons and days of week to simplify event handling
+        private Dictionary<CheckBox, DayOfWeek> buttonToDay;
+        private Dictionary<DayOfWeek, CheckBox> dayToButton;
 
-        public SetAlarm(MainWindow newMW)
+        // Collections of strings for use in ComboBoxes for alarm repeats. Set by initComboBoxes() function.
+        private ObservableCollection<string> hrsList = new ObservableCollection<string>();
+        private ObservableCollection<string> minsList = new ObservableCollection<string>();
+        private ObservableCollection<string> amPmList = new ObservableCollection<string>();
+
+
+        public SetAlarm(MainWindow newMW, int setFlag)
         {
             this.mw = newMW; // The parent view is set 
+            this.flag = setFlag;
             InitializeComponent();
         }
 
@@ -142,7 +153,14 @@ namespace Team4Clock
             TimeSpan alarmTime = new TimeSpan(hours, Convert.ToInt32(min), 0);
             BasicAlarm alarm = new BasicAlarm(alarmTime);
 
-            mw.setList(alarm);
+            if (mw.getFlag() == 0) {
+                mw.setList(alarm);
+            }
+            else if (mw.getFlag() == 1)
+            {
+                mw.editChanges(alarm);
+            }
+ 
         }
 
         private List<DayOfWeek> GetCheckboxDays()

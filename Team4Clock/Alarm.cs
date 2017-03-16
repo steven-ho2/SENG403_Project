@@ -17,11 +17,12 @@ namespace Team4Clock
             set;
         }
         public DateTime time
-        {
+        {            
             get
             {
                 return TruncateTime(GetTime());
             }
+            set;
         }
         public Object ringtone
         {
@@ -58,9 +59,10 @@ namespace Team4Clock
             }
         }
 
-        public void editAlarm()
+        public void editAlarm(DateTime newTime)
         {
             // should call the set alarm GUI and change time accordingly
+            this.time = newTime;
         }
 
         public void deleteAlarm()
