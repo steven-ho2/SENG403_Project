@@ -20,14 +20,30 @@ using MahApps.Metro.Controls.Dialogs;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Reflection;
+using System.ComponentModel;
 
 namespace Team4Clock
 {
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
         private SWClock clock;
-        private SortedSet<Alarm> alarmSet = new SortedSet<Alarm>();
-        public ObservableCollection<AlarmUI> collecton { get; set; }
+        private List<Alarm> alarmSet = new List<Alarm>();
+        ObservableCollection<AlarmUI> collecton;
+        public ObservableCollection<AlarmUI> Collection
+        {
+            get
+            {
+                return collecton;
+            }
+            set
+            {
+                collecton = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("Collection"));
+                }
+            }
+        }
         private int snoozeDelay;
         private int setDelay = 5;
         private bool alarmOn = false;
@@ -36,11 +52,11 @@ namespace Team4Clock
         private String soundLocation = @"PoliceSound.wav";
         private bool played = false;
 
-        private Alarm activeAlarm;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public MainWindow()
         {
-            collecton = new ObservableCollection<AlarmUI>();
+            Collection = new ObservableCollection<AlarmUI>();
             InitializeComponent();
             clock = new SWClock();
             startClock();
@@ -125,11 +141,15 @@ namespace Team4Clock
             awakeButton.Visibility = Visibility.Hidden;
             snoozeButton.Visibility = Visibility.Hidden;
 
+            Console.WriteLine(alarmSet.Count);
+
             foreach (Alarm alarm in alarmSet)
             {
                 if (alarm.ringing) 
                     alarm.WakeUp();
             }
+
+            RefreshAlarmUIs();
         }
 
         // Activate snooze and wake up buttons, set snooze delay
@@ -143,9 +163,7 @@ namespace Team4Clock
         //Event for when "list of alarm" button is clicked
         private void List_Click(object sender, RoutedEventArgs e)
         {
-            // ListOfAlarms listAlarm = new ListOfAlarms(this, list);
-            // Main.Children.Add(listAlarm);
-           
+            // dummy
         }
         
         //Activate the snooze buttons
@@ -214,12 +232,16 @@ namespace Team4Clock
         {
             collecton.Remove(alarmUI);
             alarmSet.Remove(alarm);
-            //this.listStack.Children.RemoveAt(id);
         }
 
-        private void listTemp_SourceUpdated(object sender, DataTransferEventArgs e)
+        private void RefreshAlarmUIs()
         {
-
+            ObservableCollection<AlarmUI> newCollection = new ObservableCollection<AlarmUI>();
+            foreach (Alarm alarm in alarmSet)
+            {
+                newCollection.Add(new AlarmUI(alarm, this));
+            }
+            Collection = newCollection;
         }
     }
 }

@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Team4Clock
 {
-    public abstract class Alarm : IComparable
+    public abstract class Alarm : IComparable 
     {
+
         public bool on
         {
             get;
@@ -15,7 +18,10 @@ namespace Team4Clock
         }
         public DateTime time
         {
-            get {return GetTime();}
+            get
+            {
+                return TruncateTime(GetTime());
+            }
         }
         public Object ringtone
         {
@@ -83,10 +89,19 @@ namespace Team4Clock
         int IComparable.CompareTo(object obj)
         {
             Alarm a = (Alarm)obj;
-            return DateTime.Compare(this.GetNextAlarmTime(), a.GetNextAlarmTime());
+            var comp = DateTime.Compare(this.GetNextAlarmTime(), a.GetNextAlarmTime());
+            return comp;
         }
 
         public abstract void WakeUp();
+
+        private DateTime TruncateTime(DateTime inTime)
+        {
+            TimeSpan truncatedTime = new TimeSpan(inTime.TimeOfDay.Hours,
+                                                  inTime.TimeOfDay.Minutes, 0);
+            DateTime date = inTime.Date;
+            return date.Add(truncatedTime);
+        }
 
         public void Ring()
         {

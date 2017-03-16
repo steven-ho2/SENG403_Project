@@ -9,6 +9,7 @@ namespace Team4Clock
     class RepeatingAlarm : Alarm
     {
         private AlarmRepeats repeatDays = new AlarmRepeats();  // Wrapper for repeat days
+        private DateTime lastTrigger;
 
         public RepeatingAlarm()
         {
@@ -54,10 +55,11 @@ namespace Team4Clock
             // Return the time of the next repeat, regardless of whether the alarm is enabled.
 
             // first check if there's a repeat for today, and if we've passed it or not
-            if (repeatDays.RepeatsOn(now.DayOfWeek))
+            if ((lastTrigger != DateTime.Today) 
+                && (repeatDays.RepeatsOn(now.DayOfWeek)))
             {
                 TimeSpan rptTime = repeatDays.GetRepeatForDay(now.DayOfWeek);
-                if (now.TimeOfDay < rptTime)
+                if (now.TimeOfDay <= rptTime.Add(new TimeSpan(0,1,0)))
                 {
                     return today.Add(rptTime);
                 }
@@ -105,7 +107,8 @@ namespace Team4Clock
         public override void WakeUp()
         {
             ringing = false;
-            
+            lastTrigger = DateTime.Today;
         }
+
     }
 }
