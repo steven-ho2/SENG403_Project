@@ -92,6 +92,9 @@
     <Compile Include="Alarm.cs" />
     <Compile Include="AlarmRepeats.cs" />
     <Compile Include="BasicAlarm.cs" />
+    <Compile Include="Analog.xaml.cs">
+      <DependentUpon>Analog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ListOfAlarms.xaml.cs">
       <DependentUpon>ListOfAlarms.xaml</DependentUpon>
     </Compile>
@@ -100,6 +103,10 @@
       <DependentUpon>SetRepeatAlarm.xaml</DependentUpon>
     </Compile>
     <Compile Include="SWClock.cs" />
+    <Page Include="Analog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ListOfAlarms.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
