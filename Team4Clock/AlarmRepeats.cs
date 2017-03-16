@@ -14,7 +14,7 @@ namespace Team4Clock
      *  predicate to determine if the repeat is set for a particular day.
      *  
      *  This class essentially wraps a dictionary with System.DayOfWeek values as
-     *  keys, and booleans as values (false: no repeat; true: repeat).
+     *  keys, and Repeat structs as values (see below).
      */
 
     class AlarmRepeats
