@@ -38,6 +38,8 @@ namespace Team4Clock
         string path = Assembly.GetExecutingAssembly().Location;
         private String soundLocation = @"PoliceSound.wav";
         private bool played = false;
+        private int flag = 0;
+        private AlarmUI editThis;
 
         public MainWindow()
         {
@@ -149,7 +151,8 @@ namespace Team4Clock
 
         private void setAlarmBtn_Click(object sender, RoutedEventArgs e)
         {
-            SetAlarm setAlarm = new SetAlarm(this);
+            setFlag(0);
+            SetAlarm setAlarm = new SetAlarm(this,0);
             Main.Children.Add(setAlarm);
         }
 
@@ -200,6 +203,37 @@ namespace Team4Clock
             collecton.Remove(alarmUI);
             list.Remove(alarm);
             //this.listStack.Children.RemoveAt(id);
+        }
+        public void editFromListAlarm(AlarmUI alarmUI, Alarm alarm)
+        {
+            setFlag(1);
+            editThis = alarmUI;
+            SetAlarm setAlarm = new SetAlarm(this, getFlag());
+            Main.Children.Add(setAlarm);
+        }
+
+        public int getFlag()
+        {
+            return this.flag;
+        }
+
+        public void setFlag(int newFlag)
+        {
+            this.flag = newFlag;
+        }
+
+
+        public void editChanges(Alarm alarm)
+        {
+            AlarmUI alarmUI = new AlarmUI(alarm, this);
+
+            for(int i = 0; i < collecton.Count; i++)
+            {
+                if(collecton[i] == editThis)
+                {
+                    collecton[i] = alarmUI;
+                }
+            }
         }
     }
 }

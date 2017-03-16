@@ -38,6 +38,11 @@ namespace Team4Clock
             return this.a;
         }
 
+        public void setAlarm(Alarm test)
+        {
+            this.a = test;
+        }
+
         private void cancelBtn_Click(object sender, RoutedEventArgs e)
         {
             a.deleteAlarm();
@@ -46,11 +51,14 @@ namespace Team4Clock
 
         private void editBtn_Click(object sender, RoutedEventArgs e)
         {
-            a.editAlarm();
+            //a.editAlarm();
+            mw.editFromListAlarm(this, a);
         }
 
         private void onOffBtn_Click(object sender, RoutedEventArgs e)
         {
+
+            Console.WriteLine("ffffffffffffffffffffffffffffffffffffffff");
             // Call the Alarms toggle
             if (a.toggleAlarmOn())
             {

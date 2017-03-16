@@ -16,7 +16,7 @@ namespace Team4Clock
         public DateTime time
         {
             get;
-            private set;
+            set;
         }
         public Object ringtone
         {
@@ -55,9 +55,10 @@ namespace Team4Clock
             }
         }
 
-        public void editAlarm()
+        public void editAlarm(DateTime newTime)
         {
             // should call the set alarm GUI and change time accordingly
+            this.time = newTime;
         }
 
         public void deleteAlarm()
