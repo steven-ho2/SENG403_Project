@@ -44,7 +44,8 @@ namespace Team4Clock
 
         private void editBtn_Click(object sender, RoutedEventArgs e)
         {
-            a.editAlarm();
+            //a.editAlarm();
+            mw.editFromListAlarm(this, a);
         }
 
         private void toggle_Click(object sender, RoutedEventArgs e)
