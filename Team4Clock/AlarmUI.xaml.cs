@@ -15,22 +15,20 @@ using System.Windows.Shapes;
 
 namespace Team4Clock
 {
-    /// <summary>
-    /// Interaction logic for Alarm.xaml
-    /// </summary>
     public partial class AlarmUI : UserControl
     {
-        private Alarm a;
+        public Alarm a {get; private set;}
         public int id;
         private MainWindow mw = new MainWindow();
 
         public AlarmUI(Alarm inputAlarm, MainWindow mw)
         {
             InitializeComponent();
-            //this.a = new Alarm(inputAlarm);
+
+            DataContext = this;
             this.a = inputAlarm;
             this.mw = mw;
-            alarmTime.Content = a.displayTime();
+            UpdateLabelColours();
         }
 
         public object getAlarm()
@@ -49,17 +47,16 @@ namespace Team4Clock
             a.editAlarm();
         }
 
-        private void onOffBtn_Click(object sender, RoutedEventArgs e)
+        private void toggle_Click(object sender, RoutedEventArgs e)
         {
-            // Call the Alarms toggle
-            if (a.toggleAlarmOn())
-            {
-                onOffBtn.Content = "OFF";
-            }
-            else
-            {
-                onOffBtn.Content = "ON";
-            }
+            UpdateLabelColours();
+        }
+
+        private void UpdateLabelColours()
+        {
+            Brush color = a.on ? Brushes.White : Brushes.DimGray;
+            alarmTime.Foreground = color;
+            infoString.Foreground = color;
         }
     }
 }
