@@ -20,17 +20,30 @@ using MahApps.Metro.Controls.Dialogs;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Reflection;
+using System.ComponentModel;
 
 namespace Team4Clock
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
         private SWClock clock;
-        private List<Alarm> list = new List<Alarm>();
-        private ObservableCollection<AlarmUI> collecton = new ObservableCollection<AlarmUI>();
+        private List<Alarm> alarmSet = new List<Alarm>();
+        ObservableCollection<AlarmUI> collecton;
+        public ObservableCollection<AlarmUI> Collection
+        {
+            get
+            {
+                return collecton;
+            }
+            set
+            {
+                collecton = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("Collection"));
+                }
+            }
+        }
         private int snoozeDelay;
         private int setDelay = 5;
         private bool alarmOn = false;
@@ -41,14 +54,16 @@ namespace Team4Clock
         private int flag = 0;
         private AlarmUI editThis;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public MainWindow()
         {
+            Collection = new ObservableCollection<AlarmUI>();
             InitializeComponent();
             clock = new SWClock();
             startClock();
             this.KeyUp += MainWindow_KeyUp;
             collecton.CollectionChanged += HandleChange;
-            listTemp.ItemsSource = collecton;
             snoozeDelay = -2;
         
             //activateSnooze();   //Testing snooze function
@@ -92,24 +107,26 @@ namespace Team4Clock
             get { return Main; }
         }
 
+        public object Children { get; internal set; }
+
         //Update the label with the current time
         private void time_tick(object sender, EventArgs e)
         {
             this.TImeLabel.Content = clock.ShowTime;
             snoozeTick();
-            foreach (Alarm alarm in list)
+            foreach (Alarm alarm in alarmSet)
             {
                 if (DateTime.Compare(clock.getCurrentTime(), alarm.time) == 0)
                 {
-                    if (alarmOn == false && played == false)
+                    if (alarm.on && alarmOn == false && played == false)
                     {
                         played = true;
                         this.player.SoundLocation = soundLocation;
                         player.Load();
                         this.player.PlayLooping();
-                        Console.WriteLine("Time" + alarm.time);
                         alarmOn = true;
                         activateSnooze();
+                        alarm.Ring();
                     }
                 }
             }
@@ -124,6 +141,15 @@ namespace Team4Clock
             awakeButton.Visibility = Visibility.Hidden;
             snoozeButton.Visibility = Visibility.Hidden;
 
+            Console.WriteLine(alarmSet.Count);
+
+            foreach (Alarm alarm in alarmSet)
+            {
+                if (alarm.ringing) 
+                    alarm.WakeUp();
+            }
+
+            RefreshAlarmUIs();
         }
 
         // Activate snooze and wake up buttons, set snooze delay
@@ -137,9 +163,7 @@ namespace Team4Clock
         //Event for when "list of alarm" button is clicked
         private void List_Click(object sender, RoutedEventArgs e)
         {
-            // ListOfAlarms listAlarm = new ListOfAlarms(this, list);
-            // Main.Children.Add(listAlarm);
-           
+            // dummy
         }
         
         //Activate the snooze buttons
@@ -156,13 +180,26 @@ namespace Team4Clock
             Main.Children.Add(setAlarm);
         }
 
+        private void rptAlarmBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SetRepeatAlarm setRptAlarm = new SetRepeatAlarm(this);
+            Main.Children.Add(setRptAlarm);
+        }
+
         public void setList(Alarm alarm)
         {
-            list.Add(alarm);
+            //list.Add(alarm, false);
             AlarmUI alarmUI = new AlarmUI(alarm, this);
+            alarmSet.Add(alarm);
             collecton.Add(alarmUI);
         }
-        
+
+        private void toggleBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Analog analog = new Analog(this);
+            Main.Children.Add(analog);
+        }
+
         // Check whether to activate buttons or keep snoozing
         private void snoozeTick()
         {
@@ -201,8 +238,17 @@ namespace Team4Clock
         public void deleteFromListAlarm(AlarmUI alarmUI,Alarm alarm)
         {
             collecton.Remove(alarmUI);
-            list.Remove(alarm);
-            //this.listStack.Children.RemoveAt(id);
+            alarmSet.Remove(alarm);
+        }
+
+        private void RefreshAlarmUIs()
+        {
+            ObservableCollection<AlarmUI> newCollection = new ObservableCollection<AlarmUI>();
+            foreach (Alarm alarm in alarmSet)
+            {
+                newCollection.Add(new AlarmUI(alarm, this));
+            }
+            Collection = newCollection;
         }
         public void editFromListAlarm(AlarmUI alarmUI, Alarm alarm)
         {
