@@ -6,7 +6,7 @@ namespace Team4Clock
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void RaisePropertyChangedEvent(string propertyName)
+        protected void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;
             if (handler != null)

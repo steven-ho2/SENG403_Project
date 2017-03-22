@@ -98,6 +98,8 @@
     <Compile Include="ListOfAlarms.xaml.cs">
       <DependentUpon>ListOfAlarms.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MainPresenter.cs" />
+    <Compile Include="ObservableObject.cs" />
     <Compile Include="RepeatingAlarm.cs" />
     <Compile Include="SetRepeatAlarm.xaml.cs">
       <DependentUpon>SetRepeatAlarm.xaml</DependentUpon>

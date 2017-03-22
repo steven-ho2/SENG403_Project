@@ -49,7 +49,7 @@ namespace Team4Clock
         private bool alarmOn = false;
         private SoundPlayer player = new SoundPlayer();
         string path = Assembly.GetExecutingAssembly().Location;
-        private String soundLocation = @"PoliceSound.wav";
+        private string soundLocation = @"PoliceSound.wav";
         private bool played = false;
         private int flag = 0;
         private AlarmUI editThis;
@@ -63,26 +63,9 @@ namespace Team4Clock
             clock = new SWClock();
             startClock();
             this.KeyUp += MainWindow_KeyUp;
-            collecton.CollectionChanged += HandleChange;
             snoozeDelay = -2;
-        
-            //activateSnooze();   //Testing snooze function
-
         }
 
-        private void HandleChange(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                // do something  
-            }
-           
-            else if(e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                
-                // do something
-            }
-        }
 
         private void MainWindow_KeyUp(object sender, KeyEventArgs e)
         {
@@ -95,16 +78,11 @@ namespace Team4Clock
         //This is the main event handler for displaying the time
         private void startClock()
         {
-            this.TImeLabel.Content = clock.ShowTime; //display the inital time to label
+            /*this.TImeLabel.Content = clock.ShowTime; //display the inital time to label
             DispatcherTimer time = new DispatcherTimer(); //This is the timer to a handle the ticking
             time.Tick += new EventHandler(time_tick);
             time.Interval = new TimeSpan(0, 0, 1); //Set the wait time to 1 min //I changed it to 1 sec to check snooze
-            time.Start();
-        }
-
-        public Grid getGrid
-        {
-            get { return Main; }
+            time.Start();*/
         }
 
         public object Children { get; internal set; }
@@ -112,7 +90,7 @@ namespace Team4Clock
         //Update the label with the current time
         private void time_tick(object sender, EventArgs e)
         {
-            this.TImeLabel.Content = clock.ShowTime;
+            //this.TImeLabel.Content = clock.ShowTime;
             snoozeTick();
             foreach (Alarm alarm in alarmSet)
             {
@@ -158,12 +136,6 @@ namespace Team4Clock
            snoozeButton.Visibility = Visibility.Hidden;
            awakeButton.Visibility = Visibility.Hidden;
            snoozeDelay = setDelay;
-        }
-
-        //Event for when "list of alarm" button is clicked
-        private void List_Click(object sender, RoutedEventArgs e)
-        {
-            // dummy
         }
         
         //Activate the snooze buttons
@@ -225,16 +197,7 @@ namespace Team4Clock
             }
             
         }
-        // Set snooze delay
-        public void setSnoozeDelay(int delay)
-        {
-            setDelay = delay;
-        }
-        // Get snooze delay
-        public int getSnoozeDelay()
-        {
-            return snoozeDelay;
-        }
+
         public void deleteFromListAlarm(AlarmUI alarmUI,Alarm alarm)
         {
             collecton.Remove(alarmUI);
