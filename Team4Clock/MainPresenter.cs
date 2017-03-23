@@ -6,6 +6,7 @@ using System.Media;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace Team4Clock
@@ -21,10 +22,11 @@ namespace Team4Clock
         private int _snoozeDelay = -2;
         private int _setDelay = 5;
         private bool _alarmOn = false;
-        string path = Assembly.GetExecutingAssembly().Location; // unnecessary reflection. should get rid of this asap
         private bool _played = false;       // what is this?
         private int _flag = 0;              // what is this?
         private AlarmUI _editThis;
+
+        public EventHandler TriggerAlarm;
 
         public string Time
         {
@@ -75,19 +77,44 @@ namespace Team4Clock
 
             foreach (Alarm alarm in _alarmSet)
             {
-                if (DateTime.Compare(_clock.getCurrentTime(), alarm.time) == 0)
+                if ((DateTime.Compare(_clock.getCurrentTime(), alarm.time) == 0)
+                    || (alarm.SnoozeOver))
                 {
-                    if (alarm.on && _alarmOn == false && _played == false)
+                    if (alarm.on)
                     {
-                        _played = true;
-                        _player.SoundLocation = _soundLocation;
-                        _player.Load();
-                        _player.PlayLooping();
-                        _alarmOn = true;
-                        //activateSnooze();
                         alarm.Ring();
+
+                        // Fire alarm trigger event
+                        if (TriggerAlarm != null)
+                        {
+                            this.TriggerAlarm(this, EventArgs.Empty);
+                        }
                     }
                 }
+            }
+        }
+
+        public ICommand TestCommand
+        {
+            get { return new DelegateCommand(TestLine);}
+        }
+
+        public ICommand WakeUpCommand
+        {
+            get { return new DelegateCommand(WakeUpAlarms); }
+        }
+
+        private void TestLine()
+        {
+            Console.WriteLine("Test Command");
+        }
+
+        private void WakeUpAlarms()
+        {
+            foreach (Alarm alarm in _alarmSet)
+            {
+                if (alarm.ringing)
+                    alarm.WakeUp();
             }
         }
     }

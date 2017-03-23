@@ -26,9 +26,8 @@ namespace Team4Clock
 {
     public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
-        private SWClock clock;
-        private List<Alarm> alarmSet = new List<Alarm>();
         ObservableCollection<AlarmUI> collecton;
+
         public ObservableCollection<AlarmUI> Collection
         {
             get
@@ -44,13 +43,9 @@ namespace Team4Clock
                 }
             }
         }
-        private int snoozeDelay;
-        private int setDelay = 5;
-        private bool alarmOn = false;
-        private SoundPlayer player = new SoundPlayer();
-        string path = Assembly.GetExecutingAssembly().Location;
-        private string soundLocation = @"PoliceSound.wav";
-        private bool played = false;
+
+        private SoundPlayer _player = new SoundPlayer();
+        private string _soundLocation = @"PoliceSound.wav";
         private int flag = 0;
         private AlarmUI editThis;
 
@@ -60,10 +55,14 @@ namespace Team4Clock
         {
             Collection = new ObservableCollection<AlarmUI>();
             InitializeComponent();
-            clock = new SWClock();
-            startClock();
             this.KeyUp += MainWindow_KeyUp;
-            snoozeDelay = -2;
+
+            // This should never be null, but better safe than sorry...
+            MainPresenter viewModel = this.DataContext as MainPresenter;
+            if (viewModel != null)
+            {
+                viewModel.TriggerAlarm += AlarmEvent;
+            }
         }
 
 
@@ -75,57 +74,27 @@ namespace Team4Clock
             }
         }
 
-        //This is the main event handler for displaying the time
-        private void startClock()
+        private void AlarmEvent(object sender, EventArgs e)
         {
-            /*this.TImeLabel.Content = clock.ShowTime; //display the inital time to label
-            DispatcherTimer time = new DispatcherTimer(); //This is the timer to a handle the ticking
-            time.Tick += new EventHandler(time_tick);
-            time.Interval = new TimeSpan(0, 0, 1); //Set the wait time to 1 min //I changed it to 1 sec to check snooze
-            time.Start();*/
+            Console.WriteLine("Alarm Triggered!");
+
+            // old ringing logic
+            _player.SoundLocation = _soundLocation;
+            _player.Load();
+            _player.PlayLooping();
+            activateSnooze();
+            //alarm.Ring();       // TODO: need to reroute this as command
+            
         }
 
         public object Children { get; internal set; }
 
-        //Update the label with the current time
-        private void time_tick(object sender, EventArgs e)
-        {
-            //this.TImeLabel.Content = clock.ShowTime;
-            snoozeTick();
-            foreach (Alarm alarm in alarmSet)
-            {
-                if (DateTime.Compare(clock.getCurrentTime(), alarm.time) == 0)
-                {
-                    if (alarm.on && alarmOn == false && played == false)
-                    {
-                        played = true;
-                        this.player.SoundLocation = soundLocation;
-                        player.Load();
-                        this.player.PlayLooping();
-                        alarmOn = true;
-                        activateSnooze();
-                        alarm.Ring();
-                    }
-                }
-            }
-        }
-
         private void awake_Click(object sender, RoutedEventArgs e)
         {
-            player.Stop();
-            played = false;
-            snoozeDelay = -2;
+            _player.Stop();
             
             awakeButton.Visibility = Visibility.Hidden;
             snoozeButton.Visibility = Visibility.Hidden;
-
-            Console.WriteLine(alarmSet.Count);
-
-            foreach (Alarm alarm in alarmSet)
-            {
-                if (alarm.ringing) 
-                    alarm.WakeUp();
-            }
 
             RefreshAlarmUIs();
         }
@@ -135,7 +104,7 @@ namespace Team4Clock
         {
            snoozeButton.Visibility = Visibility.Hidden;
            awakeButton.Visibility = Visibility.Hidden;
-           snoozeDelay = setDelay;
+           //snoozeDelay = setDelay;      // TODO: need to reroute this as command
         }
         
         //Activate the snooze buttons
@@ -170,32 +139,6 @@ namespace Team4Clock
         {
             Analog analog = new Analog(this);
             Main.Children.Add(analog);
-        }
-
-        // Check whether to activate buttons or keep snoozing
-        private void snoozeTick()
-        {
-            if (snoozeDelay >= 0)
-            {
-                if (alarmOn == true)
-                {
-                    player.Stop();
-                    alarmOn = false;
-                    snoozeButton.Visibility = Visibility.Hidden;
-                    awakeButton.Visibility = Visibility.Hidden;
-                }
-                snoozeDelay--;
-            }
-            else if (snoozeDelay == -1)
-            {
-                player.SoundLocation = soundLocation;
-                player.Load();
-                this.player.PlayLooping();
-                alarmOn = true;
-                snoozeDelay = -2;
-                activateSnooze();
-            }
-            
         }
 
         public void deleteFromListAlarm(AlarmUI alarmUI,Alarm alarm)

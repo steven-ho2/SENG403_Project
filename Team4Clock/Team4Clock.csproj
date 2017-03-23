@@ -95,6 +95,7 @@
     <Compile Include="Analog.xaml.cs">
       <DependentUpon>Analog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DelegateCommand.cs" />
     <Compile Include="ListOfAlarms.xaml.cs">
       <DependentUpon>ListOfAlarms.xaml</DependentUpon>
     </Compile>

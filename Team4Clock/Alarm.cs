@@ -11,10 +11,22 @@ namespace Team4Clock
     public abstract class Alarm : IComparable 
     {
 
+        private DateTime _snoozeTime;
+        private TimeSpan _snoozeInterval;
+
         public bool on
         {
-            get;
-            set;
+            get
+            {
+                return on;
+            }
+            set
+            {
+                // cut off snoozing if we shut the alarm off
+                if (value == false)
+                    snoozing = false;
+                on = value;
+            }
         }
         public DateTime time
         {
@@ -42,6 +54,34 @@ namespace Team4Clock
             get;
             protected set;
         }
+
+        public bool snoozing
+        {
+            get;
+            private set;
+        }
+
+        public TimeSpan SnoozeInterval
+        {
+            get
+            {
+                return _snoozeInterval;
+            }
+            set
+            {
+                _snoozeInterval = value;
+            }
+        }
+
+        public bool SnoozeOver
+        {
+            get
+            {
+                return ((snoozing) && (DateTime.Now > _snoozeTime));
+            }
+        }
+
+        
 
         //This return whether the alarm is set on or off
         public bool toggleAlarmOn()
@@ -106,6 +146,17 @@ namespace Team4Clock
         public void Ring()
         {
             this.ringing = true;
+            this.snoozing = false;
+        }
+
+        public void Snooze()
+        {
+            if (ringing)
+            {
+                ringing = false;
+                snoozing = true;
+                _snoozeTime = DateTime.Now + _snoozeInterval;
+            }
         }
     }
 }
