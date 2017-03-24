@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Prism.Events;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace Team4Clock
 {
     public class MainPresenter : ObservableObject
     {
+        protected readonly IEventAggregator _eventAggregator;
         private SWClock _clock = new SWClock();
         private List<Alarm> _alarmSet = new List<Alarm>();
         private DispatcherTimer _timer;
@@ -58,8 +60,13 @@ namespace Team4Clock
             }
         }
 
-        public MainPresenter()
+        public MainPresenter(IEventAggregator eventAggregator)
         {
+            this._eventAggregator = eventAggregator;
+            this._eventAggregator.GetEvent<NewAlarmEvent>().Subscribe((alarm) => {
+                Console.WriteLine("This is where I would insert my new Alarm... IF I HAD ONE");
+                //_alarmSet.Add(alarm); 
+            });
             StartTimer();
         }
 

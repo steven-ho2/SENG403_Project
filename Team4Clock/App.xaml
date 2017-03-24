@@ -13,8 +13,8 @@
                 <!-- Accent and AppTheme setting -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Purple.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
-
             </ResourceDictionary.MergedDictionaries>
+            <local:BoolInverterConverter x:Key="BoolInverterConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

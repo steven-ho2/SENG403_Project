@@ -13,19 +13,20 @@ namespace Team4Clock
 
         private DateTime _snoozeTime;
         private TimeSpan _snoozeInterval;
+        private bool _on;
 
         public bool on
         {
             get
             {
-                return on;
+                return _on;
             }
             set
             {
                 // cut off snoozing if we shut the alarm off
                 if (value == false)
                     snoozing = false;
-                on = value;
+                _on = value;
             }
         }
         public DateTime time

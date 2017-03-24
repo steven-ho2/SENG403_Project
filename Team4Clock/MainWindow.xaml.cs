@@ -53,6 +53,7 @@ namespace Team4Clock
 
         public MainWindow()
         {
+            this.DataContext = new MainPresenter(ApplicationService.Instance.EventAggregator);
             Collection = new ObservableCollection<AlarmUI>();
             InitializeComponent();
             this.KeyUp += MainWindow_KeyUp;
@@ -131,7 +132,7 @@ namespace Team4Clock
         {
             //list.Add(alarm, false);
             AlarmUI alarmUI = new AlarmUI(alarm, this);
-            alarmSet.Add(alarm);
+            //alarmSet.Add(alarm);
             collecton.Add(alarmUI);
         }
 
@@ -144,16 +145,16 @@ namespace Team4Clock
         public void deleteFromListAlarm(AlarmUI alarmUI,Alarm alarm)
         {
             collecton.Remove(alarmUI);
-            alarmSet.Remove(alarm);
+            //alarmSet.Remove(alarm);
         }
 
         private void RefreshAlarmUIs()
         {
             ObservableCollection<AlarmUI> newCollection = new ObservableCollection<AlarmUI>();
-            foreach (Alarm alarm in alarmSet)
+            /*foreach (Alarm alarm in alarmSet)
             {
                 newCollection.Add(new AlarmUI(alarm, this));
-            }
+            }*/
             Collection = newCollection;
         }
 

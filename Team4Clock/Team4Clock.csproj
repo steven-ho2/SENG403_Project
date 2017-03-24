@@ -39,6 +39,9 @@
       <HintPath>packages\MahApps.Metro.1.4.3\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Prism">
+      <HintPath>packages\Prism.Core.6.2.0\lib\net45\Prism.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -91,17 +94,21 @@
     </ApplicationDefinition>
     <Compile Include="Alarm.cs" />
     <Compile Include="AlarmRepeats.cs" />
+    <Compile Include="ApplicationService.cs" />
     <Compile Include="BasicAlarm.cs" />
     <Compile Include="Analog.xaml.cs">
       <DependentUpon>Analog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BoolInverterConverter.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="ListOfAlarms.xaml.cs">
       <DependentUpon>ListOfAlarms.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainPresenter.cs" />
+    <Compile Include="NewAlarmEvent.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="RepeatingAlarm.cs" />
+    <Compile Include="SetAlarmPresenter.cs" />
     <Compile Include="SetRepeatAlarm.xaml.cs">
       <DependentUpon>SetRepeatAlarm.xaml</DependentUpon>
     </Compile>

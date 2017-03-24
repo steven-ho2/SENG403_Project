@@ -25,7 +25,8 @@ namespace Team4Clock
         public SetAlarm(MainWindow newMW, int setFlag)
         {
             this.mw = newMW; // The parent view is set
-            this.flag = setFlag; 
+            this.flag = setFlag;
+            this.DataContext = new SetAlarmPresenter(ApplicationService.Instance.EventAggregator);
             InitializeComponent();
         }
 
@@ -152,22 +153,6 @@ namespace Team4Clock
             {
                 mw.editChanges(alarm);
             }
-        }
-
-        private List<DayOfWeek> GetCheckboxDays()
-        {
-            List<DayOfWeek> retList = new List<DayOfWeek>();
-            return retList;
-        }
-
-        private TimeSpan parseRepeatBoxes(ComboBox hoursBox, ComboBox minsBox, ComboBox amPm)
-        {
-            bool setPm = amPm.SelectedItem.ToString() == "PM";
-            string hoursStr = hoursBox.SelectedItem.ToString();
-            int hours = (hoursStr == "12") ? 0 : Int32.Parse(hoursBox.SelectedItem.ToString());
-            hours += setPm ? 12 : 0;
-            int mins = Int32.Parse(minsBox.SelectedItem.ToString());
-            return new TimeSpan(hours, mins, 0);
         }
     }
 }
