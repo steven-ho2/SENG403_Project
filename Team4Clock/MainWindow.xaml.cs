@@ -9,7 +9,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -21,6 +20,8 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Reflection;
 using System.ComponentModel;
+using Windows.Media.Playback;
+using Windows.Media.Core;
 
 namespace Team4Clock
 {
@@ -53,6 +54,8 @@ namespace Team4Clock
         private bool played = false;
         private int flag = 0;
         private AlarmUI editThis;
+        private MediaPlayer _mediaPlayer = new MediaPlayer();
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -121,9 +124,13 @@ namespace Team4Clock
                     if (alarm.on && alarmOn == false && played == false)
                     {
                         played = true;
-                        this.player.SoundLocation = soundLocation;
-                        player.Load();
-                        this.player.PlayLooping();
+                        //this.player.SoundLocation = soundLocation;
+                        //player.Load();
+                        //this.player.PlayLooping();
+
+                        _mediaPlayer.Source = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/PoliceSound.wav"));
+                        _mediaPlayer.Play();
+
                         alarmOn = true;
                         activateSnooze();
                         alarm.Ring();
@@ -134,7 +141,8 @@ namespace Team4Clock
 
         private void awake_Click(object sender, RoutedEventArgs e)
         {
-            player.Stop();
+            //player.Stop();
+            _mediaPlayer.Dispose();
             played = false;
             snoozeDelay = -2;
             
@@ -207,7 +215,8 @@ namespace Team4Clock
             {
                 if (alarmOn == true)
                 {
-                    player.Stop();
+                    //player.Stop();
+                    _mediaPlayer.Pause();
                     alarmOn = false;
                     snoozeButton.Visibility = Visibility.Hidden;
                     awakeButton.Visibility = Visibility.Hidden;
@@ -216,9 +225,10 @@ namespace Team4Clock
             }
             else if (snoozeDelay == -1)
             {
-                player.SoundLocation = soundLocation;
-                player.Load();
-                this.player.PlayLooping();
+                //player.SoundLocation = soundLocation;
+                //player.Load();
+                //this.player.PlayLooping();
+                _mediaPlayer.Play();
                 alarmOn = true;
                 snoozeDelay = -2;
                 activateSnooze();
