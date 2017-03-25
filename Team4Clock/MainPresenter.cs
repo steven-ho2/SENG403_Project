@@ -30,6 +30,21 @@ namespace Team4Clock
 
         public EventHandler TriggerAlarm;
 
+        private ObservableCollection<Alarm> _testAlarms = new ObservableCollection<Alarm>();
+
+        public ObservableCollection<Alarm> TestAlarms
+        {
+            get
+            {
+                return _testAlarms;
+            }
+            set
+            {
+                _testAlarms = value;
+                OnPropertyChanged("TestAlarms");
+            }
+        }
+
         public string Time
         {
             get
@@ -65,6 +80,7 @@ namespace Team4Clock
             this._eventAggregator = eventAggregator;
             this._eventAggregator.GetEvent<NewAlarmEvent>().Subscribe((alarm) => {
                 _alarmSet.Add(alarm);
+                TestAlarms.Add(alarm);
                 Console.WriteLine(_alarmSet.Count);
             });
             StartTimer();
