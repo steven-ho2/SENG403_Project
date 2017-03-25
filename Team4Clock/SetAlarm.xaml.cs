@@ -18,9 +18,8 @@ namespace Team4Clock
 {
     public partial class SetAlarm : UserControl
     {
-        private bool isPm = false;        // default to AM
-        private MainWindow mw = new MainWindow(); // The parent view object
-        private int flag = 0; // flag is edit alarm or create new alarm
+        private MainWindow mw;            // The parent view object
+        private int flag = 0;             // flag is edit alarm or create new alarm
 
         public SetAlarm(MainWindow newMW, int setFlag)
         {
@@ -37,108 +36,11 @@ namespace Team4Clock
             (this.Parent as Panel).Children.Remove(this);
         }
 
-        private void hrBtnUp_Click(object sender, RoutedEventArgs e)
-        {
-            int hr = Convert.ToInt32(hrLbl.Content);
 
-            if (hr < 12)
-            {
-                hrLbl.Content = hr + 1;
-            }
-            else
-            {
-                hrLbl.Content = 1;
-            }
-        }
-
-        private void hrDownBtn_Click(object sender, RoutedEventArgs e)
-        {
-            int hr = Convert.ToInt32(hrLbl.Content);
-
-            if (hr > 1)
-            {
-                hrLbl.Content = hr - 1;
-            }
-            else
-            {
-                hrLbl.Content = 12;
-            }
-        }
-
-        private void min1BtnUp_Click(object sender, RoutedEventArgs e)
-        {
-            int min = Convert.ToInt32(min1Lbl.Content);
-
-            if (min < 5)
-            {
-                min1Lbl.Content = min + 1;
-            }
-            else
-            {
-                min1Lbl.Content = 0;
-            }
-        }
-
-        private void min1DownBtn_Click(object sender, RoutedEventArgs e)
-        {
-            int min = Convert.ToInt32(min1Lbl.Content);
-
-            if (min > 0)
-            {
-                min1Lbl.Content = min - 1;
-            }
-            else
-            {
-                min1Lbl.Content = 5;
-            }
-        }
-
-        private void min2BtnUp_Click(object sender, RoutedEventArgs e)
-        {
-            int min = Convert.ToInt32(min2Lbl.Content);
-
-            if (min < 9)
-            {
-                min2Lbl.Content = min + 1;
-            }
-            else
-            {
-                min2Lbl.Content = 0;
-            }
-        }
-
-        private void min2BtnDown_Click(object sender, RoutedEventArgs e)
-        {
-            int min = Convert.ToInt32(min2Lbl.Content);
-
-            if (min > 0)
-            {
-                min2Lbl.Content = min - 1;
-            }
-            else
-            {
-                min2Lbl.Content = 9;
-            }
-        }
-
-        private void pmBtn_Click(object sender, RoutedEventArgs e)
-        {
-            isPm = true;
-        }
-
-        private void amBtn_Click(object sender, RoutedEventArgs e)
-        {
-            isPm = false;
-        }
-        /*
-            - Error handling is currently not done as there is no need (it should be impossible to not set AM/PM or day of week)
-            - Alarm object with data is set and passed to the MainWindow class to be used
-        */
         private void doneBtn_Click(object sender, RoutedEventArgs e)
         {
-            String min = Convert.ToString(min1Lbl.Content) + Convert.ToString(min2Lbl.Content);
             (this.Parent as Panel).Children.Remove(this);
-
+            /*
             int hours = Convert.ToInt32(hrLbl.Content) % 12;
             hours = (isPm) ? (hours + 12) : hours;
             hours = (hours == 24) ? 0 : hours;
@@ -152,7 +54,7 @@ namespace Team4Clock
             else if (mw.getFlag() == 1)
             {
                 mw.editChanges(alarm);
-            }
+            }*/
         }
     }
 }

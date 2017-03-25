@@ -64,8 +64,8 @@ namespace Team4Clock
         {
             this._eventAggregator = eventAggregator;
             this._eventAggregator.GetEvent<NewAlarmEvent>().Subscribe((alarm) => {
-                Console.WriteLine("This is where I would insert my new Alarm... IF I HAD ONE");
-                //_alarmSet.Add(alarm); 
+                _alarmSet.Add(alarm);
+                Console.WriteLine(_alarmSet.Count);
             });
             StartTimer();
         }
