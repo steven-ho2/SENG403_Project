@@ -81,7 +81,11 @@ namespace Team4Clock
             this._eventAggregator.GetEvent<NewAlarmEvent>().Subscribe((alarm) => {
                 _alarmSet.Add(alarm);
                 TestAlarms.Add(alarm);
-                Console.WriteLine(_alarmSet.Count);
+            });
+            this._eventAggregator.GetEvent<DeleteAlarmEvent>().Subscribe((Alarm) =>
+            {
+                _alarmSet.Remove(Alarm);
+                TestAlarms.Remove(Alarm);
             });
             StartTimer();
         }

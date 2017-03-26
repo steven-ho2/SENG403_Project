@@ -94,6 +94,7 @@
     </ApplicationDefinition>
     <Compile Include="Alarm.cs" />
     <Compile Include="AlarmRepeats.cs" />
+    <Compile Include="AlarmUIPresenter.cs" />
     <Compile Include="ApplicationService.cs" />
     <Compile Include="BasicAlarm.cs" />
     <Compile Include="Analog.xaml.cs">
@@ -101,11 +102,12 @@
     </Compile>
     <Compile Include="BoolInverterConverter.cs" />
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Events\DeleteAlarmEvent.cs" />
     <Compile Include="ListOfAlarms.xaml.cs">
       <DependentUpon>ListOfAlarms.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainPresenter.cs" />
-    <Compile Include="NewAlarmEvent.cs" />
+    <Compile Include="Events\NewAlarmEvent.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="RepeatingAlarm.cs" />
     <Compile Include="SetAlarmPresenter.cs" />

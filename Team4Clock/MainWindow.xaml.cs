@@ -21,6 +21,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Reflection;
 using System.ComponentModel;
+using Prism.Events;
 
 namespace Team4Clock
 {
@@ -48,15 +49,22 @@ namespace Team4Clock
         private string _soundLocation = @"PoliceSound.wav";
         private int flag = 0;
         private AlarmUI editThis;
+        private IEventAggregator _eventAggregator;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public MainWindow()
         {
-            this.DataContext = new MainPresenter(ApplicationService.Instance.EventAggregator);
+            this._eventAggregator = ApplicationService.Instance.EventAggregator;
+            this.DataContext = new MainPresenter(_eventAggregator);
             Collection = new ObservableCollection<AlarmUI>();
             InitializeComponent();
             this.KeyUp += MainWindow_KeyUp;
+
+            this._eventAggregator.GetEvent<NewAlarmEvent>().Subscribe((alarm) =>
+            {
+                this.Collection.Add(new AlarmUI(alarm, this));
+            });
 
             // This should never be null, but better safe than sorry...
             MainPresenter viewModel = this.DataContext as MainPresenter;
