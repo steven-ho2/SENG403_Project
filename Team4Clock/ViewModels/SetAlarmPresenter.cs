@@ -8,11 +8,18 @@ using System.Windows.Input;
 
 namespace Team4Clock
 {
+    /// <summary>
+    /// ViewModel for Basic Alarm setting interface.
+    /// 
+    /// The ViewModel can handle creating a new Alarm, or editing an existing one. In the latter
+    /// case, all necessary fields are set up according to the Alarm passed in.
+    /// </summary>
     class SetAlarmPresenter : ObservableObject
     {
         private bool _isEditMode = false;
         private Alarm _oldAlarm;
 
+        // Fields
         private bool _isPm = false;
         private int _hr = 12;       // Hours
         private int _minTens;       // Minutes - 2nd dec. place
@@ -61,13 +68,20 @@ namespace Team4Clock
 
         private readonly IEventAggregator _eventAggregator;
 
-        // Base (create mode) constructor
+        /// <summary>
+        /// Base (create mode) constructor
+        /// </summary>
+        /// <param name="eventAggregator">Event aggregator for the app</param>
         public SetAlarmPresenter(IEventAggregator eventAggregator)
         {
             this._eventAggregator = eventAggregator;
         }
 
-        // Edit mode constructor
+        /// <summary>
+        /// Edit mode constructor
+        /// </summary>
+        /// <param name="alarm">Alarm to be edited.</param>
+        /// <param name="eventAggregator">Event aggregator for the app</param>
         public SetAlarmPresenter(BasicAlarm alarm, IEventAggregator eventAggregator)
         {
             this._eventAggregator = eventAggregator;
@@ -144,6 +158,13 @@ namespace Team4Clock
             this.MinOnes = (MinOnes - 1 < 0 ? 9 : MinOnes - 1);
         }
 
+        /// <summary>
+        /// "Done" button functionality.
+        /// 
+        /// Parses the various fields in use by the ViewModel into a TimeSpan, and creates an
+        /// Alarm with the given time. Then, publishes either an EditAlarmEvent or a NewAlarmEvent,
+        /// depending on mode.
+        /// </summary>
         private void Done()
         {
             int mins = (MinTens * 10) + MinOnes;

@@ -8,6 +8,12 @@ using System.Windows.Media;
 
 namespace Team4Clock
 {
+    /// <summary>
+    /// This is a ValueConverter for the text on AlarmUIs.
+    /// 
+    /// It interprets a boolean and converts it to a coloured brush: 
+    /// either white for "True" or dimgray for "False".
+    /// </summary>
     class BCConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, 

@@ -9,6 +9,20 @@ using System.Windows.Input;
 
 namespace Team4Clock
 {
+    /// <summary>
+    /// ViewModel for Repeating Alarm setting interface.
+    /// 
+    /// Assumes that any View implementation will rely on selecting from times as list of strings
+    /// (i.e. list of possible hours, list of possible minutes, list containing "AM" and "PM")
+    /// for any given day of the week.
+    /// 
+    /// This ViewModel provides two events which should be handled by the View:
+    ///     * NoRepeatError is sent when a user tries to create the alarm without any repeats.
+    ///     * SuccessEvent is sent when an alarm is successfully created.
+    ///     
+    /// The ViewModel can handle creating a new Alarm, or editing an existing one. In the latter
+    /// case, all strings are set up according to the Alarm passed in.
+    /// </summary>
     public class RepeatAlarmPresenter : ObservableObject
     {
         private IEventAggregator _eventAggregator;
@@ -155,14 +169,21 @@ namespace Team4Clock
 
         // ----------------- End of properties -----------------
 
-        // Base (create mode) constructor
+        /// <summary>
+        /// Base (create mode) constructor.
+        /// </summary>
+        /// <param name="eventAggregator">App event aggregator.</param>
         public RepeatAlarmPresenter(IEventAggregator eventAggregator)
         {
             this._eventAggregator = eventAggregator;
             InitLists();
         }
 
-        // Edit mode constructor
+        /// <summary>
+        /// Edit mode constructor.
+        /// </summary>
+        /// <param name="alarm">Alarm to be edited.</param>
+        /// <param name="eventAggregator">App event aggregator.</param>
         public RepeatAlarmPresenter(RepeatingAlarm alarm, IEventAggregator eventAggregator)
         {
             this._eventAggregator = eventAggregator;
@@ -179,6 +200,14 @@ namespace Team4Clock
 
         }
 
+        /// <summary>
+        /// Method to handle setting all strings and checkbox-booleans according to
+        /// the existing repeats in an alarm that has been passed in to edit.
+        /// </summary>
+        /// <param name="alarm">The Alarm eing edited.</param>
+        /// <param name="day">The day of the week to check for repeats in the Alarm.</param>
+        /// <param name="checkBox">The corresponding ViewModel boolean for this day (as ref).</param>
+        /// <param name="timeInfo">The TimeInfo class for this day.</param>
         private void UpdateFromEditAlarm(RepeatingAlarm alarm, DayOfWeek day, ref bool checkBox, RepeatTimePresenter timeInfo)
         {
             if (alarm.RepeatsOn(day))
@@ -195,6 +224,12 @@ namespace Team4Clock
             }
         }
 
+        /// <summary>
+        /// Initialize string lists.
+        /// 
+        /// Called at ViewModel initialization. Populates _hrsList with strings corresponding to the range 1-12,
+        /// _minsList with strings from 00-60, and _amPmList with "AM" and "PM".
+        /// </summary>
         private void InitLists()
         {
             // Set up shared string collections for combo boxes
@@ -210,6 +245,12 @@ namespace Team4Clock
             _amPmList.Add("PM");
         }
 
+        /// <summary>
+        /// Parse the set of strings for a given day (as a RepeatTimePresenter) into
+        /// a corresponding TimeSpan.
+        /// </summary>
+        /// <param name="timePresenter">The RepeatTimePresenter for the given day.</param>
+        /// <returns>A TimeSpan parsed from the strings in the RepeatTimePresenter.</returns>
         private TimeSpan parseRepeats(RepeatTimePresenter timePresenter)
         {
             bool setPm = (timePresenter.AmPm == "PM");
@@ -220,6 +261,13 @@ namespace Team4Clock
             return new TimeSpan(hours, mins, 0);
         }
 
+        /// <summary>
+        /// Sets up the repeats on a RepeatingAlarm based on parameters of
+        /// the ViewModel. Essentially parses the RepeatTimePresenter for
+        /// each day if the corresponding boolean is set, and then sets
+        /// the appropriate repeat in the alarm.
+        /// </summary>
+        /// <param name="alarm">The RepeatingAlarm to set repeats for.</param>
         private void setAlarmRepeats(RepeatingAlarm alarm)
         {
             TimeSpan time;
@@ -260,12 +308,27 @@ namespace Team4Clock
             }
         }
 
+        // ---------------------------- Commands ----------------------------
+
+        /// <summary>
+        /// "Done" button command. Calls Done().
+        /// </summary>
         public ICommand DoneCommand
         {
             get { return new DelegateCommand(Done); }
         }
 
 
+        /// <summary>
+        /// "Done" function. Should be called when the user attempts to finish creating/editing
+        /// a RepeatingAlarm.
+        /// 
+        /// If everything looks good, this will publish through the event aggregator either an
+        /// EditAlarmEvent or a NewAlarmEvent (depending on create/edit mode).
+        /// 
+        /// Sends either a SuccessEvent on a success or a NoRepeatError in the case that this
+        /// was called, but the Alarm created had no repeats set.
+        /// </summary>
         private void Done()
         {
             RepeatingAlarm alarm = new RepeatingAlarm();

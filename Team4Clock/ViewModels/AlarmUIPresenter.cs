@@ -8,6 +8,11 @@ using System.Windows.Input;
 
 namespace Team4Clock
 {
+    /// <summary>
+    /// ViewModel for AlarmUI controls.
+    /// 
+    /// Contains view interaction logic for this control.
+    /// </summary>
     class AlarmUIPresenter : ObservableObject
     {
         private Alarm _alarm;
@@ -22,6 +27,12 @@ namespace Team4Clock
             }
         }
 
+        /// <summary>
+        /// Constructor. Requires an Alarm (because this ViewModel has no meaning without one)
+        /// and an EventAggregator for event publishing.
+        /// </summary>
+        /// <param name="alarm">Alarm to represent with this ViewModel.</param>
+        /// <param name="eventAggregator">Event aggregator. Should be global.</param>
         public AlarmUIPresenter(Alarm alarm, IEventAggregator eventAggregator)
         {
             this._alarm = alarm;
@@ -31,11 +42,23 @@ namespace Team4Clock
 
         // ----------------------Commands----------------------
 
+        /// <summary>
+        /// Command for pushing the "Delete Alarm" button, or equivalent.
+        /// 
+        /// Ultimate publishes a DeleteAlarmEvent for the alarm this AlarmUI
+        /// represents.
+        /// </summary>
         public ICommand DelAlarmCommand
         {
             get { return new DelegateCommand(DeleteAlarm); }
         }
 
+        /// <summary>
+        /// Command for pushing the "Edit Alarm" button, or equivalent.
+        /// 
+        /// Ultimately publishes a RequestEditAlarmEvent for the alarm this
+        /// AlarmUI represents.
+        /// </summary>
         public ICommand EditAlarmCommand
         {
             get { return new DelegateCommand(EditAlarm); }

@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace Team4Clock
 {
+    /// <summary>
+    /// Event published when the application requests that an Alarm be
+    /// edited.
+    /// </summary>
     public class RequestEditAlarmEvent : PubSubEvent<Alarm>
     {
     }

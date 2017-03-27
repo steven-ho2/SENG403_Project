@@ -8,12 +8,16 @@ using System.Threading.Tasks;
 
 namespace Team4Clock
 {
+    /// <summary>
+    /// Alarm abstract base class. Contains some methods common to all planned alarm types.
+    /// </summary>
     public abstract class Alarm : IComparable 
     {
 
-        private DateTime _snoozeTime;
-        private TimeSpan _snoozeInterval = new TimeSpan(0, 0, 5);
-        private bool _on;
+        private DateTime _snoozeTime;                                   // When snoozing: the absolute time at which the snooze period ends
+        private TimeSpan _snoozeInterval = new TimeSpan(0, 0, 5);       // The duration of a snooze for this alarm
+        private bool _on;                                               // Alarm on/off state
+
 
         public bool on
         {
@@ -78,41 +82,47 @@ namespace Team4Clock
             }
         }
 
-        
-
-        //This return whether the alarm is set on or off
-        public bool toggleAlarmOn()
-        {
-            if(this.on)
-            {
-                this.on = false;
-                return this.on;
-            }
-            else
-            {
-                this.on = true;
-                return this.on;
-            }
-        }
-
-        // This gets the time the alarm is set to
+        /// <summary>
+        /// This gets the date and time the alarm is set to.
+        /// 
+        /// Implementation varies based on subclass.
+        /// </summary>
+        /// <returns>The date/time of the alarm.</returns>
         protected abstract DateTime GetTime();
 
-        public bool checkAlarm(DateTime cur)
-        {
-            return this.time.Equals(cur);
-        }
 
-        //Displays the time the alarm is set to
+        /// <summary>
+        /// This should return a "display time", i.e. a string representing the time
+        /// the Alarm is set to as it should be presented to the View.
+        /// </summary>
+        /// <returns>A string displaying the time of the alarm.</returns>
         public abstract String displayTime();
 
-        // Returns some secondary information about the alarm
+        /// <summary>
+        /// This should return a string containing some auxiliary information about
+        /// the alarm, such as repeat days for a repating alarm. Can be an empty string
+        /// but must be implemented.
+        /// </summary>
+        /// <returns>A string with secondary info about the alarm.</returns>
         public abstract String infoString();
 
+        /// <summary>
+        /// Should the next time at which the alarm will go off, if enabled.
+        /// 
+        /// Semantically, the difference between this method and GetTime() is that this
+        /// method should account for the possibility that the alarm is off and reflect
+        /// the time the alarm will go off IF it is turned back on.
+        /// </summary>
+        /// <returns>The next time the alarm will go off, if the alarm is turned on.</returns>
         public abstract DateTime GetNextAlarmTime();
 
 
-        // Comparator. Compares next time of alarm for both alarms (see GetNextAlarmTime() above).
+        /// <summary>
+        /// Comparator. Compares alarms by the next alarm time (i.e. time returned by calling
+        /// GetNextAlarmTime().
+        /// </summary>
+        /// <param name="obj">The other Alarm to compare against.</param>
+        /// <returns>Standard integer reflecting comparison result.</returns>
         int IComparable.CompareTo(object obj)
         {
             Alarm a = (Alarm)obj;
@@ -120,8 +130,16 @@ namespace Team4Clock
             return comp;
         }
 
+        /// <summary>
+        /// Any internal behaviour needed when the "Wake Up" button is pressed and applied to the alarm.
+        /// </summary>
         public abstract void WakeUp();
 
+        /// <summary>
+        /// Truncates DateTimes by cutting off seconds. Intended to simplify some comparisons.
+        /// </summary>
+        /// <param name="inTime">The time to truncate.</param>
+        /// <returns>inTime, with seconds truncated. </returns>
         private DateTime TruncateTime(DateTime inTime)
         {
             TimeSpan truncatedTime = new TimeSpan(inTime.TimeOfDay.Hours,
@@ -130,12 +148,19 @@ namespace Team4Clock
             return date.Add(truncatedTime);
         }
 
+        /// <summary>
+        /// Ringing behaviour. Sets the "ringing" flag and disables the "snoozing" flag.
+        /// </summary>
         public void Ring()
         {
             this.ringing = true;
             this.snoozing = false;
         }
 
+        /// <summary>
+        /// Snoozing behaviour. Only operates if the alarm is actually ringing, and if so,
+        /// disables ringing, sets snoozing, and updates SnoozeTime.
+        /// </summary>
         public void Snooze()
         {
             if (ringing)

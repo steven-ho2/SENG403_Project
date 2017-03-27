@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace Team4Clock
 {
+    /// <summary>
+    /// Basically just a class to wrap a trio of strings, used to reflect
+    /// repeats as defined by the RepeatAlarmPresenter ViewModel.
+    /// 
+    /// This was originally intended to be a ViewModel in its own right, thus
+    /// the name and placement. Now, however, it is more like a struct. The 
+    /// naming is kept as-is because I'm lazy.
+    /// </summary>
     public class RepeatTimePresenter
     {
         private string _hours = "12";

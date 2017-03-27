@@ -16,24 +16,37 @@ using System.Windows.Shapes;
 
 namespace Team4Clock
 {
+    /// <summary>
+    /// View for setting basic alarms.
+    /// </summary>
     public partial class SetAlarm : UserControl
     {
 
+        /// <summary>
+        /// Default (new alarm mode) constructor.
+        /// </summary>
         public SetAlarm()
         {
             this.DataContext = new SetAlarmPresenter(ApplicationService.Instance.EventAggregator);
             InitializeComponent();
         }
 
-        // Edit mode constructor
+        /// <summary>
+        /// Edit mode constructor
+        /// </summary>
+        /// <param name="editAlarm">The alarm to be edited.</param>
         public SetAlarm(BasicAlarm editAlarm)
         {
             this.DataContext = new SetAlarmPresenter(editAlarm, ApplicationService.Instance.EventAggregator);
             InitializeComponent();
         }
 
-        // Removes the current set alarm view from the stack allowing
-        // the parent main view to be shown
+        /// <summary>
+        /// Removes the current set alarm view from the stack allowing
+        /// the parent main view to be shown
+        /// </summary>
+        /// <param name="sender">The sending object.</param>
+        /// <param name="e">Event args.</param>
         private void exit_Click(object sender, RoutedEventArgs e)
         {
             (this.Parent as Panel).Children.Remove(this);

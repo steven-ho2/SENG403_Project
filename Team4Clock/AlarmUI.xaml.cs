@@ -15,19 +15,22 @@ using System.Windows.Shapes;
 
 namespace Team4Clock
 {
+    /// <summary>
+    /// View for AlarmUIs on Windows desktop.
+    /// </summary>
     public partial class AlarmUI : UserControl
     {
+
+        /// <summary>
+        /// Constructor. Requires an Alarm as input (because the UI control has no meaning without one).
+        /// 
+        /// Sets DataContext to ViewModel and initializes the control.
+        /// </summary>
+        /// <param name="inputAlarm">The Alarm this AlarmUI is meant to represent.</param>
         public AlarmUI(Alarm inputAlarm)
         {
             DataContext = new AlarmUIPresenter(inputAlarm, ApplicationService.Instance.EventAggregator);
             InitializeComponent();
-        }
-
-        // TODO: resolve this
-        private void editBtn_Click(object sender, RoutedEventArgs e)
-        {
-            //a.editAlarm();
-            //mw.editFromListAlarm(this, a);
         }
     }
 }

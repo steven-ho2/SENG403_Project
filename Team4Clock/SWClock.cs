@@ -7,23 +7,20 @@ using System.Collections;
 
 namespace Team4Clock
 {
+    /// <summary>
+    /// Clock class.
+    /// 
+    /// This class has little utility in the current iteration of the app, and is only
+    /// used to get the current time in truncated format.
+    /// 
+    /// This should be deprecated soon.
+    /// </summary>
     class SWClock
     {
-        private List<Alarm> alarmList;
-        
-        public SWClock() {
-            this.alarmList = new List<Alarm>();
-        }
-
-        //This this returns the current time as a string
-        public String ShowTime
-        {
-            get
-            {
-                return DateTime.Now.ToString("hh:mm:ss tt");
-            }
-        }
-
+        /// <summary>
+        /// Gets the current time, with seconds truncated.
+        /// </summary>
+        /// <returns>The current time, with seconds truncated.</returns>
         public DateTime getCurrentTime()
         {
             DateTime dt = DateTime.Now;
@@ -31,28 +28,5 @@ namespace Team4Clock
             return now;
         }
 
-        //this is to set an alarm
-        public void setAlarm(Object obj)
-        {
-
-        }
-
-        //This to dismiss an alarm the is ringing
-        public void dismissAlarm(Object obj)
-        {
-
-        }
-
-        //This will cancel "delete" an alarm
-        public void cancelAlarm(Object obj)
-        {
-
-        }
-
-        //This will snooze a ringing alarm
-        public void snoozeAlarm(Object obj)
-        {
-
-        }
     }
 }
