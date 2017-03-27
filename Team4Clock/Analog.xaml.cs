@@ -35,7 +35,7 @@ namespace Team4Clock
 
         private void setAlarm_Click(object sender, RoutedEventArgs e)
         {
-            SetAlarm newSA = new SetAlarm(newMW, 0);
+            SetAlarm newSA = new SetAlarm(0);
             (this.Parent as Panel).Children.Add(newSA);
 
         }

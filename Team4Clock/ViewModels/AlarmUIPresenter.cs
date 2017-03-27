@@ -28,16 +28,17 @@ namespace Team4Clock
             this._eventAggregator = eventAggregator;
         }
 
-        //----------Commands-------------
+
+        // ----------------------Commands----------------------
 
         public ICommand DelAlarmCommand
         {
             get { return new DelegateCommand(DeleteAlarm); }
         }
 
-        public ICommand ToggleAlarmCommand
+        public ICommand EditAlarmCommand
         {
-            get { return new DelegateCommand(ToggleAlarm); }
+            get { return new DelegateCommand(EditAlarm); }
         }
 
 
@@ -46,10 +47,9 @@ namespace Team4Clock
             _eventAggregator.GetEvent<DeleteAlarmEvent>().Publish(_alarm);
         }
 
-        private void ToggleAlarm()
+        private void EditAlarm()
         {
-            _alarm.toggleAlarmOn();
+            _eventAggregator.GetEvent<RequestEditAlarmEvent>().Publish(_alarm);
         }
-
     }
 }

@@ -10,6 +10,9 @@ namespace Team4Clock
 {
     class SetAlarmPresenter : ObservableObject
     {
+        private bool _isEditMode = false;
+        private Alarm _oldAlarm;
+
         private bool _isPm = false;
         private int _hr = 12;       // Hours
         private int _minTens;       // Minutes - 2nd dec. place
@@ -57,9 +60,19 @@ namespace Team4Clock
         }
 
         private readonly IEventAggregator _eventAggregator;
+
+        // Base (create mode) constructor
         public SetAlarmPresenter(IEventAggregator eventAggregator)
         {
             this._eventAggregator = eventAggregator;
+        }
+
+        // Edit mode constructor
+        public SetAlarmPresenter(BasicAlarm alarm, IEventAggregator eventAggregator)
+        {
+            this._eventAggregator = eventAggregator;
+            _isEditMode = true;
+            _oldAlarm = alarm;
         }
 
         // ----------------------Commands----------------------
@@ -135,7 +148,14 @@ namespace Team4Clock
             hour = (hour == 24) ? 0 : hour;
             TimeSpan alarmTime = new TimeSpan(hour, mins, 0);
             BasicAlarm alarm = new BasicAlarm(alarmTime);
-            _eventAggregator.GetEvent<NewAlarmEvent>().Publish(alarm);
+
+            if (_isEditMode)
+            {
+                EditAlarmWrapper wrapper = new EditAlarmWrapper(_oldAlarm, alarm);
+                _eventAggregator.GetEvent<EditAlarmEvent>().Publish(wrapper);
+            }
+            else
+                _eventAggregator.GetEvent<NewAlarmEvent>().Publish(alarm);
         }
 
     }

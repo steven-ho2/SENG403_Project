@@ -27,17 +27,18 @@ namespace Team4Clock
 {
     public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
-        ObservableCollection<AlarmUI> collecton;
+        private ObservableCollection<AlarmUI> collection;
+        private Dictionary<Alarm, AlarmUI> _alarmUIMap = new Dictionary<Alarm,AlarmUI>();
 
         public ObservableCollection<AlarmUI> Collection
         {
             get
             {
-                return collecton;
+                return collection;
             }
             set
             {
-                collecton = value;
+                collection = value;
                 if (PropertyChanged != null)
                 {
                     PropertyChanged(this, new PropertyChangedEventArgs("Collection"));
@@ -56,18 +57,12 @@ namespace Team4Clock
 
         public MainWindow()
         {
-            Console.WriteLine("Instantiating a MainWindow...");
             this._eventAggregator = ApplicationService.Instance.EventAggregator;
             this.DataContext = new MainPresenter(ApplicationService.Instance.EventAggregator);
             Collection = new ObservableCollection<AlarmUI>();
             InitializeComponent();
             this.KeyUp += MainWindow_KeyUp;
-
-            this._eventAggregator.GetEvent<NewAlarmEvent>().Subscribe((alarm) =>
-            {              
-                Collection.Add(new AlarmUI(alarm));
-            });
-
+            SubscribeToEvents();
 
             // This should never be null, but better safe than sorry...
             MainPresenter viewModel = this.DataContext as MainPresenter;
@@ -77,6 +72,65 @@ namespace Team4Clock
             }
         }
 
+        private void SubscribeToEvents()
+        {
+            this._eventAggregator.GetEvent<NewAlarmEvent>().Subscribe((alarm) =>
+            {
+                AddAlarm(alarm);
+            });
+
+            this._eventAggregator.GetEvent<DeleteAlarmEvent>().Subscribe((alarm) =>
+            {
+                DeleteAlarm(alarm);
+            });
+
+
+            this._eventAggregator.GetEvent<EditAlarmEvent>().Subscribe((wrapper) =>
+            {
+                DeleteAlarm(wrapper.OldAlarm);
+                AddAlarm(wrapper.NewAlarm);
+            });
+
+            this._eventAggregator.GetEvent<RequestEditAlarmEvent>().Subscribe((alarm) =>
+            {
+                OpenEditAlarm(alarm);
+            });
+        }
+
+        private void AddAlarm(Alarm alarm)
+        {
+            AlarmUI alarmUI = new AlarmUI(alarm);
+            _alarmUIMap.Add(alarm, alarmUI);
+            Collection.Add(alarmUI);
+        }
+
+        private void DeleteAlarm(Alarm alarm)
+        {
+            AlarmUI delAlarmUI = _alarmUIMap[alarm];
+            Collection.Remove(delAlarmUI);
+            _alarmUIMap.Remove(alarm);
+        }
+
+        private void OpenEditAlarm(Alarm alarm)
+        {
+            Type alarmType = alarm.GetType();
+            if (alarmType == typeof(BasicAlarm))
+                SetAlarmView(alarm as BasicAlarm);
+            else
+                Console.WriteLine("It's a RepeatingAlarm");
+        }
+
+        private void SetAlarmView(BasicAlarm alarm = null)
+        {
+            SetAlarm setAlarm;
+            if (alarm == null)
+                // set new alarm
+                setAlarm = new SetAlarm(0);
+            else
+                // edit alarm
+                setAlarm = new SetAlarm(alarm);
+            Main.Children.Add(setAlarm);
+        }
 
         private void MainWindow_KeyUp(object sender, KeyEventArgs e)
         {
@@ -88,18 +142,11 @@ namespace Team4Clock
 
         private void AlarmEvent(object sender, EventArgs e)
         {
-            Console.WriteLine("Alarm Triggered!");
-
-            // old ringing logic
             _player.SoundLocation = _soundLocation;
             _player.Load();
             _player.PlayLooping();
-            activateSnooze();
-            //alarm.Ring();       // TODO: need to reroute this as command
-            
+            activateSnooze();            
         }
-
-        public object Children { get; internal set; }
 
         private void awake_Click(object sender, RoutedEventArgs e)
         {
@@ -128,9 +175,7 @@ namespace Team4Clock
 
         private void setAlarmBtn_Click(object sender, RoutedEventArgs e)
         {
-            setFlag(0);
-            SetAlarm setAlarm = new SetAlarm(this, getFlag());
-            Main.Children.Add(setAlarm);
+            SetAlarmView();
         }
 
         private void rptAlarmBtn_Click(object sender, RoutedEventArgs e)
@@ -152,56 +197,5 @@ namespace Team4Clock
             Analog analog = new Analog(this);
             Main.Children.Add(analog);
         }
-
-        public void deleteFromListAlarm(AlarmUI alarmUI,Alarm alarm)
-        {
-            collecton.Remove(alarmUI);
-            //alarmSet.Remove(alarm);
-        }
-
-        private void RefreshAlarmUIs()
-        {
-            ObservableCollection<AlarmUI> newCollection = new ObservableCollection<AlarmUI>();
-            /*foreach (Alarm alarm in alarmSet)
-            {
-                newCollection.Add(new AlarmUI(alarm, this));
-            }*/
-            Collection = newCollection;
-        }
-
-        public void editFromListAlarm(AlarmUI alarmUI, Alarm alarm)
-        {
-            setFlag(1);
-            editThis = alarmUI;
-            SetAlarm setAlarm = new SetAlarm(this, getFlag());
-            Main.Children.Add(setAlarm);
-        }
-
-        public int getFlag()
-        {
-            return this.flag;
-        }
-
-        public void setFlag(int newFlag)
-        {
-            this.flag = newFlag;
-        }
-
-
-        // TODO: resolve this
-        public void editChanges(Alarm alarm)
-        {
-            /*AlarmUI alarmUI = new AlarmUI(alarm, this);
-
-            for (int i = 0; i < collecton.Count; i++)
-            {
-                if (collecton[i] == editThis)
-                {
-                    collecton[i] = alarmUI;
-                }
-            }*/
-        }
-
-
     }
 }

@@ -14,7 +14,7 @@
     <Grid Name="Main">
         <!--<Grid x:Name="RightCanvas" Width="151.818" HorizontalAlignment="Left"> -->
         <ContentControl x:Name="listCanvas" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
-            <Button x:Name="analogBtn" Content="Analog" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="87" Click="toggleBtn_Click" Height="44" d:LayoutOverrides="LeftPosition, RightPosition" Command="{Binding TestCommand}"/>
+            <Button x:Name="analogBtn" Content="Analog" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="87" Click="toggleBtn_Click" Height="44" d:LayoutOverrides="LeftPosition, RightPosition"/>
         </ContentControl>
         <Label x:Name="TimeLabel" Content="{Binding Path=Time}" FontSize="150" VerticalAlignment="Center" Canvas.Left="201" Canvas.Top="157" Foreground="Black" Margin="0,154,0,170" HorizontalAlignment="Center" />
         <Button x:Name="snoozeButton" Content="Snooze" Visibility="Hidden" HorizontalAlignment="Center" Margin="272,369,409,121" VerticalAlignment="Center" Width="87"  Height="44" Click="snooze_Click" x:FieldModifier ="public" RenderTransformOrigin="-0.719,0.732" />
@@ -26,7 +26,7 @@
             <Controls:Flyout.Resources>
                 <CollectionViewSource x:Key="alarmKeys" Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=Collection}">
                     <CollectionViewSource.SortDescriptions>
-                        <scm:SortDescription PropertyName="a" Direction="Ascending"/>
+                        <scm:SortDescription PropertyName="Alarm" Direction="Ascending"/>
                     </CollectionViewSource.SortDescriptions>
                 </CollectionViewSource>
             </Controls:Flyout.Resources>

@@ -30,21 +30,6 @@ namespace Team4Clock
 
         public EventHandler TriggerAlarm;
 
-        private ObservableCollection<Alarm> _testAlarms = new ObservableCollection<Alarm>();
-
-        public ObservableCollection<Alarm> TestAlarms
-        {
-            get
-            {
-                return _testAlarms;
-            }
-            set
-            {
-                _testAlarms = value;
-                OnPropertyChanged("TestAlarms");
-            }
-        }
-
         public string Time
         {
             get
@@ -77,18 +62,26 @@ namespace Team4Clock
 
         public MainPresenter(IEventAggregator eventAggregator)
         {
-            Console.WriteLine("Instantiating new MainPresenter...");
             this._eventAggregator = eventAggregator;
-            this._eventAggregator.GetEvent<NewAlarmEvent>().Subscribe((alarm) => {
+            SubscribeToEvents();
+            StartTimer();
+        }
+
+        private void SubscribeToEvents()
+        {
+            this._eventAggregator.GetEvent<NewAlarmEvent>().Subscribe((alarm) =>
+            {
                 _alarmSet.Add(alarm);
-                TestAlarms.Add(alarm);
             });
             this._eventAggregator.GetEvent<DeleteAlarmEvent>().Subscribe((Alarm) =>
             {
                 _alarmSet.Remove(Alarm);
-                TestAlarms.Remove(Alarm);
             });
-            StartTimer();
+            this._eventAggregator.GetEvent<EditAlarmEvent>().Subscribe((Wrapper) =>
+            {
+                _alarmSet.Remove(Wrapper.OldAlarm);
+                _alarmSet.Add(Wrapper.NewAlarm);
+            });
         }
 
         private void StartTimer()

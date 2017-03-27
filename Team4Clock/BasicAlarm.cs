@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Team4Clock
 {
-    class BasicAlarm : Alarm
+    public class BasicAlarm : Alarm
     {
         private DateTime alarmTime;
 
-       //This is the contructor for the BasicAlarm Class
+       // This is the contructor for the BasicAlarm Class
         public BasicAlarm(DateTime time)
         {
             this.alarmTime = time;
@@ -25,6 +25,12 @@ namespace Team4Clock
             this.on = true;
         }
 
+        // Parameterless constructor.
+        public BasicAlarm()
+        {
+            this.on = true;
+        }
+
         /* Sets this alarm to the next occurrence of a particular clock time, 
          * represented by a TimeSpan reference.
          * 
@@ -35,7 +41,7 @@ namespace Team4Clock
          * newTime: The alarm will be set to this time, for whatever day this time 
          *          will next occur (today or tomorrow).
          */
-        private void SetAlarmTime(TimeSpan newTime)
+        public void SetAlarmTime(TimeSpan newTime)
         {
             TimeSpan currTime = DateTime.Now.TimeOfDay;
             DateTime newAlarmTime = DateTime.Now.Date;
