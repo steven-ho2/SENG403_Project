@@ -26,7 +26,7 @@
             <Controls:Flyout.Resources>
                 <CollectionViewSource x:Key="alarmKeys" Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=Collection}">
                     <CollectionViewSource.SortDescriptions>
-                        <scm:SortDescription PropertyName="Alarm" Direction="Ascending"/>
+                        <scm:SortDescription PropertyName="DataContext.Alarm" Direction="Ascending"/>
                     </CollectionViewSource.SortDescriptions>
                 </CollectionViewSource>
             </Controls:Flyout.Resources>
