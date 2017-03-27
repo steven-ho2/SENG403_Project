@@ -17,47 +17,17 @@ namespace Team4Clock
 {
     public partial class AlarmUI : UserControl
     {
-        public Alarm a {get; private set;}
-        public int id;
-        private MainWindow mw = new MainWindow();
-
-        public AlarmUI(Alarm inputAlarm, MainWindow mw)
+        public AlarmUI(Alarm inputAlarm)
         {
+            DataContext = new AlarmUIPresenter(inputAlarm, ApplicationService.Instance.EventAggregator);
             InitializeComponent();
-
-            DataContext = this;
-            this.a = inputAlarm;
-            this.mw = mw;
-            UpdateLabelColours();
         }
 
-        public object getAlarm()
-        {
-            return this.a;
-        }
-
-        private void cancelBtn_Click(object sender, RoutedEventArgs e)
-        {
-            a.deleteAlarm();
-            mw.deleteFromListAlarm(this,a);
-        }
-
+        // TODO: resolve this
         private void editBtn_Click(object sender, RoutedEventArgs e)
         {
             //a.editAlarm();
-            mw.editFromListAlarm(this, a);
-        }
-
-        private void toggle_Click(object sender, RoutedEventArgs e)
-        {
-            UpdateLabelColours();
-        }
-
-        private void UpdateLabelColours()
-        {
-            Brush color = a.on ? Brushes.White : Brushes.DimGray;
-            alarmTime.Foreground = color;
-            infoString.Foreground = color;
+            //mw.editFromListAlarm(this, a);
         }
     }
 }

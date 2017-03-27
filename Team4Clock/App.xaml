@@ -15,6 +15,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <local:BoolInverterConverter x:Key="BoolInverterConverter"/>
+            <local:BCConverter x:Key="BCConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

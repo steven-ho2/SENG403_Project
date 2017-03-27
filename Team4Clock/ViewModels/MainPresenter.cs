@@ -77,6 +77,7 @@ namespace Team4Clock
 
         public MainPresenter(IEventAggregator eventAggregator)
         {
+            Console.WriteLine("Instantiating new MainPresenter...");
             this._eventAggregator = eventAggregator;
             this._eventAggregator.GetEvent<NewAlarmEvent>().Subscribe((alarm) => {
                 _alarmSet.Add(alarm);
@@ -107,7 +108,7 @@ namespace Team4Clock
                 if ((DateTime.Compare(_clock.getCurrentTime(), alarm.time) == 0)
                     || (alarm.SnoozeOver))
                 {
-                    if (alarm.on)
+                    if (alarm.on && !alarm.ringing)
                     {
                         alarm.Ring();
 
@@ -121,19 +122,9 @@ namespace Team4Clock
             }
         }
 
-        public ICommand TestCommand
-        {
-            get { return new DelegateCommand(TestLine);}
-        }
-
         public ICommand WakeUpCommand
         {
             get { return new DelegateCommand(WakeUpAlarms); }
-        }
-
-        private void TestLine()
-        {
-            Console.WriteLine("Test Command");
         }
 
         private void WakeUpAlarms()

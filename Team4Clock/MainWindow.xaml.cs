@@ -49,22 +49,25 @@ namespace Team4Clock
         private string _soundLocation = @"PoliceSound.wav";
         private int flag = 0;
         private AlarmUI editThis;
-        private IEventAggregator _eventAggregator;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private IEventAggregator _eventAggregator;
+
         public MainWindow()
         {
+            Console.WriteLine("Instantiating a MainWindow...");
             this._eventAggregator = ApplicationService.Instance.EventAggregator;
-            this.DataContext = new MainPresenter(_eventAggregator);
+            this.DataContext = new MainPresenter(ApplicationService.Instance.EventAggregator);
             Collection = new ObservableCollection<AlarmUI>();
             InitializeComponent();
             this.KeyUp += MainWindow_KeyUp;
 
             this._eventAggregator.GetEvent<NewAlarmEvent>().Subscribe((alarm) =>
-            {
-                this.Collection.Add(new AlarmUI(alarm, this));
+            {              
+                Collection.Add(new AlarmUI(alarm));
             });
+
 
             // This should never be null, but better safe than sorry...
             MainPresenter viewModel = this.DataContext as MainPresenter;
@@ -105,7 +108,7 @@ namespace Team4Clock
             awakeButton.Visibility = Visibility.Hidden;
             snoozeButton.Visibility = Visibility.Hidden;
 
-            RefreshAlarmUIs();
+            //RefreshAlarmUIs();
         }
 
         // Activate snooze and wake up buttons, set snooze delay
@@ -139,9 +142,9 @@ namespace Team4Clock
         public void setList(Alarm alarm)
         {
             //list.Add(alarm, false);
-            AlarmUI alarmUI = new AlarmUI(alarm, this);
+            //AlarmUI alarmUI = new AlarmUI(alarm, this);
             //alarmSet.Add(alarm);
-            collecton.Add(alarmUI);
+            //collecton.Add(alarmUI);
         }
 
         private void toggleBtn_Click(object sender, RoutedEventArgs e)
@@ -185,9 +188,10 @@ namespace Team4Clock
         }
 
 
+        // TODO: resolve this
         public void editChanges(Alarm alarm)
         {
-            AlarmUI alarmUI = new AlarmUI(alarm, this);
+            /*AlarmUI alarmUI = new AlarmUI(alarm, this);
 
             for (int i = 0; i < collecton.Count; i++)
             {
@@ -195,7 +199,7 @@ namespace Team4Clock
                 {
                     collecton[i] = alarmUI;
                 }
-            }
+            }*/
         }
 
 

@@ -24,7 +24,7 @@
         <ToggleButton IsChecked="{Binding IsOpen, ElementName=alarmListFlyout}" Cursor="Hand" x:Name="List_Button" Content="List" Margin="10,10,0,0" VerticalAlignment="Top" Width="87" Height="44" HorizontalAlignment="Left"/>
         <Controls:Flyout x:Name="alarmListFlyout" Theme="Accent">
             <Controls:Flyout.Resources>
-                <CollectionViewSource x:Key="alarmKeys" Source="{Binding Collection}">
+                <CollectionViewSource x:Key="alarmKeys" Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=Collection}">
                     <CollectionViewSource.SortDescriptions>
                         <scm:SortDescription PropertyName="a" Direction="Ascending"/>
                     </CollectionViewSource.SortDescriptions>
