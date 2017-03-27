@@ -99,7 +99,7 @@
     <Compile Include="EditAlarmWrapper.cs" />
     <Compile Include="Events\EditAlarmEvent.cs" />
     <Compile Include="Events\RequestEditAlarmEvent.cs" />
-    <Compile Include="RepeatAlarmPresenter.cs" />
+    <Compile Include="ViewModels\RepeatAlarmPresenter.cs" />
     <Compile Include="ViewModels\AlarmUIPresenter.cs" />
     <Compile Include="ApplicationService.cs" />
     <Compile Include="BasicAlarm.cs" />

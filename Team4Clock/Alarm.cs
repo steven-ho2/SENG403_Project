@@ -12,7 +12,7 @@ namespace Team4Clock
     {
 
         private DateTime _snoozeTime;
-        private TimeSpan _snoozeInterval;
+        private TimeSpan _snoozeInterval = new TimeSpan(0, 0, 5);
         private bool _on;
 
         public bool on
@@ -36,11 +36,7 @@ namespace Team4Clock
                 return TruncateTime(GetTime());
             }
         }
-        public Object ringtone
-        {
-            get;
-            set;
-        }
+
         public string display
         {
             get { return displayTime(); }
@@ -99,16 +95,6 @@ namespace Team4Clock
             }
         }
 
-        public void editAlarm()
-        {
-            // should call the set alarm GUI and change time accordingly
-        }
-
-        public void deleteAlarm()
-        {
-            // should call delete from the alarm list
-        }
-
         // This gets the time the alarm is set to
         protected abstract DateTime GetTime();
 
@@ -153,7 +139,7 @@ namespace Team4Clock
         public void Snooze()
         {
             if (ringing)
-            {
+            {                
                 ringing = false;
                 snoozing = true;
                 _snoozeTime = DateTime.Now + _snoozeInterval;

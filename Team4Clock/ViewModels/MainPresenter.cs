@@ -22,11 +22,6 @@ namespace Team4Clock
         private string _time;
 
         private int _snoozeDelay = -2;
-        private int _setDelay = 5;
-        private bool _alarmOn = false;
-        private bool _played = false;       // what is this?
-        private int _flag = 0;              // what is this?
-        private AlarmUI _editThis;
 
         public EventHandler TriggerAlarm;
 
@@ -98,7 +93,7 @@ namespace Team4Clock
 
             foreach (Alarm alarm in _alarmSet)
             {
-                if ((DateTime.Compare(_clock.getCurrentTime(), alarm.time) == 0)
+                if (((DateTime.Compare(_clock.getCurrentTime(), alarm.time) == 0) && !alarm.snoozing)
                     || (alarm.SnoozeOver))
                 {
                     if (alarm.on && !alarm.ringing)
@@ -115,9 +110,16 @@ namespace Team4Clock
             }
         }
 
+        // ---------------- Commands ----------------
+
         public ICommand WakeUpCommand
         {
             get { return new DelegateCommand(WakeUpAlarms); }
+        }
+
+        public ICommand SnoozeCommand
+        {
+            get { return new DelegateCommand(SnoozeAlarms); }
         }
 
         private void WakeUpAlarms()
@@ -126,6 +128,15 @@ namespace Team4Clock
             {
                 if (alarm.ringing)
                     alarm.WakeUp();
+            }
+        }
+
+        private void SnoozeAlarms()
+        {
+            foreach (Alarm alarm in _alarmSet)
+            {
+                if (alarm.ringing)
+                    alarm.Snooze();
             }
         }
     }

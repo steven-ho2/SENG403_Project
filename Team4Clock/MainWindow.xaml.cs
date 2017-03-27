@@ -158,25 +158,15 @@ namespace Team4Clock
             activateSnooze();            
         }
 
-        private void awake_Click(object sender, RoutedEventArgs e)
+        private void stop_Click(object sender, RoutedEventArgs e)
         {
             _player.Stop();
-            
-            awakeButton.Visibility = Visibility.Hidden;
-            snoozeButton.Visibility = Visibility.Hidden;
 
-            //RefreshAlarmUIs();
-        }
-
-        // Activate snooze and wake up buttons, set snooze delay
-        private void snooze_Click(object sender, RoutedEventArgs e)
-        {
            snoozeButton.Visibility = Visibility.Hidden;
            awakeButton.Visibility = Visibility.Hidden;
-           //snoozeDelay = setDelay;      // TODO: need to reroute this as command
         }
         
-        //Activate the snooze buttons
+        // Activate the snooze buttons
         public void activateSnooze()
         {
             snoozeButton.Visibility = Visibility.Visible;
@@ -191,14 +181,6 @@ namespace Team4Clock
         private void rptAlarmBtn_Click(object sender, RoutedEventArgs e)
         {
             SetRepeatView();
-        }
-
-        public void setList(Alarm alarm)
-        {
-            //list.Add(alarm, false);
-            //AlarmUI alarmUI = new AlarmUI(alarm, this);
-            //alarmSet.Add(alarm);
-            //collecton.Add(alarmUI);
         }
 
         private void toggleBtn_Click(object sender, RoutedEventArgs e)
