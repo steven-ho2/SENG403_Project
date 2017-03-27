@@ -26,20 +26,14 @@ namespace Team4Clock
             repeatDays.SetRepeat(day, repeats, time);
         }
 
-        // Debug method to list out all repeat days with the times for each repeat.
-        // Returns a string with this information.
-        public string ListRepeatDaysAndTimes()
+        public bool RepeatsOn(DayOfWeek day)
         {
-            string retStr = "";
+            return repeatDays.RepeatsOn(day);
+        }
 
-            List<DayOfWeek> days = repeatDays.GetRepeats();
-            foreach (DayOfWeek day in days)
-            {
-                TimeSpan time = repeatDays.GetRepeatForDay(day);
-                retStr += day + ": " + time + "\n";
-            }
-
-            return retStr;
+        public TimeSpan GetRepeatForDay(DayOfWeek day)
+        {
+            return repeatDays.GetRepeatForDay(day);
         }
 
         protected override DateTime GetTime()

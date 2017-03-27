@@ -20,6 +20,7 @@ namespace Team4Clock
         private ObservableCollection<string> _minsList = new ObservableCollection<string>();
         private ObservableCollection<string> _amPmList = new ObservableCollection<string>();
 
+        // RepeatTimePresenters (wrappers for selectable time strings)
         private RepeatTimePresenter _sunTimes = new RepeatTimePresenter();
         private RepeatTimePresenter _monTimes = new RepeatTimePresenter();
         private RepeatTimePresenter _tueTimes = new RepeatTimePresenter();
@@ -28,6 +29,7 @@ namespace Team4Clock
         private RepeatTimePresenter _friTimes = new RepeatTimePresenter();
         private RepeatTimePresenter _satTimes = new RepeatTimePresenter();
 
+        // Booleans determining whether each individual day is selected to take a repeat
         private bool _sunCheck;
         private bool _monCheck;
         private bool _tueCheck;
@@ -36,8 +38,10 @@ namespace Team4Clock
         private bool _friCheck;
         private bool _satCheck;
 
+        // Events
         public EventHandler NoRepeatError;
         public EventHandler SuccessEvent;
+
 
         // ----------------- Start of properties -----------------
 
@@ -110,7 +114,7 @@ namespace Team4Clock
         public bool SunCheck
         {
             get { return _sunCheck; }
-            set { _sunCheck = value; }
+            set { _sunCheck = value; OnPropertyChanged("SunCheck"); }
         }
 
         public bool MonCheck
@@ -165,7 +169,30 @@ namespace Team4Clock
             InitLists();
             _isEditMode = true;
             _oldAlarm = alarm;
-            // todo: set up information according to old alarm
+            UpdateFromEditAlarm(alarm, DayOfWeek.Sunday, ref _sunCheck, SunTimes);
+            UpdateFromEditAlarm(alarm, DayOfWeek.Monday, ref _monCheck, MonTimes);
+            UpdateFromEditAlarm(alarm, DayOfWeek.Tuesday, ref _tueCheck, TueTimes);
+            UpdateFromEditAlarm(alarm, DayOfWeek.Wednesday, ref _wedCheck, WedTimes);
+            UpdateFromEditAlarm(alarm, DayOfWeek.Thursday, ref _thuCheck, ThuTimes);
+            UpdateFromEditAlarm(alarm, DayOfWeek.Friday, ref _friCheck, FriTimes);
+            UpdateFromEditAlarm(alarm, DayOfWeek.Saturday, ref _satCheck, SatTimes);
+
+        }
+
+        private void UpdateFromEditAlarm(RepeatingAlarm alarm, DayOfWeek day, ref bool checkBox, RepeatTimePresenter timeInfo)
+        {
+            if (alarm.RepeatsOn(day))
+            {
+                checkBox = true;
+                TimeSpan span = alarm.GetRepeatForDay(day);
+                int hoursNum = (span.Hours > 12) ? (span.Hours - 12) : span.Hours;
+                if (hoursNum == 0) hoursNum = 12;
+                string hours = hoursNum.ToString();
+                string mins = span.Minutes.ToString("D2");
+                timeInfo.Hours = hours;
+                timeInfo.Mins = mins;
+                if (span.Hours >= 12) timeInfo.AmPm = "PM";
+            }
         }
 
         private void InitLists()
@@ -262,7 +289,7 @@ namespace Team4Clock
             }
             else
             {
-                // No repeats; fire error event
+                // No repeats were set; fire error event
                 if (NoRepeatError != null)
                 {
                     this.NoRepeatError(this, EventArgs.Empty);

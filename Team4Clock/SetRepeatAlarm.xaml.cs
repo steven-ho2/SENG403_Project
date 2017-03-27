@@ -18,8 +18,6 @@ namespace Team4Clock
 {
     public partial class SetRepeatAlarm : UserControl
     {
-        bool _hasError = true;
-
         // New alarm constructor
         public SetRepeatAlarm()
         {
@@ -42,8 +40,8 @@ namespace Team4Clock
             RepeatAlarmPresenter viewModel = this.DataContext as RepeatAlarmPresenter;
             if (viewModel != null)
             {
-                viewModel.NoRepeatError += ErrorEventHandler;
-                viewModel.SuccessEvent += SuccessEventHandler;
+                viewModel.NoRepeatError += ErrorEventHandler;       // handler for a "no repeats set" error event
+                viewModel.SuccessEvent += ExitEvent;                // handler for a "success" event
             }
         }
 
@@ -52,19 +50,9 @@ namespace Team4Clock
             errLabel.Visibility = Visibility.Visible;
         }
 
-        private void SuccessEventHandler(object sender, EventArgs e)
-        {
-            CloseWindow();
-        }
-
         // Removes the current set alarm view from the stack allowing
         // the parent main view to be shown
-        private void back_Click(object sender, RoutedEventArgs e)
-        {
-            CloseWindow();
-        }
-
-        private void CloseWindow()
+        private void ExitEvent(object sender, EventArgs e)
         {
             (this.Parent as Panel).Children.Remove(this);
         }

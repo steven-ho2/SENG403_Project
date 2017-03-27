@@ -71,7 +71,7 @@
                 <Label Grid.Column="2" Grid.Row="7">:</Label>
                 <ComboBox x:Name="satMins" IsEnabled="{Binding ElementName=satBtn, Path=IsChecked}" Grid.Row="7" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding MinsList}"  SelectedIndex="0" SelectedItem="{Binding SatTimes.Mins}"/>
                 <ComboBox x:Name="satAmPm" IsEnabled="{Binding ElementName=satBtn, Path=IsChecked}" Grid.Row="7" Grid.Column="4" Margin="5,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding AmPmList}"  SelectedIndex="0" SelectedItem="{Binding SatTimes.AmPm}"/>
-                <Button x:Name="backBtn" Content="Back" Width="75" Click="back_Click" Height="73" Style="{DynamicResource MetroCircleButtonStyle}" 
+                <Button x:Name="backBtn" Content="Back" Width="75" Click="ExitEvent" Height="73" Style="{DynamicResource MetroCircleButtonStyle}" 
                          BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
                          Grid.Row="8" />
                 <Button x:Name="doneBtn" Content="Done"  Style="{DynamicResource MetroCircleButtonStyle}" Command="{Binding DoneCommand}"
