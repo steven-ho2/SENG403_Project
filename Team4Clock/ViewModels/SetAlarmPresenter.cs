@@ -73,6 +73,10 @@ namespace Team4Clock
             this._eventAggregator = eventAggregator;
             _isEditMode = true;
             _oldAlarm = alarm;
+            int oldMins = _oldAlarm.time.Minute;
+            _minTens = oldMins / 10;
+            _minOnes = oldMins % 10;
+            
         }
 
         // ----------------------Commands----------------------

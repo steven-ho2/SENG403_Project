@@ -18,11 +18,9 @@ namespace Team4Clock
 {
     public partial class SetAlarm : UserControl
     {
-        private int flag = 0;             // flag is edit alarm or create new alarm
 
-        public SetAlarm(int setFlag)
+        public SetAlarm()
         {
-            this.flag = setFlag;
             this.DataContext = new SetAlarmPresenter(ApplicationService.Instance.EventAggregator);
             InitializeComponent();
         }

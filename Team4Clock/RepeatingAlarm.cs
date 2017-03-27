@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Team4Clock
 {
-    class RepeatingAlarm : Alarm
+    public class RepeatingAlarm : Alarm
     {
         private AlarmRepeats repeatDays = new AlarmRepeats();  // Wrapper for repeat days
         private DateTime lastTrigger;

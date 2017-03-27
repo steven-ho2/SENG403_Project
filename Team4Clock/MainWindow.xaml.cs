@@ -48,8 +48,6 @@ namespace Team4Clock
 
         private SoundPlayer _player = new SoundPlayer();
         private string _soundLocation = @"PoliceSound.wav";
-        private int flag = 0;
-        private AlarmUI editThis;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -117,7 +115,7 @@ namespace Team4Clock
             if (alarmType == typeof(BasicAlarm))
                 SetAlarmView(alarm as BasicAlarm);
             else
-                Console.WriteLine("It's a RepeatingAlarm");
+                SetRepeatView(alarm as RepeatingAlarm);
         }
 
         private void SetAlarmView(BasicAlarm alarm = null)
@@ -125,10 +123,22 @@ namespace Team4Clock
             SetAlarm setAlarm;
             if (alarm == null)
                 // set new alarm
-                setAlarm = new SetAlarm(0);
+                setAlarm = new SetAlarm();
             else
                 // edit alarm
                 setAlarm = new SetAlarm(alarm);
+            Main.Children.Add(setAlarm);
+        }
+
+        private void SetRepeatView(RepeatingAlarm alarm = null)
+        {
+            SetRepeatAlarm setAlarm;
+            if (alarm == null)
+                // set new alarm
+                setAlarm = new SetRepeatAlarm();
+            else
+                //edit alarm
+                setAlarm = new SetRepeatAlarm(alarm);
             Main.Children.Add(setAlarm);
         }
 
@@ -180,8 +190,7 @@ namespace Team4Clock
 
         private void rptAlarmBtn_Click(object sender, RoutedEventArgs e)
         {
-            SetRepeatAlarm setRptAlarm = new SetRepeatAlarm(this);
-            Main.Children.Add(setRptAlarm);
+            SetRepeatView();
         }
 
         public void setList(Alarm alarm)
