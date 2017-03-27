@@ -109,9 +109,6 @@
     <Compile Include="Converters\BoolInverterConverter.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Events\DeleteAlarmEvent.cs" />
-    <Compile Include="ListOfAlarms.xaml.cs">
-      <DependentUpon>ListOfAlarms.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\MainPresenter.cs" />
     <Compile Include="Events\NewAlarmEvent.cs" />
     <Compile Include="ObservableObject.cs" />
@@ -122,10 +119,6 @@
     </Compile>
     <Compile Include="SWClock.cs" />
     <Page Include="Analog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ListOfAlarms.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
