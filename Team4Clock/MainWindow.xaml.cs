@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Media;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,39 +15,191 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Collections;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Reflection;
+using System.ComponentModel;
+using Prism.Events;
 
 namespace Team4Clock
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// The View for the MainWindow.
+    /// 
+    /// This class represents pretty much all of the UI for the Windows implementation of this application.
+    /// Other controls/Views are added or taken away from this window as needed.
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
-        private SWClock clock;
-   
-        private List<Alarm> list = new List<Alarm>();
-        private int snoozeDelay;
-        private int setDelay = 3;
 
-        public MainWindow()
+        // Alarm UI properties and containers, including a map to map Alarms to their representative AlarmUIs.
+        private ObservableCollection<AlarmUI> collection;
+        private Dictionary<Alarm, AlarmUI> _alarmUIMap = new Dictionary<Alarm,AlarmUI>();
+
+        public ObservableCollection<AlarmUI> Collection
         {
-            InitializeComponent();
-
-
-           
-
-     
-
-
-            clock = new SWClock();
-            
-            startClock();
-            this.KeyUp += MainWindow_KeyUp;
-
-            activateSnooze();   //Testing snooze function
-
+            get
+            {
+                return collection;
+            }
+            set
+            {
+                collection = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("Collection"));
+                }
+            }
         }
 
+        // Sound data
+        private SoundPlayer _player = new SoundPlayer();
+        private string _soundLocation = @"PoliceSound.wav";
+
+        // Event fields
+        public event PropertyChangedEventHandler PropertyChanged;
+        private IEventAggregator _eventAggregator;
+
+        /// <summary>
+        /// MainWindow constructor. Must be parameterless.
+        /// 
+        /// Sets up event handling, and initializes AlarmUI collection.
+        /// </summary>
+        public MainWindow()
+        {
+            this._eventAggregator = ApplicationService.Instance.EventAggregator;
+            this.DataContext = new MainPresenter(ApplicationService.Instance.EventAggregator);
+            Collection = new ObservableCollection<AlarmUI>();
+            InitializeComponent();
+            this.KeyUp += MainWindow_KeyUp;
+            SubscribeToEvents();
+
+            // This should never be null, but better safe than sorry...
+            MainPresenter viewModel = this.DataContext as MainPresenter;
+            if (viewModel != null)
+            {
+                viewModel.TriggerAlarm += AlarmEvent;
+            }
+        }
+
+        /// <summary>
+        /// Subscribe to Prism (MVVM aggregated) events.
+        /// 
+        /// MainWindow must listen to NewAlarm, DeleteAlarm, EditAlarm, and RequestEditAlarm events
+        /// to update the View in accordance with these changes.
+        /// </summary>
+        private void SubscribeToEvents()
+        {
+            this._eventAggregator.GetEvent<NewAlarmEvent>().Subscribe((alarm) =>
+            {
+                AddAlarm(alarm);
+            });
+
+            this._eventAggregator.GetEvent<DeleteAlarmEvent>().Subscribe((alarm) =>
+            {
+                DeleteAlarm(alarm);
+            });
+
+
+            this._eventAggregator.GetEvent<EditAlarmEvent>().Subscribe((wrapper) =>
+            {
+                DeleteAlarm(wrapper.OldAlarm);
+                AddAlarm(wrapper.NewAlarm);
+            });
+
+            this._eventAggregator.GetEvent<RequestEditAlarmEvent>().Subscribe((alarm) =>
+            {
+                OpenEditAlarm(alarm);
+            });
+        }
+
+        /// <summary>
+        /// Add a new Alarm to the View.
+        /// 
+        /// Creates a new AlarmUI and adds it to the collection (and also to the map which
+        /// allows tracking of the Alarm it is connected to).
+        /// </summary>
+        /// <param name="alarm">The alarm for which an AlarmUI is to be made.</param>
+        private void AddAlarm(Alarm alarm)
+        {
+            AlarmUI alarmUI = new AlarmUI(alarm);
+            _alarmUIMap.Add(alarm, alarmUI);
+            Collection.Add(alarmUI);
+        }
+
+        /// <summary>
+        /// Removes an Alarm from the View.
+        /// 
+        /// Looks up the given Alarm in the map, and removes its corresponding AlarmUI,
+        /// as well as the map entry itself.
+        /// </summary>
+        /// <param name="alarm">The Alarm that is being removed.</param>
+        private void DeleteAlarm(Alarm alarm)
+        {
+            AlarmUI delAlarmUI = _alarmUIMap[alarm];
+            Collection.Remove(delAlarmUI);
+            _alarmUIMap.Remove(alarm);
+        }
+
+        /// <summary>
+        /// Open up the editing View for a given Alarm. 
+        /// 
+        /// Behaviour depends on the type of Alarm given. This method determines which
+        /// subclass the Alarm belongs to and calls the appropriate SetView method.
+        /// </summary>
+        /// <param name="alarm">The alarm to edit.</param>
+        private void OpenEditAlarm(Alarm alarm)
+        {
+            Type alarmType = alarm.GetType();
+            if (alarmType == typeof(BasicAlarm))
+                SetAlarmView(alarm as BasicAlarm);
+            else
+                SetRepeatView(alarm as RepeatingAlarm);
+        }
+
+        /// <summary>
+        /// Opens the View for SetAlarm, either in New Alarm mode (default) or
+        /// in Edit mode (if a BasicAlarm is passed).
+        /// </summary>
+        /// <param name="alarm">The alarm to edit. If null, then create a new alarm.</param>
+        private void SetAlarmView(BasicAlarm alarm = null)
+        {
+            SetAlarm setAlarm;
+            if (alarm == null)
+                // set new alarm
+                setAlarm = new SetAlarm();
+            else
+                // edit alarm
+                setAlarm = new SetAlarm(alarm);
+            Main.Children.Add(setAlarm);
+        }
+
+        /// <summary>
+        /// Opens the View for SetRepeatingAlarm, either in New Alarm mode (default) or
+        /// in Edit mode (if a RepeatingAlarm is passed).
+        /// </summary>
+        /// <param name="alarm">The alarm to edit. If null, then create a new alarm.</param>
+        private void SetRepeatView(RepeatingAlarm alarm = null)
+        {
+            SetRepeatAlarm setAlarm;
+            if (alarm == null)
+                // set new alarm
+                setAlarm = new SetRepeatAlarm();
+            else
+                //edit alarm
+                setAlarm = new SetRepeatAlarm(alarm);
+            Main.Children.Add(setAlarm);
+        }
+
+        /// <summary>
+        /// Key event handler for the Escape key. 
+        /// 
+        /// Shuts down the app if Esc is pressed.
+        /// </summary>
+        /// <param name="sender">Sending object (ignored)</param>
+        /// <param name="e">Event arguments (ignored)</param>
         private void MainWindow_KeyUp(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Escape)
@@ -55,109 +208,80 @@ namespace Team4Clock
             }
         }
 
-        //This is the main event handler for displaying the time
-        private void startClock()
+        /// <summary>
+        /// Event handler for when an alarm goes off.
+        /// 
+        /// Plays alarm sound and shows hidden "wake up/snooze" buttons.
+        /// </summary>
+        /// <param name="sender">Sending object (ignored)</param>
+        /// <param name="e">Event args (ignored)</param>
+        private void AlarmEvent(object sender, EventArgs e)
         {
-            this.TImeLabel.Content = clock.ShowTime; //display the inital time to label
-            DispatcherTimer time = new DispatcherTimer(); //This is the timer to a handle the ticking
-            time.Tick += new EventHandler(time_tick);
-            time.Interval = new TimeSpan(0, 0, 1); //Set the wait time to 1 min //I changed it to 1 sec to check snooze
-            time.Start();
-
+            _player.SoundLocation = _soundLocation;
+            _player.Load();
+            _player.PlayLooping();
+            ShowWakeUpButtons();            
         }
 
-        public Grid getGrid
+        /// <summary>
+        /// Click handler for clicking either Wake Up or Snooze.
+        /// 
+        /// Stops the playing alarm sound and hides Wake Up/Snooze buttons.
+        /// </summary>
+        /// <param name="sender">Sending object</param>
+        /// <param name="e">Event args</param>
+        private void stop_Click(object sender, RoutedEventArgs e)
         {
-            get { return Main; }
-        }
+            _player.Stop();
 
-        //Update the label with the current time
-        private void time_tick(object sender, EventArgs e)
-        {
-            this.TImeLabel.Content = clock.ShowTime;
-            snoozeTick();
-            foreach (Alarm alarm in list)
-            {
-                if(DateTime.Compare(clock.getCurrentTime(), alarm.time) == 0)
-                {
-                    Console.Beep();
-                }
-            }
-        }
-
-        private void awake_Click(object sender, RoutedEventArgs e)
-        {
-            awakeButton.Visibility = Visibility.Hidden;
-            snoozeButton.Visibility = Visibility.Hidden;
-
-            snoozeDelay = -1;
-
-        }
-
-        // Activate snooze and wake up buttons, set snooze delay
-        private void snooze_Click(object sender, RoutedEventArgs e)
-        {
            snoozeButton.Visibility = Visibility.Hidden;
            awakeButton.Visibility = Visibility.Hidden;
-           snoozeDelay = setDelay;
-        }
-
-        //Event for when "list of alarm" button is clicked
-        private void List_Click(object sender, RoutedEventArgs e)
-        {
-            ListOfAlarms listAlarm = new ListOfAlarms(this, list);
-            Main.Children.Add(listAlarm);
-
-
-
         }
         
-        //Activate the snooze buttons
-        public void activateSnooze()
+        /// <summary>
+        /// Activate the "Wake Up" and "Snooze" buttons
+        /// </summary>
+        public void ShowWakeUpButtons()
         {
             snoozeButton.Visibility = Visibility.Visible;
             awakeButton.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Click handler for the "Set Alarm" button.
+        /// 
+        /// Just calls SetAlarmView() (create new alarm mode).
+        /// </summary>
+        /// <param name="sender">Sending object.</param>
+        /// <param name="e">Event args.</param>
         private void setAlarmBtn_Click(object sender, RoutedEventArgs e)
         {
-            SetAlarm setAlarm = new SetAlarm(this);
-            Main.Children.Add(setAlarm);
+            SetAlarmView();
         }
 
-        public void setList(Alarm alarm)
+        /// <summary>
+        /// Click handler for the "Set Repeating Alarm" button.
+        /// 
+        /// Just calls SetRepeatView() (create new alarm mode).
+        /// </summary>
+        /// <param name="sender">Sending object.</param>
+        /// <param name="e">Event args.</param>
+        private void rptAlarmBtn_Click(object sender, RoutedEventArgs e)
         {
-            list.Add(alarm);
-            Console.WriteLine(alarm);
+            SetRepeatView();
         }
-        
-        // Check whether to activate buttons or keep snoozing
-        private void snoozeTick()
+
+        /// <summary>
+        /// Analog toggle button event handler. 
+        /// 
+        /// Currently switches the view to the "Analog" window.
+        /// </summary>
+        /// <param name="sender">Sending object.</param>
+        /// <param name="e">Event args.</param>
+        private void toggleBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (snoozeDelay > 0)
-            {
-                snoozeDelay--;
-            }
-            else if(snoozeDelay == -1)
-            {
-                snoozeButton.Visibility = Visibility.Hidden;
-                awakeButton.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                activateSnooze();
-            }
-            
-        }
-        // Set snooze delay
-        public void setSnoozeDelay(int delay)
-        {
-            setDelay = delay;
-        }
-        // Get snooze delay
-        public int getSnoozeDelay()
-        {
-            return snoozeDelay;
+            Analog analog = new Analog(this);
+            Main.Children.Add(analog);
         }
     }
 }

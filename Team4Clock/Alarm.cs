@@ -1,182 +1,173 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Team4Clock
 {
-    public class Alarm
+    /// <summary>
+    /// Alarm abstract base class. Contains some methods common to all planned alarm types.
+    /// </summary>
+    public abstract class Alarm : IComparable 
     {
-        private bool on;
+
+        private DateTime _snoozeTime;                                   // When snoozing: the absolute time at which the snooze period ends
+        private TimeSpan _snoozeInterval = new TimeSpan(0, 0, 5);       // The duration of a snooze for this alarm
+        private bool _on;                                               // Alarm on/off state
+
+
+        public bool on
+        {
+            get
+            {
+                return _on;
+            }
+            set
+            {
+                // cut off snoozing if we shut the alarm off
+                if (value == false)
+                    snoozing = false;
+                _on = value;
+            }
+        }
         public DateTime time
+        {
+            get
+            {
+                return TruncateTime(GetTime());
+            }
+        }
+
+        public string display
+        {
+            get { return displayTime(); }
+        }
+        public string info
+        {
+            get { return infoString(); }
+        }
+
+        public bool ringing
+        {
+            get;
+            protected set;
+        }
+
+        public bool snoozing
         {
             get;
             private set;
         }
-        public Object ringtone
-        {
-            get;
-            set;
-        }
-        private AlarmRepeats repeatDays = new AlarmRepeats();  // Wrapper for repeat days
 
-        //This is the contructor for the Alarm Class
-        public Alarm(DateTime time)
+        public TimeSpan SnoozeInterval
         {
-            this.time = time;
-            this.on = true;
-        }
-        
-        // Alternate constructor which takes a TimeSpan reference,
-        // and calls SetAlarmTime().
-        public Alarm(TimeSpan timeSpan)
-        {
-            SetAlarmTime(timeSpan);
-            this.on = true;
-        }
-
-        //This return whether the alarm is set on or off
-        public bool toggleAlarmOn()
-        {
-            if(this.on)
+            get
             {
-                this.on = false;
-                return this.on;
+                return _snoozeInterval;
             }
-            else
+            set
             {
-                this.on = true;
-                return this.on;
+                _snoozeInterval = value;
             }
         }
 
-        public void editAlarm()
+        public bool SnoozeOver
         {
-            // should call the set alarm GUI and change time accordingly
-        }
-
-        public void deleteAlarm()
-        {
-            // should call delete from the alarm list
-        }
-
-        // This gets the time the alarm is set to
-        // *DEPRECATED* Prefer the use of C# style getter.
-        public DateTime getTime()
-        {
-            return time;
-        }
-
-        public bool checkAlarm(DateTime cur)
-        {
-            return this.time.Equals(cur);
-        }
-
-        //Displays the time the alarm is set to
-        public String displayTime()
-        {
-            return time.ToString("hh:mm tt");
-        }
-
-        //This gets the ringtone the is set to this alarm
-        // *DEPRECATED* Prefer the use of C# style getter.
-        public Object getRingtone()
-        {
-            return ringtone;
-        }
-
-        //This is to set the ringtone for the alarm
-        // *DEPRECATED* Prefer the use of C# style setter.
-        public void setRingtone(Object obj)
-        {
-            this.ringtone = obj;
-        }
-
-        /* Sets this alarm to the next occurrence of a particular clock time, 
-         * represented by a TimeSpan reference.
-         * 
-         * Basically, this looks at the time given, and decides whether or not
-         * that time has passed for today. If not, then the alarm is set for
-         * today; otherwise, tomorrow.
-         * 
-         * newTime: The alarm will be set to this time, for whatever day this time 
-         *          will next occur (today or tomorrow).
-         */
-        private void SetAlarmTime(TimeSpan newTime)
-        {
-            TimeSpan currTime = DateTime.Now.TimeOfDay;
-            DateTime alarmTime = DateTime.Now.Date;
-            if (currTime >= newTime)
+            get
             {
-                alarmTime = alarmTime.AddDays(1);
+                return ((snoozing) && (DateTime.Now > _snoozeTime));
             }
-            alarmTime += newTime;
-            this.time = alarmTime;
         }
 
-        /* Sets this alarm to a specific date.
-         * 
-         * Ignores the time component of the provided DateTime and keeps whatever
-         * time of day is currently defined for this alarm.
-         * 
-         * date: DateTime object containing the new date to use. Time of day is ignored.
-         */
-        private void SetAlarmDate(DateTime date)
+        /// <summary>
+        /// This gets the date and time the alarm is set to.
+        /// 
+        /// Implementation varies based on subclass.
+        /// </summary>
+        /// <returns>The date/time of the alarm.</returns>
+        protected abstract DateTime GetTime();
+
+
+        /// <summary>
+        /// This should return a "display time", i.e. a string representing the time
+        /// the Alarm is set to as it should be presented to the View.
+        /// </summary>
+        /// <returns>A string displaying the time of the alarm.</returns>
+        public abstract String displayTime();
+
+        /// <summary>
+        /// This should return a string containing some auxiliary information about
+        /// the alarm, such as repeat days for a repating alarm. Can be an empty string
+        /// but must be implemented.
+        /// </summary>
+        /// <returns>A string with secondary info about the alarm.</returns>
+        public abstract String infoString();
+
+        /// <summary>
+        /// Should the next time at which the alarm will go off, if enabled.
+        /// 
+        /// Semantically, the difference between this method and GetTime() is that this
+        /// method should account for the possibility that the alarm is off and reflect
+        /// the time the alarm will go off IF it is turned back on.
+        /// </summary>
+        /// <returns>The next time the alarm will go off, if the alarm is turned on.</returns>
+        public abstract DateTime GetNextAlarmTime();
+
+
+        /// <summary>
+        /// Comparator. Compares alarms by the next alarm time (i.e. time returned by calling
+        /// GetNextAlarmTime().
+        /// </summary>
+        /// <param name="obj">The other Alarm to compare against.</param>
+        /// <returns>Standard integer reflecting comparison result.</returns>
+        int IComparable.CompareTo(object obj)
         {
-            DateTime newTime = date.Date;        // new date, with time reset to midnight
-            TimeSpan alarmTime = time.TimeOfDay;
-            newTime += alarmTime;
-            this.time = newTime;
+            Alarm a = (Alarm)obj;
+            var comp = DateTime.Compare(this.GetNextAlarmTime(), a.GetNextAlarmTime());
+            return comp;
         }
 
-        /* Set or unset a repeat for a particular day.
-         * 
-         * day:     The DayOfWeek for which to modify repeat behaviour.
-         * repeats: Whether to repeat for this day (true: repeat for this day).
-         */
-        public void SetRepeat(DayOfWeek day, bool repeats)
+        /// <summary>
+        /// Any internal behaviour needed when the "Wake Up" button is pressed and applied to the alarm.
+        /// </summary>
+        public abstract void WakeUp();
+
+        /// <summary>
+        /// Truncates DateTimes by cutting off seconds. Intended to simplify some comparisons.
+        /// </summary>
+        /// <param name="inTime">The time to truncate.</param>
+        /// <returns>inTime, with seconds truncated. </returns>
+        private DateTime TruncateTime(DateTime inTime)
         {
-            repeatDays.SetRepeat(day, repeats);
+            TimeSpan truncatedTime = new TimeSpan(inTime.TimeOfDay.Hours,
+                                                  inTime.TimeOfDay.Minutes, 0);
+            DateTime date = inTime.Date;
+            return date.Add(truncatedTime);
         }
 
-        /* Updates the alarm's time to the next instance of the repeat.
-         * 
-         * The actual time (TimeSpan) of the alarm is invariant in this function. All that
-         * changes is the date.
-         * 
-         * Does nothing if no repeats are set.
-         */ 
-        private void UpdateRepeat()
+        /// <summary>
+        /// Ringing behaviour. Sets the "ringing" flag and disables the "snoozing" flag.
+        /// </summary>
+        public void Ring()
         {
-            if ((repeatDays != null) && (repeatDays.Repeats()))
-            {
-                DateTime now = DateTime.Now;
+            this.ringing = true;
+            this.snoozing = false;
+        }
 
-                // first check if the next repeat is today, and the time has
-                // not yet passed for the alarm
-                if (repeatDays.RepeatsOn(now.DayOfWeek))
-                {
-                    if (now.TimeOfDay < time.TimeOfDay)
-                    {
-                        SetAlarmDate(now);
-                        return;
-                    }
-                }
-
-                // The next instance is not today, or the time has already
-                // passed. Find the next date the alarm will trigger on, and
-                // reset the date.
-                for (int i = 1; i < 7; i++)
-                {
-                    DateTime then = now.AddDays(i);
-                    DayOfWeek day = then.DayOfWeek;
-                    if (repeatDays.RepeatsOn(day))
-                    {
-                        SetAlarmDate(then);
-                        return;
-                    }
-                }
+        /// <summary>
+        /// Snoozing behaviour. Only operates if the alarm is actually ringing, and if so,
+        /// disables ringing, sets snoozing, and updates SnoozeTime.
+        /// </summary>
+        public void Snooze()
+        {
+            if (ringing)
+            {                
+                ringing = false;
+                snoozing = true;
+                _snoozeTime = DateTime.Now + _snoozeInterval;
             }
         }
     }

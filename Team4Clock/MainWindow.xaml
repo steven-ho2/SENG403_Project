@@ -1,20 +1,42 @@
-﻿<Window x:Class="Team4Clock.MainWindow"
+﻿<Controls:MetroWindow x:Class="Team4Clock.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:local="clr-namespace:Team4Clock"
+        xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         mc:Ignorable="d"
+        Title="Dope Clock" ResizeMode="NoResize" WindowState="Maximized" WindowStyle="None" WindowStartupLocation="Manual" Height="534" IgnoreTaskbarOnMaximize="True"
+        >
 
-      Title="Dope Clock" ResizeMode="NoResize" WindowState="Maximized" WindowStyle="None" WindowStartupLocation="Manual" Height="534">
     <Grid Name="Main">
-        <Label x:Name="TImeLabel" Content="Label" FontSize="150" VerticalAlignment="Center" Canvas.Left="201" Canvas.Top="157" Margin="0,154,0,170" HorizontalAlignment="Center"/>
-        <Button x:Name="snoozeButton" Content="Snooze" HorizontalAlignment="Left" Margin="201,426,0,0" VerticalAlignment="Top" Width="75" Click="snooze_Click" x:FieldModifier ="public" Visibility="Hidden"/>
-        <Button x:Name="awakeButton" Content="Wake Up" HorizontalAlignment="Left" Margin="201,460,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="awake_Click" Visibility="Hidden"/>
-        <Button x:Name="setAlarmBtn" Content="Set Alarm" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="87" Click="setAlarmBtn_Click" Height="44"/>
-        <Button x:Name="List_Button" Content="List" Grid.Column="1" Margin="36,10,10,0" VerticalAlignment="Top" Click="List_Click" Width="50" Height="50" HorizontalAlignment="Left"/>
         <!--<Grid x:Name="RightCanvas" Width="151.818" HorizontalAlignment="Left"> -->
-        <ContentControl x:Name="listCanvas" Content="{Binding Path=ChildView}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+        <ContentControl x:Name="listCanvas" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+            <Button x:Name="analogBtn" Content="Analog" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="87" Click="toggleBtn_Click" Height="44" d:LayoutOverrides="LeftPosition, RightPosition"/>
+        </ContentControl>
+        <Label x:Name="TimeLabel" Content="{Binding Path=Time}" FontSize="150" VerticalAlignment="Center" Canvas.Left="201" Canvas.Top="157" Foreground="Black" Margin="0,154,0,170" HorizontalAlignment="Center" />
+        <Button x:Name="snoozeButton" Content="Snooze" Visibility="Hidden" HorizontalAlignment="Center" Margin="272,369,409,121" VerticalAlignment="Center" Width="87"  Height="44" Click="stop_Click" x:FieldModifier ="public" RenderTransformOrigin="-0.719,0.732" Command="{Binding SnoozeCommand}" />
+        <Button x:Name="awakeButton" Content="Wake Up" Visibility="Hidden" HorizontalAlignment="Center" Margin="381,369,300,121" VerticalAlignment="Center" Width="87" Height="44" Click="stop_Click" Command="{Binding WakeUpCommand}"/>
+        <Button x:Name="setAlarmBtn" Content="New Alarm" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="141" Click="setAlarmBtn_Click" Height="44"/>
+        <Button x:Name="rptAlarmBtn" Content="New Repeating Alarm" HorizontalAlignment="Right" Margin="0,72,10,0" VerticalAlignment="Top" Width="141" Click="rptAlarmBtn_Click" Height="44"/>
+        <ToggleButton IsChecked="{Binding IsOpen, ElementName=alarmListFlyout}" Cursor="Hand" x:Name="List_Button" Content="List" Margin="10,10,0,0" VerticalAlignment="Top" Width="87" Height="44" HorizontalAlignment="Left"/>
+        <Controls:Flyout x:Name="alarmListFlyout" Theme="Accent">
+            <Controls:Flyout.Resources>
+                <CollectionViewSource x:Key="alarmKeys" Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=Collection}">
+                    <CollectionViewSource.SortDescriptions>
+                        <scm:SortDescription PropertyName="DataContext.Alarm" Direction="Ascending"/>
+                    </CollectionViewSource.SortDescriptions>
+                </CollectionViewSource>
+            </Controls:Flyout.Resources>
+            <ItemsControl Name="listTemp" ItemsSource="{Binding Source={StaticResource alarmKeys}}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Controls:Flyout>
+        <!--<Grid x:Name="RightCanvas" Width="151.818" HorizontalAlignment="Left"> -->
     </Grid>
-
-</Window>
+</Controls:MetroWindow>

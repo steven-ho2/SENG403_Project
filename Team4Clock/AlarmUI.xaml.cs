@@ -16,47 +16,21 @@ using System.Windows.Shapes;
 namespace Team4Clock
 {
     /// <summary>
-    /// Interaction logic for Alarm.xaml
+    /// View for AlarmUIs on Windows desktop.
     /// </summary>
     public partial class AlarmUI : UserControl
     {
 
-        private Alarm a;
-
+        /// <summary>
+        /// Constructor. Requires an Alarm as input (because the UI control has no meaning without one).
+        /// 
+        /// Sets DataContext to ViewModel and initializes the control.
+        /// </summary>
+        /// <param name="inputAlarm">The Alarm this AlarmUI is meant to represent.</param>
         public AlarmUI(Alarm inputAlarm)
         {
+            DataContext = new AlarmUIPresenter(inputAlarm, ApplicationService.Instance.EventAggregator);
             InitializeComponent();
-            //this.a = new Alarm(inputAlarm);
-            this.a = inputAlarm;
-            alarmTime.Content = a.displayTime();
-        }
-
-        public object getAlarm()
-        {
-            return this.a;
-        }
-
-        private void cancelBtn_Click(object sender, RoutedEventArgs e)
-        {
-            a.deleteAlarm();
-        }
-
-        private void editBtn_Click(object sender, RoutedEventArgs e)
-        {
-            a.editAlarm();
-        }
-
-        private void onOffBtn_Click(object sender, RoutedEventArgs e)
-        {
-            // Call the Alarms toggle
-            if (a.toggleAlarmOn())
-            {
-                onOffBtn.Content = "OFF";
-            }
-            else
-            {
-                onOffBtn.Content = "ON";
-            }
         }
     }
 }
