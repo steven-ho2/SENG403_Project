@@ -39,6 +39,9 @@
       <HintPath>packages\MahApps.Metro.1.4.3\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Prism">
+      <HintPath>packages\Prism.Core.6.2.0\lib\net45\Prism.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -91,23 +94,31 @@
     </ApplicationDefinition>
     <Compile Include="Alarm.cs" />
     <Compile Include="AlarmRepeats.cs" />
+    <Compile Include="ViewModels\RepeatTimePresenter.cs" />
+    <Compile Include="Converters\BCConverter.cs" />
+    <Compile Include="EditAlarmWrapper.cs" />
+    <Compile Include="Events\EditAlarmEvent.cs" />
+    <Compile Include="Events\RequestEditAlarmEvent.cs" />
+    <Compile Include="ViewModels\RepeatAlarmPresenter.cs" />
+    <Compile Include="ViewModels\AlarmUIPresenter.cs" />
+    <Compile Include="ApplicationService.cs" />
     <Compile Include="BasicAlarm.cs" />
     <Compile Include="Analog.xaml.cs">
       <DependentUpon>Analog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ListOfAlarms.xaml.cs">
-      <DependentUpon>ListOfAlarms.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Converters\BoolInverterConverter.cs" />
+    <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Events\DeleteAlarmEvent.cs" />
+    <Compile Include="ViewModels\MainPresenter.cs" />
+    <Compile Include="Events\NewAlarmEvent.cs" />
+    <Compile Include="ObservableObject.cs" />
     <Compile Include="RepeatingAlarm.cs" />
+    <Compile Include="ViewModels\SetAlarmPresenter.cs" />
     <Compile Include="SetRepeatAlarm.xaml.cs">
       <DependentUpon>SetRepeatAlarm.xaml</DependentUpon>
     </Compile>
     <Compile Include="SWClock.cs" />
     <Page Include="Analog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ListOfAlarms.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

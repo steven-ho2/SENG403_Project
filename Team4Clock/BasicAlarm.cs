@@ -6,36 +6,46 @@ using System.Threading.Tasks;
 
 namespace Team4Clock
 {
-    class BasicAlarm : Alarm
+    /// <summary>
+    /// BasicAlarm class, deriving Alarm.
+    /// 
+    /// This class represents a "basic alarm," i.e. one with no repeats that is instead set 
+    /// to a specific time. The alarm will, by default, be set to the next occurrence of that
+    /// particular time.
+    /// </summary>
+    public class BasicAlarm : Alarm
     {
         private DateTime alarmTime;
-
-       //This is the contructor for the BasicAlarm Class
-        public BasicAlarm(DateTime time)
-        {
-            this.alarmTime = time;
-            this.on = true;
-        }
         
-        // Alternate constructor which takes a TimeSpan reference,
-        // and calls SetAlarmTime().
+        /// <summary>
+        /// Constructor which takes a TimeSpan reference, and calls SetAlarmTime().
+        /// </summary>
+        /// <param name="timeSpan">The TimeSpan to set the alarm to.</param>
         public BasicAlarm(TimeSpan timeSpan)
         {
             SetAlarmTime(timeSpan);
             this.on = true;
         }
 
-        /* Sets this alarm to the next occurrence of a particular clock time, 
-         * represented by a TimeSpan reference.
-         * 
-         * Basically, this looks at the time given, and decides whether or not
-         * that time has passed for today. If not, then the alarm is set for
-         * today; otherwise, tomorrow.
-         * 
-         * newTime: The alarm will be set to this time, for whatever day this time 
-         *          will next occur (today or tomorrow).
-         */
-        private void SetAlarmTime(TimeSpan newTime)
+        /// <summary>
+        /// Parameterless constructor.
+        /// </summary>
+        public BasicAlarm()
+        {
+            this.on = true;
+        }
+
+        /// <summary>
+        /// Sets this alarm to the next occurrence of a particular clock time, 
+        /// represented by a TimeSpan reference.
+        /// 
+        /// Basically, this looks at the time given, and decides whether or not
+        /// that time has passed for today. If not, then the alarm is set for
+        /// today; otherwise, tomorrow.
+        /// </summary>
+        /// <param name="newTime">The alarm will be set to this time, 
+        ///     for whatever day this time will next occur (today or tomorrow).</param>
+        public void SetAlarmTime(TimeSpan newTime)
         {
             TimeSpan currTime = DateTime.Now.TimeOfDay;
             DateTime newAlarmTime = DateTime.Now.Date;
@@ -47,50 +57,51 @@ namespace Team4Clock
             this.alarmTime = newAlarmTime;
         }
 
+        /// <summary>
+        /// Implementation of GetTime() for basic alarm.
+        /// Just returns the absolute DateTime of the Alarm (may not reflect the next
+        /// actual ringing time, if the alarm is currently off).
+        /// </summary>
+        /// <returns>The absolute DateTime of this Alarm.</returns>
         protected override DateTime GetTime()
         {
             return alarmTime;
         }
 
-        /* Sets this alarm to a specific date.
-         * 
-         * Ignores the time component of the provided DateTime and keeps whatever
-         * time of day is currently defined for this alarm.
-         * 
-         * date: DateTime object containing the new date to use. Time of day is ignored.
-         */
-        private void SetAlarmDate(DateTime date)
-        {
-            DateTime newTime = date.Date;        // new date, with time reset to midnight
-            TimeSpan newSpan = time.TimeOfDay;
-            newTime += newSpan;
-            this.alarmTime = newTime;
-        }
-
-        /* Sets this alarm to a specific date and time.
-         * 
-         * dateTime: the date and time to set the alarm for
-         */
-        private void SetAlarm(DateTime dateTime)
-        {
-            this.alarmTime = dateTime;
-        }
-
+        /// <summary>
+        /// Displays the time in the following format: HH:MM (AM/PM).
+        /// </summary>
+        /// <returns>A string reflecting the BasicAlarm's time.</returns>
         public override String displayTime()
         {
             return time.ToString("hh:mm tt");
         }
 
+        /// <summary>
+        /// Auxiliary info string override.
+        /// 
+        /// Currently returns an empty string as there is no additional information to give
+        /// about BasicAlarms.
+        /// </summary>
+        /// <returns>An empty string.</returns>
         public override string infoString()
         {
             return "";
         }
 
+        /// <summary>
+        /// Override for GetNextAlarmTime(). Return value depends on whether or not the
+        /// alarm is on. If the alarm is on, this just returns the time the alarm is set
+        /// to.
+        /// 
+        /// Otherwise, it returns a DateTime where the Date is set to the next time the
+        /// alarm will occur. Specifically, if the alarm's time has passed for today, it
+        /// will return a DateTime with that time for tomorrow; otherwise, the date will
+        /// be set for today.
+        /// </summary>
+        /// <returns>The next time the alarm will go off.</returns>
         public override DateTime GetNextAlarmTime()
         {
-            DateTime now = DateTime.Now;
-            DateTime today = DateTime.Today;
-
             // Alarm is enabled.
             // Return whatever date/time is set for the alarm.
             if (this.on)
@@ -101,10 +112,18 @@ namespace Team4Clock
             // Return the alarm's time for the next day the time will occur (either today or tomorrow).
             else
             {
-                return today.Add(time.TimeOfDay);
+                DateTime today = DateTime.Today;
+                DateTime tempTime = today.Add(time.TimeOfDay);
+                if (DateTime.Now > tempTime)
+                    return today.AddDays(1).Add(time.TimeOfDay);
+                else
+                    return today.Add(time.TimeOfDay);
             }
         }
 
+        /// <summary>
+        /// Wake up behaviour for a BasicAlarm. Just turns the alarm off and stops it from ringing.
+        /// </summary>
         public override void WakeUp()
         {
             this.on = false;

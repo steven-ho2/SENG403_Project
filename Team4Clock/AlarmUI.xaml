@@ -6,21 +6,21 @@
              xmlns:local="clr-namespace:Team4Clock"
              mc:Ignorable="d" BorderBrush="White">
     <UserControl.Resources>
-        
+
     </UserControl.Resources>
     <Grid>
 
         <Rectangle HorizontalAlignment="Left" Height="125" VerticalAlignment="Top" Width="446" Stroke="#FFF1ECEC"/>
 
 
-        <Label x:Name="alarmTime" Height="70" Canvas.Left="10" Foreground="White"  Canvas.Top="10" Margin="10,10,62.4,45" HorizontalContentAlignment="Center" FontSize="29.333"
-               Content="{Binding Path=a.display}"/>
-        <Button x:Name="cancelBtn" Content="X" Background="Red" Height="39" Canvas.Left="338" Canvas.Top="10" Width="47" Click="cancelBtn_Click" Margin="389,10,10.4,76"/>
-        <Button x:Name="editBtn" Content="Edit" Background="DimGray" Height="41" Canvas.Left="338" Canvas.Top="63" Width="47" Click="editBtn_Click" Margin="389,74,10.4,10"/>
-        <Label x:Name="infoString"  Height="70" Canvas.Left="10" Foreground="White" Canvas.Top="10" Margin="39,73,33,-18" HorizontalContentAlignment="Center" FontSize="20" RenderTransformOrigin="0.5,0.643"
-               Content="{Binding Path=a.info}"/>
+        <Label x:Name="alarmTime" Height="70" Canvas.Left="10" Foreground="{Binding Path=Alarm.on, Converter={StaticResource BCConverter}}"  Canvas.Top="10" Margin="10,10,62.4,45" HorizontalContentAlignment="Center" FontSize="29.333"
+               Content="{Binding Path=Alarm.display}"/>
+        <Button x:Name="cancelBtn" Content="x" FontSize="18" Background="#ec7263" Height="39" Canvas.Left="338" Canvas.Top="10" Width="47" Command="{Binding DelAlarmCommand}" Margin="389,10,10.4,76"/>
+        <Button x:Name="editBtn" Content="Edit" FontSize="13"  Background="#febe7e" Height="41" Canvas.Left="338" Canvas.Top="63" Width="47" Command="{Binding EditAlarmCommand}" Margin="389,74,10.4,10"/>
+        <Label x:Name="infoString" Canvas.Left="10" Foreground="{Binding Path=Alarm.on, Converter={StaticResource BCConverter}}" Canvas.Top="10" Margin="39,73,57,0" HorizontalContentAlignment="Center" FontSize="20" RenderTransformOrigin="0.5,0.643"
+               Content="{Binding Path=Alarm.info}"/>
         <CheckBox Style="{DynamicResource MetroCircleToggleButtonStyle}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="&#x23F0;" Width="50" Height="50" FontSize="20" 
-                  x:Name="testBox" IsChecked="{Binding Path=a.on, Mode=TwoWay}" Click="toggle_Click" Margin="10,40,386,35"/>
+                  x:Name="testBox" IsChecked="{Binding Path=Alarm.on, Mode=TwoWay}" Margin="10,40,386,35"/>
 
 
     </Grid>

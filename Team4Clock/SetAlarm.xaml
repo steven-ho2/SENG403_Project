@@ -31,23 +31,23 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
                 <Label Content="Set Alarm" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" Grid.Row="0" Grid.ColumnSpan="6"/>
-                <Button x:Name="hrBtnUp" Content="+" FontSize="18.667" Click="hrBtnUp_Click" Grid.Row="1" Grid.Column="1"/>
-                <Label x:Name="hrLbl" Content="12" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Row="2" Grid.Column="1"/>
-                <Button x:Name="hrDownBtn" Content="-" FontSize="18.667" Click="hrDownBtn_Click" Grid.Row="3" Grid.Column="1"/>
-                <Button x:Name="min1BtnUp" Content="+" FontSize="18.667" Click="min1BtnUp_Click" Grid.Row="1" Grid.Column="3"/>
-                <Label x:Name="min1Lbl" Content="0" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Row="2" Grid.Column="3"/>
-                <Button x:Name="min1DownBtn" Content="-" FontSize="18.667" Click="min1DownBtn_Click" Grid.Row="3" Grid.Column="3"/>
-                <Button x:Name="min2BtnUp" Content="+" FontSize="18.667" Click="min2BtnUp_Click" Grid.Row="1" Grid.Column="4"/>
-                <Label x:Name="min2Lbl" Content="0" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Row="2" Grid.Column="4"/>
-                <Button x:Name="min2BtnDown" Content="-" FontSize="18.667" Click="min2BtnDown_Click" Grid.Row="3" Grid.Column="4"/>
-                <Button x:Name="backBtn" Content="Back" Width="75" Click="backBtn_Click" Height="73" Style="{DynamicResource MetroCircleButtonStyle}" 
+                <Button x:Name="hrBtnUp" Content="+" FontSize="18.667" Command="{Binding IncHourCommand}" Grid.Row="1" Grid.Column="1"/>
+                <Label x:Name="hrLbl" Content="{Binding Path=Hour}" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Row="2" Grid.Column="1"/>
+                <Button x:Name="hrDownBtn" Content="-" FontSize="18.667" Command="{Binding DecHourCommand}" Grid.Row="3" Grid.Column="1"/>
+                <Button x:Name="min1BtnUp" Content="+" FontSize="18.667" Command="{Binding IncMinTensCommand}" Grid.Row="1" Grid.Column="3"/>
+                <Label x:Name="min1Lbl" Content="{Binding Path=MinTens}" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Row="2" Grid.Column="3"/>
+                <Button x:Name="min1DownBtn" Content="-" FontSize="18.667" Command="{Binding DecMinTensCommand}" Grid.Row="3" Grid.Column="3"/>
+                <Button x:Name="min2BtnUp" Content="+" FontSize="18.667" Command="{Binding IncMinOnesCommand}" Grid.Row="1" Grid.Column="4"/>
+                <Label x:Name="min2Lbl" Content="{Binding Path=MinOnes}" FontSize="26.667" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Row="2" Grid.Column="4"/>
+                <Button x:Name="min2BtnDown" Content="-" FontSize="18.667" Command="{Binding DecMinOnesCommand}" Grid.Row="3" Grid.Column="4"/>
+                <Button x:Name="backBtn" Content="Back" Width="75" Click="exit_Click" Height="73" Style="{DynamicResource MetroCircleButtonStyle}" 
                         HorizontalAlignment="Right" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
                         Grid.Column="0" Grid.Row="4" Grid.RowSpan="1"/>
                 <StackPanel Name="AmPmButtons" Grid.Row="2" Grid.Column="5">
-                    <RadioButton x:Name="amBtn" Content="AM" Width="75" Height="37" Canvas.Top="22" Click="amBtn_Click" IsChecked="True"/>
-                    <RadioButton x:Name="pmBtn" Content="PM" Width="75" Canvas.Top="59" Height="37" Click="pmBtn_Click"/>
+                    <RadioButton x:Name="amBtn" Content="AM" Width="75" Height="37" Canvas.Top="22" IsChecked="{Binding IsPm, Converter={StaticResource BoolInverterConverter}}"/>
+                    <RadioButton x:Name="pmBtn" Content="PM" Width="75" Canvas.Top="59" Height="37" IsChecked="{Binding IsPm}"/>
                 </StackPanel>
-                <Button x:Name="doneBtn" Content="Done"   Style="{DynamicResource MetroCircleButtonStyle}" Click="doneBtn_Click"
+                <Button x:Name="doneBtn" Content="Done"   Style="{DynamicResource MetroCircleButtonStyle}" Click="exit_Click" Command="{Binding DoneCommand}"
                         HorizontalAlignment="Right" Width="75" Height="73" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="1"/>
         </Grid>
         </Viewbox>
