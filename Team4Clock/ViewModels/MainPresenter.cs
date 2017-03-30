@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Reflection;
@@ -27,6 +28,7 @@ namespace Team4Clock
         private SWClock _clock = new SWClock();
         private List<Alarm> _alarmSet = new List<Alarm>();
         private DispatcherTimer _timer;
+        private AlarmIO _alarmIO;
 
         private string _time;
 
@@ -58,7 +60,28 @@ namespace Team4Clock
         {
             this._eventAggregator = eventAggregator;
             SubscribeToEvents();
+            SetupIO();
             StartTimer();
+        }
+
+        private void SetupIO()
+        {
+            _alarmIO = new AlarmIO();
+            try
+            {
+                List<Alarm> testList = _alarmIO.ReadAlarmList();
+                if (testList != null)
+                {
+                    Console.WriteLine(testList.Count);
+                    _alarmSet = testList;
+                    _eventAggregator.GetEvent<SetAlarmsEvent>().Publish(_alarmSet);
+                }
+            }
+
+            catch (IOException)
+            {
+                Console.Error.WriteLine("[ERROR] Could not load alarms.bin.");
+            }
         }
 
         /// <summary>
@@ -73,15 +96,18 @@ namespace Team4Clock
             this._eventAggregator.GetEvent<NewAlarmEvent>().Subscribe((alarm) =>
             {
                 _alarmSet.Add(alarm);
+                _alarmIO.WriteAlarmList(_alarmSet);
             });
             this._eventAggregator.GetEvent<DeleteAlarmEvent>().Subscribe((Alarm) =>
             {
                 _alarmSet.Remove(Alarm);
+                _alarmIO.WriteAlarmList(_alarmSet);
             });
             this._eventAggregator.GetEvent<EditAlarmEvent>().Subscribe((Wrapper) =>
             {
                 _alarmSet.Remove(Wrapper.OldAlarm);
                 _alarmSet.Add(Wrapper.NewAlarm);
+                _alarmIO.WriteAlarmList(_alarmSet);
             });
         }
 

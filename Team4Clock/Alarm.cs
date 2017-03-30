@@ -11,6 +11,7 @@ namespace Team4Clock
     /// <summary>
     /// Alarm abstract base class. Contains some methods common to all planned alarm types.
     /// </summary>
+    [Serializable]
     public abstract class Alarm : IComparable 
     {
 

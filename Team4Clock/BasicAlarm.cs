@@ -13,6 +13,7 @@ namespace Team4Clock
     /// to a specific time. The alarm will, by default, be set to the next occurrence of that
     /// particular time.
     /// </summary>
+    [Serializable]
     public class BasicAlarm : Alarm
     {
         private DateTime alarmTime;

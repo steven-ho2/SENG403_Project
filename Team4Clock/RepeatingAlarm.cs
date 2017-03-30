@@ -13,6 +13,7 @@ namespace Team4Clock
     /// Repeats are based on days of the week, and may apply to different times on different
     /// days.
     /// </summary>
+    [Serializable]
     public class RepeatingAlarm : Alarm
     {
         private AlarmRepeats repeatDays = new AlarmRepeats();  // Wrapper for repeat days

@@ -93,7 +93,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Alarm.cs" />
+    <Compile Include="AlarmIO.cs" />
     <Compile Include="AlarmRepeats.cs" />
+    <Compile Include="Events\SetAlarmsEvent.cs" />
     <Compile Include="ViewModels\RepeatTimePresenter.cs" />
     <Compile Include="Converters\BCConverter.cs" />
     <Compile Include="EditAlarmWrapper.cs" />
