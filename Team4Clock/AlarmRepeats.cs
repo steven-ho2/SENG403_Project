@@ -15,7 +15,7 @@ namespace Team4Clock
     /// This class essentially wraps a dictionary with System.DayOfWeek values as
     /// keys, and internal Repeat structs as values.
     /// </summary>
-
+    [Serializable]
     class AlarmRepeats
     {
         private Dictionary<DayOfWeek, Repeat> repeatDays;
@@ -112,6 +112,7 @@ namespace Team4Clock
         /// <summary>
         /// Basic struct to hold repeat information, allowing for variable repeats.
         /// </summary>
+        [Serializable]
         protected struct Repeat
         {
             public bool repeats;

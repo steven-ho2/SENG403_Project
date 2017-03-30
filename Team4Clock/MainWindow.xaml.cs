@@ -69,12 +69,15 @@ namespace Team4Clock
         /// </summary>
         public MainWindow()
         {
-            this._eventAggregator = ApplicationService.Instance.EventAggregator;
-            this.DataContext = new MainPresenter(ApplicationService.Instance.EventAggregator);
             Collection = new ObservableCollection<AlarmUI>();
+
+            this._eventAggregator = ApplicationService.Instance.EventAggregator;
+            SubscribeToEvents();
+
+            this.DataContext = new MainPresenter(ApplicationService.Instance.EventAggregator);
+
             InitializeComponent();
             this.KeyUp += MainWindow_KeyUp;
-            SubscribeToEvents();
 
             // This should never be null, but better safe than sorry...
             MainPresenter viewModel = this.DataContext as MainPresenter;
@@ -112,6 +115,14 @@ namespace Team4Clock
             this._eventAggregator.GetEvent<RequestEditAlarmEvent>().Subscribe((alarm) =>
             {
                 OpenEditAlarm(alarm);
+            });
+
+            this._eventAggregator.GetEvent<SetAlarmsEvent>().Subscribe((alarmSet) =>
+            {
+                foreach(Alarm alarm in alarmSet)
+                {
+                    AddAlarm(alarm);
+                }
             });
         }
 
