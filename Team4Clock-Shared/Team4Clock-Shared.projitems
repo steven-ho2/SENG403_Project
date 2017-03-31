@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>016fd719-b0de-45a3-ae37-d3017e5016a9</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Team4Clock_Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Alarm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AlarmIO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AlarmRepeats.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ApplicationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BasicAlarm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BCConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BoolInverterConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DelegateCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EditAlarmWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Events\DeleteAlarmEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Events\EditAlarmEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Events\NewAlarmEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Events\RequestEditAlarmEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Events\SetAlarmsEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ObservableObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RepeatingAlarm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SWClock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AlarmUIPresenter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainPresenter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\RepeatAlarmPresenter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\RepeatTimePresenter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SetAlarmPresenter.cs" />
+  </ItemGroup>
+</Project>
