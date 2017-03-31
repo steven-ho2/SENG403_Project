@@ -90,7 +90,15 @@ namespace Team4Clock
             int oldMins = _oldAlarm.time.Minute;
             _minTens = oldMins / 10;
             _minOnes = oldMins % 10;
-            
+            int oldHours = _oldAlarm.time.Hour;
+            if (oldHours >= 12)
+            {
+                oldHours -= 12;
+                _isPm = true;
+            }
+            if (oldHours == 0) oldHours = 12;
+            _hr = oldHours;
+
         }
 
         // ----------------------Commands----------------------
