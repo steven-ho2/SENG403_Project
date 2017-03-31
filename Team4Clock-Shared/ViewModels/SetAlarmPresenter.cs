@@ -190,6 +190,5 @@ namespace Team4Clock
             else
                 _eventAggregator.GetEvent<NewAlarmEvent>().Publish(alarm);
         }
-
     }
 }

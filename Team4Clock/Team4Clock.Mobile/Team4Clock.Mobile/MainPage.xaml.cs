@@ -19,5 +19,18 @@ namespace Team4Clock.Mobile
             this.BindingContext = new MainPresenter(ApplicationService.Instance.EventAggregator);
 			InitializeComponent();
 		}
-	}
+
+
+        private void setAlarmBtn_Click(object sender, EventArgs e)
+        {
+            SetAlarmView();
+        }
+
+        private void SetAlarmView(BasicAlarm alarm = null)
+        {
+            SetAlarm setAlarm;
+            setAlarm = new SetAlarm();
+            Navigation.PushModalAsync(setAlarm);
+        }
+    }
 }

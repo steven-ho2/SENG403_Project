@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Team4Clock.Mobile.SetAlarm">
+    <Grid
+        HorizontalOptions="CenterAndExpand"
+        VerticalOptions="CenterAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        
+        <Label Text="Set Alarm"
+           VerticalOptions="Center"
+           HorizontalOptions="Center"
+               Margin="0,10,0,0"
+               FontSize="Large"
+               FontAttributes="Bold"
+               Grid.Row="0" Grid.ColumnSpan="6"/>
+
+        <Button x:Name="hrBtnUp" Text="+" FontSize="20" Command="{Binding IncHourCommand}" HorizontalOptions="Center" Grid.Row="1" Grid.Column="1"/>
+        <Label x:Name="hrLbl" Text="{Binding Path=Hour}" FontSize="40" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" Grid.Row="2" Grid.Column="1" Margin="0, 25, 0, 25"/>
+        <Button x:Name="hrDownBtn" Text="-" FontSize="20" Command="{Binding DecHourCommand}" HorizontalOptions="Center" Grid.Row="3" Grid.Column="1"/>
+        <Button x:Name="min1BtnUp" Text="+" FontSize="20" Command="{Binding IncMinTensCommand}" HorizontalOptions="Center" Grid.Row="1" Grid.Column="3"/>
+        <Label x:Name="min1Lbl" Text="{Binding Path=MinTens}" FontSize="40" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" Grid.Row="2" Grid.Column="3" Margin="0, 25, 0, 25"/>
+        <Button x:Name="min1DownBtn" Text="-" FontSize="20" Command="{Binding DecMinTensCommand}" HorizontalOptions="Center" Grid.Row="3" Grid.Column="3"/>
+        <Button x:Name="min2BtnUp" Text="+" FontSize="20" Command="{Binding IncMinOnesCommand}" HorizontalOptions="Center" Grid.Row="1" Grid.Column="4"/>
+        <Label x:Name="min2Lbl" Text="{Binding Path=MinOnes}" FontSize="40" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" Grid.Row="2" Grid.Column="4" Margin="0, 25, 0, 25" />
+        <Button x:Name="min2BtnDown" Text="-" FontSize="20" Command="{Binding DecMinOnesCommand}" HorizontalOptions="Center" Grid.Row="3" Grid.Column="4"/>
+        <!-- There are no RadioButtons in Xamarin... ugh -->
+        <!-- Use a TableView w/ checkmarks; or, possibly, a Switch)-->
+        <Grid x:Name="AmPmSubgrid"
+              Grid.Row="2"
+              Grid.Column="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label Text="AM" VerticalOptions="CenterAndExpand"  HorizontalOptions="Center" Grid.Column="0"/>
+            <Switch HorizontalOptions="Center" Grid.Column="1"/>
+            <Label Text="PM" VerticalOptions="CenterAndExpand"  HorizontalOptions="Center"  Grid.Column="2"/>
+        </Grid>
+        <!--<RadioButton x:Name="amBtn" Text="AM"/>-->
+        <!--<RadioButton x:Name="pmBtn" Text="PM"/>-->
+
+
+        <Button Text="Back"
+                Clicked="exit_Click" HorizontalOptions="Start"
+                Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"  Grid.RowSpan="1"/>
+        <Button x:Name="doneBtn" Text="Done"  Clicked="exit_Click" Command="{Binding DoneCommand}"
+                        HorizontalOptions="End" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="1"/>
+    </Grid>
+</ContentPage>

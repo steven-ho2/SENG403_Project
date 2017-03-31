@@ -4,10 +4,37 @@
              xmlns:local="clr-namespace:Team4Clock.Mobile"
              x:Class="Team4Clock.Mobile.MainPage">
 
-    <Label Text="{Binding Path=Time}" 
-           VerticalOptions="Center" 
-           HorizontalOptions="Center" 
-           FontSize="42"
-           />
-
+    <Grid x:Name="Main">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <Button Text="List"
+                VerticalOptions="CenterAndExpand"
+                Grid.Row="0"
+                Margin="15,0,15,0"/>
+        <Label Text="{Binding Path=Time}" 
+               VerticalOptions="CenterAndExpand" 
+               HorizontalOptions="CenterAndExpand" 
+               FontSize="60"
+               Grid.Row="1"
+               Margin="10,0,10,0"
+               />
+        <Button Text="New Alarm" 
+                VerticalOptions="CenterAndExpand"
+                Grid.Row="2"
+                Grid.Column="0"
+                Margin="15,0,15,0"
+                Clicked="setAlarmBtn_Click"/>
+        <Button Text="New Repeating Alarm"
+                VerticalOptions="End"
+                Grid.Row="3"
+                Margin="15,0,15,0"/>
+    </Grid>
 </ContentPage>
