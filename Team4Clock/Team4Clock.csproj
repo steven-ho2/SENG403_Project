@@ -95,6 +95,8 @@
     <Compile Include="Analog.xaml.cs">
       <DependentUpon>Analog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BCConverter.cs" />
+    <Compile Include="Converters\BoolInverterConverter.cs" />
     <Compile Include="SetRepeatAlarm.xaml.cs">
       <DependentUpon>SetRepeatAlarm.xaml</DependentUpon>
     </Compile>

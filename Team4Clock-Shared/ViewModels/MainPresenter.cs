@@ -1,15 +1,9 @@
 ﻿using Prism.Events;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Media;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Threading;
+using System.Timers;
 
 namespace Team4Clock
 {
@@ -27,7 +21,7 @@ namespace Team4Clock
         protected readonly IEventAggregator _eventAggregator;
         private SWClock _clock = new SWClock();
         private List<Alarm> _alarmSet = new List<Alarm>();
-        private DispatcherTimer _timer;
+        private Timer _timer;
         private AlarmIO _alarmIO;
 
         private string _time;
@@ -117,9 +111,10 @@ namespace Team4Clock
         /// </summary>
         private void StartTimer()
         {
-            _timer = new DispatcherTimer(DispatcherPriority.Render);
-            _timer.Interval = TimeSpan.FromSeconds(1);
-            _timer.Tick += Timer_Tick;
+            _timer = new Timer();
+            _timer.Interval = 1000;
+            _timer.AutoReset = true;
+            _timer.Elapsed += Timer_Tick;
             _timer.Start();
         }
 

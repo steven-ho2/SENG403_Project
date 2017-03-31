@@ -14,8 +14,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)AlarmRepeats.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ApplicationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BasicAlarm.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\BCConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\BoolInverterConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DelegateCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditAlarmWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\DeleteAlarmEvent.cs" />
