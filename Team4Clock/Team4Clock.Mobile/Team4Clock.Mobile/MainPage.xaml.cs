@@ -21,9 +21,14 @@ namespace Team4Clock.Mobile
 		}
 
 
-        private void setAlarmBtn_Click(object sender, EventArgs e)
+        private void SetAlarmBtn_Click(object sender, EventArgs e)
         {
             SetAlarmView();
+        }
+
+        private void ListBtn_Click(object sender, EventArgs e)
+        {
+            ListAlarmView();
         }
 
         private void SetAlarmView(BasicAlarm alarm = null)
@@ -31,6 +36,13 @@ namespace Team4Clock.Mobile
             SetAlarm setAlarm;
             setAlarm = new SetAlarm();
             Navigation.PushModalAsync(setAlarm);
+        }
+
+
+        private void ListAlarmView()
+        {
+            AlarmList alarmList = new AlarmList();
+            Navigation.PushModalAsync(alarmList);
         }
     }
 }

@@ -18,7 +18,8 @@
         <Button Text="List"
                 VerticalOptions="CenterAndExpand"
                 Grid.Row="0"
-                Margin="15,0,15,0"/>
+                Margin="15,0,15,0"
+                Clicked="ListBtn_Click"/>
         <Label Text="{Binding Path=Time}" 
                VerticalOptions="CenterAndExpand" 
                HorizontalOptions="CenterAndExpand" 
@@ -31,7 +32,7 @@
                 Grid.Row="2"
                 Grid.Column="0"
                 Margin="15,0,15,0"
-                Clicked="setAlarmBtn_Click"/>
+                Clicked="SetAlarmBtn_Click"/>
         <Button Text="New Repeating Alarm"
                 VerticalOptions="End"
                 Grid.Row="3"
