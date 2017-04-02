@@ -15,10 +15,18 @@ namespace Team4Clock.Mobile
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AlarmList : ContentPage
     {
-        public AlarmList()
+        /// <summary>
+        /// Temporary (?) constructor until AlarmUI controls are created for Xamarin.
+        /// 
+        /// Takes raw Alarms (rather than AlarmUIs, as planned) to ensure that the list
+        /// is able to display the right information (proof-of-concept).
+        /// </summary>
+        /// <param name="alarms">An ObservableCollection of raw Alarm objects.</param>
+        public AlarmList(ObservableCollection<Alarm> alarms)
         {
-			InitializeComponent ();
-            BindingContext = new AlarmListViewModel();
+            Console.WriteLine("Alarms in input set: " + alarms.Count);
+            InitializeComponent();
+            BindingContext = new AlarmListViewModel(alarms);
         }
 
         void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
@@ -37,31 +45,30 @@ namespace Team4Clock.Mobile
     }
 
 
-
+    /// <summary>
+    /// Internal ViewModel class for the AlarmList.
+    /// 
+    /// This is currently not shared code, because the original app was designed
+    /// without MVVM in mind. As a result, AlarmUIs are handled in an unusual way:
+    /// the ListView in the MainWindow is maintained by the MainWindow itself.
+    /// 
+    /// This cannot work in Android/iOS, however, and so a separate View, with
+    /// a corresponding ViewModel, is needed.
+    /// </summary>
     class AlarmListViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<Item> Items { get; }
-        public ObservableCollection<Grouping<string, Item>> ItemsGrouped { get; }
+        public ObservableCollection<Alarm> Alarms { get; set; }
+        public ObservableCollection<Grouping<DateTime, Alarm>> AlarmsGrouped { get; }
 
-        public AlarmListViewModel()
+        public AlarmListViewModel(ObservableCollection<Alarm> alarms)
         {
-            Items = new ObservableCollection<Item>(new[]
-            {
-                new Item { Text = "Baboon", Detail = "Africa & Asia" },
-                new Item { Text = "Capuchin Monkey", Detail = "Central & South America" },
-                new Item { Text = "Blue Monkey", Detail = "Central & East Africa" },
-                new Item { Text = "Squirrel Monkey", Detail = "Central & South America" },
-                new Item { Text = "Golden Lion Tamarin", Detail= "Brazil" },
-                new Item { Text = "Howler Monkey", Detail = "South America" },
-                new Item { Text = "Japanese Macaque", Detail = "Japan" },
-            });
+            Alarms = alarms;
+            var sorted = from alarm in Alarms
+                         orderby alarm.time
+                         group alarm by alarm.time into alarmGroup
+                         select new Grouping<DateTime, Alarm>(alarmGroup.Key, alarmGroup);
 
-            var sorted = from item in Items
-                         orderby item.Text
-                         group item by item.Text[0].ToString() into itemGroup
-                         select new Grouping<string, Item>(itemGroup.Key, itemGroup);
-
-            ItemsGrouped = new ObservableCollection<Grouping<string, Item>>(sorted);
+            AlarmsGrouped = new ObservableCollection<Grouping<DateTime, Alarm>>(sorted);
 
             RefreshDataCommand = new Command(
                 async () => await RefreshData());

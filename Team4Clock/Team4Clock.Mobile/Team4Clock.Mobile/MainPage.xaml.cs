@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,12 +14,49 @@ namespace Team4Clock.Mobile
 	{
         private IEventAggregator _eventAggregator;
 
+        private ObservableCollection<Alarm> _tempAlarmList = new ObservableCollection<Alarm>();
+
 		public MainPage()
 		{
             this._eventAggregator = ApplicationService.Instance.EventAggregator;
+            SubscribeToEvents();
             this.BindingContext = new MainPresenter(ApplicationService.Instance.EventAggregator);
 			InitializeComponent();
 		}
+
+        private void SubscribeToEvents()
+        {
+            this._eventAggregator.GetEvent<NewAlarmEvent>().Subscribe((alarm) =>
+            {
+                AddAlarm(alarm);
+            });
+
+            this._eventAggregator.GetEvent<DeleteAlarmEvent>().Subscribe((alarm) =>
+            {
+                // placeholder
+            });
+
+
+            this._eventAggregator.GetEvent<EditAlarmEvent>().Subscribe((wrapper) =>
+            {
+                // placeholder
+            });
+
+            this._eventAggregator.GetEvent<RequestEditAlarmEvent>().Subscribe((alarm) =>
+            {
+                // placeholder
+            });
+
+            this._eventAggregator.GetEvent<SetAlarmsEvent>().Subscribe((alarmSet) =>
+            {
+                // placeholder
+            });
+        }
+
+        private void AddAlarm(Alarm alarm)
+        {
+            _tempAlarmList.Add(alarm);
+        }
 
 
         private void SetAlarmBtn_Click(object sender, EventArgs e)
@@ -41,7 +79,7 @@ namespace Team4Clock.Mobile
 
         private void ListAlarmView()
         {
-            AlarmList alarmList = new AlarmList();
+            AlarmList alarmList = new AlarmList(_tempAlarmList);
             Navigation.PushModalAsync(alarmList);
         }
     }

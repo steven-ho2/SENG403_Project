@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Team4Clock.Mobile.AlarmList"
              Title="ListView">
-  <ListView ItemsSource="{Binding ItemsGrouped}"
+  <ListView ItemsSource="{Binding AlarmsGrouped}"
             ItemTapped="Handle_ItemTapped"
             ItemSelected="Handle_ItemSelected"
             HasUnevenRows="true"
@@ -29,8 +29,26 @@
     <!--Built in Cells-->
     <ListView.ItemTemplate>
       <DataTemplate>
-        <TextCell Text="{Binding Text}"
-                  Detail="{Binding Detail}"/>
+        <!--<TextCell Text="{Binding display}"
+                  Detail="{Binding info}"/>-->
+        <ViewCell>
+            <ViewCell.View>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" Text="{Binding display}" FontSize="Large"/>
+                            <Button Grid.Column="1" Text="X"/>
+                            <Label Grid.Column="0" Grid.Row="1"  Text="{Binding info}" />
+                            <Button Grid.Column="1" Grid.Row="1" Text="Edit"/>
+                        </Grid>            
+            </ViewCell.View>            
+        </ViewCell>
       </DataTemplate>
     </ListView.ItemTemplate>
     
