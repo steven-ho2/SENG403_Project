@@ -58,20 +58,21 @@ namespace Team4Clock.Mobile
     class AlarmListViewModel : INotifyPropertyChanged
     {
         public ObservableCollection<Alarm> Alarms { get; set; }
-        public ObservableCollection<Grouping<DateTime, Alarm>> AlarmsGrouped { get; }
+
+        public ObservableCollection<AlarmUI> AlarmUIs { get; set; }
 
         public AlarmListViewModel(ObservableCollection<Alarm> alarms)
         {
             Alarms = alarms;
-            var sorted = from alarm in Alarms
-                         orderby alarm.time
-                         group alarm by alarm.time into alarmGroup
-                         select new Grouping<DateTime, Alarm>(alarmGroup.Key, alarmGroup);
-
-            AlarmsGrouped = new ObservableCollection<Grouping<DateTime, Alarm>>(sorted);
 
             RefreshDataCommand = new Command(
                 async () => await RefreshData());
+
+            AlarmUIs = new ObservableCollection<AlarmUI>();
+            foreach (Alarm alarm in Alarms)
+            {
+                AlarmUIs.Add(new AlarmUI());
+            }
         }
 
         public ICommand RefreshDataCommand { get; }
@@ -101,25 +102,5 @@ namespace Team4Clock.Mobile
         public event PropertyChangedEventHandler PropertyChanged;
         void OnPropertyChanged([CallerMemberName]string propertyName = "") =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        public class Item
-        {
-            public string Text { get; set; }
-            public string Detail { get; set; }
-
-            public override string ToString() => Text;
-        }
-
-        public class Grouping<K, T> : ObservableCollection<T>
-        {
-            public K Key { get; private set; }
-
-            public Grouping(K key, IEnumerable<T> items)
-            {
-                Key = key;
-                foreach (var item in items)
-                    this.Items.Add(item);
-            }
-        }
     }
 }
