@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Team4Clock_Xamarin; assembly=Team4Clock_Xamarin"
+             x:Class="Team4Clock_Xamarin.SetAlarm"
+             Title="Set Alarm">
+
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness"
+                iOS="0, 20, 0, 0" />
+    </ContentPage.Padding>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <OnPlatform x:Key="boxSize"
+                  x:TypeArguments="x:Double"
+                  iOS="50"
+                  Android="50"
+                  WinPhone="75" />
+
+            <!-- This is only an issue on the iPhone; Android and
+           WinPhone auto size the row height to the contents. -->
+            <OnPlatform x:Key="rowHeight"
+                  x:TypeArguments="x:Int32"
+                  iOS="60"
+                  Android="60"
+                  WinPhone="85" />
+
+            <local:BoolInverterConverter x:Key="boolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.BindingContext>
+        <local:SetAlarmViewModel/>
+    </ContentPage.BindingContext>
+
+    <Grid HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="100" />
+        </Grid.ColumnDefinitions>
+        <Button 
+            Text="UP"
+            x:Name="HrBtnUp"
+            Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="CenterAndExpand"
+            Command="{Binding IncHourCommand}"/>
+        <Label
+           x:Name="HrLbl"
+           Text="{Binding Hour}"
+           Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+           TextColor="Purple"
+           FontSize="Large"
+           BackgroundColor="Aqua"
+           HorizontalOptions="FillAndExpand"
+           HorizontalTextAlignment="Center"
+           VerticalTextAlignment="Center" />
+        <Button 
+            Text="UP"
+            x:Name="MinTensBtnUp"
+            Grid.Row="0" Grid.Column="2"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="CenterAndExpand"
+            Command="{Binding IncMinTensCommand}"/>
+        <Label 
+           x:Name="MinTensLbl"
+           Text="{Binding MinTens}"
+           Grid.Row="1" Grid.Column="2"
+           TextColor="Purple"
+           FontSize="Large"
+           BackgroundColor="Aqua"
+           HorizontalTextAlignment="Center"
+           VerticalTextAlignment="Center" />
+        <Button 
+            x:Name="MinOnesBtnUp"
+            Text="UP"
+            Grid.Row="0" Grid.Column="3"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="CenterAndExpand"
+            Command="{Binding IncMinOnesCommand}" />
+        <Label
+           x:Name="MinOnesLbl"
+           Text="{Binding MinOnes}"
+           Grid.Row="1" Grid.Column="3"
+           TextColor="Purple"
+           FontSize="Large"
+           BackgroundColor="Aqua"
+           HorizontalTextAlignment="Center"
+           VerticalTextAlignment="Center" />
+        <Button 
+            x:Name="HrBtnDown"
+            Text="Down"
+            Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="StartAndExpand"
+            Command="{Binding DecHourCommand}" />
+        <Button 
+            x:Name ="MinTensBtnDown"
+            Text="Down"
+            Grid.Row="2" Grid.Column="2"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="StartAndExpand"
+            Command="{Binding DecMinTensCommand}" />
+        <Button
+            x:Name="MinOnesBtnDown"
+            Text="Down"
+            Grid.Row="2" Grid.Column="3"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="StartAndExpand"
+            Command="{Binding DecMinOnesCommand}" />
+        <Button
+            Text="AM"
+            Grid.Row="3" Grid.Column="0"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="CenterAndExpand"
+            Command="{Binding IsAmCommand}"/>
+        <Button
+            Text="PM"
+            Grid.Row="3" Grid.Column="1"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="StartAndExpand" 
+            Command="{Binding IsPmCommand}"/>
+        <Button 
+            Text="Done"
+            Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"
+            Clicked="DoneButtonClicked" 
+            Command="{Binding DoneCommand}"/>
+    </Grid>
+</ContentPage>
