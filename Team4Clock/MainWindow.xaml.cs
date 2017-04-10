@@ -62,6 +62,9 @@ namespace Team4Clock
         public event PropertyChangedEventHandler PropertyChanged;
         private IEventAggregator _eventAggregator;
 
+        //Analog vs Digital --- Analog on = true, off = false
+        private bool clockDisplay = false;
+
         /// <summary>
         /// MainWindow constructor. Must be parameterless.
         /// 
@@ -291,8 +294,20 @@ namespace Team4Clock
         /// <param name="e">Event args.</param>
         private void toggleBtn_Click(object sender, RoutedEventArgs e)
         {
-            Analog analog = new Analog(this);
-            Main.Children.Add(analog);
+            if (!clockDisplay)
+            {
+                TimeLabel.Visibility = Visibility.Hidden;
+                analogClock.Visibility = Visibility.Visible;
+                analogBtn.Content = "Digital";
+                clockDisplay = true;
+            }
+            else
+            {
+                TimeLabel.Visibility = Visibility.Visible;
+                analogClock.Visibility = Visibility.Hidden;
+                analogBtn.Content = "Analog";
+                clockDisplay = false;
+            }
         }
     }
 }
