@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Team4Clock", "Team4Clock.cs
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{183E71E3-3A27-4358-9623-AB3FC04D461F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "clock", "..\..\ocd-clock-master\clock\clock.csproj", "{0C3CCA41-7534-47F2-B9D4-05AEF030E9F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "clock", "..\clock\clock.csproj", "{0C3CCA41-7534-47F2-B9D4-05AEF030E9F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

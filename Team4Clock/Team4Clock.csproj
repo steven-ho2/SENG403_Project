@@ -187,7 +187,7 @@
     <Content Include="PoliceSound.wav" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ocd-clock-master\clock\clock.csproj">
+    <ProjectReference Include="..\clock\clock.csproj">
       <Project>{0c3cca41-7534-47f2-b9d4-05aef030e9f9}</Project>
       <Name>clock</Name>
     </ProjectReference>
