@@ -78,7 +78,7 @@ namespace Team4Clock
             SubscribeToEvents();
 
             this.DataContext = new MainPresenter(ApplicationService.Instance.EventAggregator);
-
+         
             InitializeComponent();
             this.KeyUp += MainWindow_KeyUp;
 
@@ -88,6 +88,12 @@ namespace Team4Clock
             {
                 viewModel.TriggerAlarm += AlarmEvent;
             }
+
+            var comboBoxContent = new ObservableCollection<string>();
+            comboBoxContent.Add("5 seconds");
+            comboBoxContent.Add("10 seconds");
+            comboBoxContent.Add("15 seconds");
+            comboBox.ItemsSource = comboBoxContent;
         }
 
         /// <summary>
@@ -250,6 +256,7 @@ namespace Team4Clock
 
            snoozeButton.Visibility = Visibility.Hidden;
            awakeButton.Visibility = Visibility.Hidden;
+           comboBox.Visibility = Visibility.Hidden;
         }
         
         /// <summary>
@@ -259,6 +266,7 @@ namespace Team4Clock
         {
             snoozeButton.Visibility = Visibility.Visible;
             awakeButton.Visibility = Visibility.Visible;
+            comboBox.Visibility = Visibility.Visible;
         }
 
         /// <summary>

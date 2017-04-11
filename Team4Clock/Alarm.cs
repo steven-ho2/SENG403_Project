@@ -16,10 +16,10 @@ namespace Team4Clock
     {
 
         private DateTime _snoozeTime;                                   // When snoozing: the absolute time at which the snooze period ends
-        private TimeSpan _snoozeInterval = new TimeSpan(0, 0, 5);       // The duration of a snooze for this alarm
+        private TimeSpan _snoozeInterval;                               // The duration of a snooze for this alarm
         private bool _on;                                               // Alarm on/off state
 
-
+    
         public bool on
         {
             get
@@ -162,13 +162,15 @@ namespace Team4Clock
         /// Snoozing behaviour. Only operates if the alarm is actually ringing, and if so,
         /// disables ringing, sets snoozing, and updates SnoozeTime.
         /// </summary>
-        public void Snooze()
+        public void Snooze(int snzInterval)
         {
             if (ringing)
             {                
                 ringing = false;
                 snoozing = true;
-                _snoozeTime = DateTime.Now + _snoozeInterval;
+               _snoozeInterval = new TimeSpan(0, 0, snzInterval);
+
+               _snoozeTime = DateTime.Now + _snoozeInterval;
             }
         }
     }
