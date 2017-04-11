@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Team4Clock;
 using Prism.Events;
+using Team4Clock_Shared;
 
 namespace Team4Clock.Mobile
 {
@@ -16,9 +17,9 @@ namespace Team4Clock.Mobile
 
         private ObservableCollection<Alarm> _alarmList = new ObservableCollection<Alarm>();
 
-        // Sound data
-        private SoundPlayer _player = new SoundPlayer();
-        private string _soundLocation = @"PoliceSound.wav";
+        // Sound junk
+        private IAudioPlayerService _audioPlayer;
+        private bool _isStopped;
 
         public MainPage()
 		{
@@ -92,7 +93,35 @@ namespace Team4Clock.Mobile
 
         private void AlarmEvent(object sender, EventArgs e)
         {
-            // PLACEHOLDER
+            _audioPlayer = DependencyService.Get<IAudioPlayerService>();
+            _audioPlayer.Play("PoliceSound.wav");
+            ShowWakeUpButtons();
+        }
+
+        public void ShowWakeUpButtons()
+        {
+            //awakeButton.Opacity = 1.0;
+            //awakeButton.IsEnabled = true;
+            //snoozeButton.Opacity = 1.0;
+            //snoozeButton.IsEnabled = true;
+        }
+
+        private void Stop_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                _audioPlayer.Pause();
+            }
+            catch(Exception ex)
+            {
+            }
+            // do nothing on an exception
+            Console.WriteLine("cliiiick");
+            //awakeButton.Opacity = 0;
+            //awakeButton.IsEnabled = false;
+            //snoozeButton.Opacity = 0;
+            //snoozeButton.IsEnabled = false;
+
         }
     }
 }

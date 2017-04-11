@@ -98,6 +98,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\AudioPlayerService.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -117,6 +118,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\PoliceSound.wav" />
   </ItemGroup>
   <Import Project="..\Team4Clock.Mobile\Team4Clock.Mobile.projitems" Label="Shared" Condition="Exists('..\Team4Clock.Mobile\Team4Clock.Mobile.projitems')" />
   <Import Project="..\..\..\Team4Clock-Shared\Team4Clock-Shared.projitems" Label="Shared" />

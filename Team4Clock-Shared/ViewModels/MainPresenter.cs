@@ -43,6 +43,21 @@ namespace Team4Clock
             }
         }
 
+        private bool _buttonsVisible;
+
+        public bool ButtonsVisible
+        {
+            get
+            {
+                return _buttonsVisible;
+            }
+            set
+            {
+                _buttonsVisible = value;
+                OnPropertyChanged("ButtonsVisible");
+            }
+        }
+
         /// <summary>
         /// ViewModel constructor.
         /// 
@@ -148,6 +163,7 @@ namespace Team4Clock
                         if (TriggerAlarm != null)
                         {
                             this.TriggerAlarm(this, EventArgs.Empty);
+                            ButtonsVisible = true;
                         }
                     }
                 }
@@ -187,6 +203,7 @@ namespace Team4Clock
                 if (alarm.ringing)
                     alarm.WakeUp();
             }
+            ButtonsVisible = false;
         }
 
         /// <summary>
@@ -200,6 +217,7 @@ namespace Team4Clock
                 if (alarm.ringing)
                     alarm.Snooze();
             }
+            ButtonsVisible = false;
         }
     }
 }

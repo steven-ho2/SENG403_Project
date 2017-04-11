@@ -10,6 +10,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -19,23 +20,38 @@
                 VerticalOptions="CenterAndExpand"
                 Grid.Row="0"
                 Margin="15,0,15,0"
-                Clicked="ListBtn_Click"/>
+                Clicked="ListBtn_Click"
+                Grid.ColumnSpan="2"/>
         <Label Text="{Binding Path=Time}" 
                VerticalOptions="CenterAndExpand" 
                HorizontalOptions="CenterAndExpand" 
                FontSize="60"
                Grid.Row="1"
                Margin="10,0,10,0"
+               Grid.ColumnSpan="2"
                />
-        <Button Text="New Alarm" 
-                VerticalOptions="CenterAndExpand"
+
+        <Button Text="Wake Up" 
+                x:Name="awakeButton"
                 Grid.Row="2"
                 Grid.Column="0"
+                IsVisible="{Binding Path=ButtonsVisible}"
+                Command="{Binding Path=WakeUpCommand}"
+                Clicked="Stop_Click"/>
+        <Button Text="Snooze" 
+                x:Name="snoozeButton"
+                Grid.Row="2"
+                Grid.Column="1"
+                IsVisible="{Binding Path=ButtonsVisible}"
+                Command="{Binding Path=SnoozeCommand}"
+                Clicked="Stop_Click"/>
+
+        <Button Text="New Alarm" 
+                VerticalOptions="CenterAndExpand"
+                Grid.Row="3"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
                 Margin="15,0,15,0"
                 Clicked="SetAlarmBtn_Click"/>
-        <Button Text="New Repeating Alarm"
-                VerticalOptions="End"
-                Grid.Row="3"
-                Margin="15,0,15,0"/>
     </Grid>
 </ContentPage>
