@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Team4Clock_Xamarin"
+             x:Class="Team4Clock_Xamarin.MainPage"
+             Title="Dope Clock">
+
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness"
+                iOS="0, 20, 0, 0" />
+    </ContentPage.Padding>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="100" />
+        </Grid.ColumnDefinitions>
+
+        <Button Text="Alarm List"
+            Grid.Row="0" Grid.Column="0"
+            HorizontalOptions="Start"
+            VerticalOptions="CenterAndExpand"
+            Clicked="ListAlarmButtonClicked" />
+
+        <BoxView Color="Silver"
+             HeightRequest="0"
+             Grid.Row="0" Grid.Column="1" />
+
+        <Button Text="Set Alarm"
+            Grid.Row="0" Grid.Column="2"
+            HorizontalOptions="Start"
+            VerticalOptions="CenterAndExpand"
+            Clicked="SetAlarmButtonClicked" />
+
+        <BoxView Color="Teal"
+             Grid.Row="1" Grid.Column="0" />
+
+        <Label Text="Time"
+           Grid.Row="1" Grid.Column="1"
+           TextColor="Purple"
+           FontSize="Large"
+           BackgroundColor="Aqua"
+           HorizontalTextAlignment="Center"
+           VerticalTextAlignment="Center" />
+
+        <Label Text="Span two columns"
+           Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+           TextColor="Blue"
+           BackgroundColor="Yellow"
+           HorizontalTextAlignment="Center"
+           VerticalTextAlignment="Center" />
+
+        <Label Text="Fixed 100x100"
+           Grid.Row="2" Grid.Column="2"
+           TextColor="Aqua"
+           BackgroundColor="Red"
+           HorizontalTextAlignment="Center"
+           VerticalTextAlignment="Center" />
+    </Grid>
+</ContentPage>
