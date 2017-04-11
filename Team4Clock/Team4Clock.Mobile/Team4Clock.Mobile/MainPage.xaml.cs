@@ -49,10 +49,14 @@ namespace Team4Clock.Mobile
                 DeleteAlarm(alarm);
             });
 
-
             this._eventAggregator.GetEvent<EditAlarmEvent>().Subscribe((wrapper) =>
             {
                 // placeholder
+            });
+
+            this._eventAggregator.GetEvent<RequestEditAlarmEvent>().Subscribe((alarm) =>
+            {
+                SetAlarmView();
             });
         }
 
@@ -73,11 +77,13 @@ namespace Team4Clock.Mobile
 
         private void ListBtn_Click(object sender, EventArgs e)
         {
+            Navigation.PopModalAsync();
             ListAlarmView();
         }
 
         private void SetAlarmView(BasicAlarm alarm = null)
         {
+            Navigation.PopModalAsync();
             SetAlarm setAlarm;
             setAlarm = new SetAlarm();
             Navigation.PushModalAsync(setAlarm);
@@ -95,15 +101,6 @@ namespace Team4Clock.Mobile
         {
             _audioPlayer = DependencyService.Get<IAudioPlayerService>();
             _audioPlayer.Play("PoliceSound.wav");
-            ShowWakeUpButtons();
-        }
-
-        public void ShowWakeUpButtons()
-        {
-            //awakeButton.Opacity = 1.0;
-            //awakeButton.IsEnabled = true;
-            //snoozeButton.Opacity = 1.0;
-            //snoozeButton.IsEnabled = true;
         }
 
         private void Stop_Click(object sender, EventArgs e)
@@ -114,14 +111,10 @@ namespace Team4Clock.Mobile
             }
             catch(Exception ex)
             {
+                // there might be an exception if the audio player isn't currently playing
+                // if so, just swallow the exception
             }
-            // do nothing on an exception
             Console.WriteLine("cliiiick");
-            //awakeButton.Opacity = 0;
-            //awakeButton.IsEnabled = false;
-            //snoozeButton.Opacity = 0;
-            //snoozeButton.IsEnabled = false;
-
         }
     }
 }

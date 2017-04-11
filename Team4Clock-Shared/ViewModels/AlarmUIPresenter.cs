@@ -27,6 +27,16 @@ namespace Team4Clock
             }
         }
 
+        public bool AlarmOn
+        {
+            get { return _alarm.on; }
+            set
+            {
+                _alarm.on = value;
+                OnPropertyChanged("AlarmOn");
+            }
+        }
+
         /// <summary>
         /// Constructor. Requires an Alarm (because this ViewModel has no meaning without one)
         /// and an EventAggregator for event publishing.

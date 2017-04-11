@@ -48,6 +48,7 @@
                     <ViewCell.View>
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
@@ -55,10 +56,12 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <Label Grid.Column="0" Text="{Binding Alarm.display}" FontSize="Large"/>
-                            <Button Grid.Column="1" Text="X" Command="{Binding DelAlarmCommand}"/>
-                            <Label Grid.Column="0" Grid.Row="1"  Text="{Binding Alarm.info}" />
-                            <Button Grid.Column="1" Grid.Row="1" Text="Edit" Command="{Binding EditAlarmCommand}"/>
+                            <Label Grid.Column="0" Text="Off/On" FontSize="Large" HorizontalOptions="Center" VerticalOptions="End"/>
+                            <Switch Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Start" IsToggled="{Binding Path=AlarmOn}"/>
+                            <Label Grid.Column="1" Text="{Binding Alarm.display}" FontSize="Large"/>
+                            <Button Grid.Column="2" Text="X" Command="{Binding DelAlarmCommand}"/>
+                            <Label Grid.Column="1" Grid.Row="1"  Text="{Binding Alarm.info}" />
+                            <Button Grid.Column="2" Grid.Row="1" Text="Edit" Command="{Binding EditAlarmCommand}"/>
                         </Grid>
                     </ViewCell.View>
                 </ViewCell>
@@ -80,17 +83,5 @@
       </DataTemplate>
     </ListView.ItemTemplate>
     -->
-    <ListView.Footer>
-      <StackLayout Padding="10"
-                   Orientation="Horizontal"
-                   HorizontalOptions="FillAndExpand"
-                   BackgroundColor="#dadada">
-        <Label Text="Footer" 
-               HorizontalTextAlignment="Center" 
-               HorizontalOptions="FillAndExpand" 
-               TextColor="Black"
-               FontAttributes="Bold"/>
-      </StackLayout>
-    </ListView.Footer>
   </ListView>
 </ContentPage>
