@@ -226,9 +226,6 @@ namespace Team4Clock
         private void stop_Click(object sender, RoutedEventArgs e)
         {
             _player.Stop();
-
-           snoozeButton.Visibility = Visibility.Hidden;
-           awakeButton.Visibility = Visibility.Hidden;
         }
         
         /// <summary>
@@ -236,8 +233,6 @@ namespace Team4Clock
         /// </summary>
         public void ShowWakeUpButtons()
         {
-            snoozeButton.Visibility = Visibility.Visible;
-            awakeButton.Visibility = Visibility.Visible;
         }
 
         /// <summary>

@@ -24,14 +24,8 @@ namespace Team4Clock.Mobile
         public MainPage()
 		{
             this._eventAggregator = ApplicationService.Instance.EventAggregator;
-            
-            this.BindingContext = new MainPresenter(ApplicationService.Instance.EventAggregator);
             SubscribeToEvents();
-            InitializeComponent();
-		}
-
-        private void SubscribeToEvents()
-        {
+            this.BindingContext = new MainPresenter(ApplicationService.Instance.EventAggregator);
             // This should never be null, but better safe than sorry...
             MainPresenter viewModel = this.BindingContext as MainPresenter;
             if (viewModel != null)
@@ -39,6 +33,11 @@ namespace Team4Clock.Mobile
                 viewModel.TriggerAlarm += AlarmEvent;
             }
 
+            InitializeComponent();
+		}
+
+        private void SubscribeToEvents()
+        {
             this._eventAggregator.GetEvent<NewAlarmEvent>().Subscribe((alarm) =>
             {
                 AddAlarm(alarm);
@@ -51,12 +50,22 @@ namespace Team4Clock.Mobile
 
             this._eventAggregator.GetEvent<EditAlarmEvent>().Subscribe((wrapper) =>
             {
-                // placeholder
+                DeleteAlarm(wrapper.OldAlarm);
+                AddAlarm(wrapper.NewAlarm);
             });
 
             this._eventAggregator.GetEvent<RequestEditAlarmEvent>().Subscribe((alarm) =>
             {
-                SetAlarmView();
+                SetAlarmView(alarm as HybridAlarm);
+            });
+
+            this._eventAggregator.GetEvent<SetAlarmsEvent>().Subscribe((alarmSet) =>
+            {
+                Console.WriteLine("Set alarm event...");
+                foreach (Alarm alarm in alarmSet)
+                {
+                    AddAlarm(alarm);
+                }
             });
         }
 
@@ -81,11 +90,14 @@ namespace Team4Clock.Mobile
             ListAlarmView();
         }
 
-        private void SetAlarmView(BasicAlarm alarm = null)
+        private void SetAlarmView(HybridAlarm alarm = null)
         {
             Navigation.PopModalAsync();
             SetAlarm setAlarm;
-            setAlarm = new SetAlarm();
+            if (alarm == null)
+                setAlarm = new SetAlarm();
+            else
+                setAlarm = new SetAlarm(alarm);
             Navigation.PushModalAsync(setAlarm);
         }
 

@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Team4Clock.Mobile"
              x:Class="Team4Clock.Mobile.MainPage">
-
     <Grid x:Name="Main">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

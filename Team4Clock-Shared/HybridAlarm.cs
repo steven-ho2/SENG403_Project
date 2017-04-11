@@ -113,10 +113,12 @@ namespace Team4Clock
             }
 
             DateTime tempTime = today.Add(_alarmTime);
-            if (DateTime.Now > tempTime)
-                return today.AddDays(1).Add(_alarmTime);
+            if (lastTrigger != today)
+            {
+                return today.Add(_alarmTime);
+            }
             else
-                return today.Add(time.TimeOfDay);
+                return today.AddDays(1).Add(_alarmTime);
         }
 
         /// <summary>

@@ -14,9 +14,15 @@ namespace Team4Clock.Mobile
 	{
 		public SetAlarm ()
 		{
-            this.BindingContext = new SetAlarmPresenter(ApplicationService.Instance.EventAggregator);
+            this.BindingContext = new HybridAlarmPresenter(ApplicationService.Instance.EventAggregator);
             InitializeComponent ();
 		}
+
+        public SetAlarm(HybridAlarm alarm)
+        {
+            this.BindingContext = new HybridAlarmPresenter(alarm, ApplicationService.Instance.EventAggregator);
+            InitializeComponent();
+        }
 
         private void exit_Click(object sender, EventArgs e)
         {

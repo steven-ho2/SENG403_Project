@@ -85,6 +85,7 @@ namespace Team4Clock
                     _alarmSet = testList;
                     _eventAggregator.GetEvent<SetAlarmsEvent>().Publish(_alarmSet);
                 }
+                
             }
 
             catch (IOException)

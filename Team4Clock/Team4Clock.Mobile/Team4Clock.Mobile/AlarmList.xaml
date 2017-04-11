@@ -14,7 +14,7 @@
                    Orientation="Horizontal"
                    HorizontalOptions="FillAndExpand"
                    BackgroundColor="#dadada">
-        <Label Text="Header"
+        <Label Text="Alarm List"
                HorizontalTextAlignment="Center"
                HorizontalOptions="FillAndExpand"
                TextColor="Black"

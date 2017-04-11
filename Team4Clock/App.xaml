@@ -16,6 +16,7 @@
             </ResourceDictionary.MergedDictionaries>
             <local:BoolInverterConverter x:Key="BoolInverterConverter"/>
             <local:BCConverter x:Key="BCConverter"/>
+            <BooleanToVisibilityConverter x:Key="BoolVisibilityConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

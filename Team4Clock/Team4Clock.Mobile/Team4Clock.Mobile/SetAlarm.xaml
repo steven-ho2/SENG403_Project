@@ -11,6 +11,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -55,11 +56,44 @@
         <!--<RadioButton x:Name="amBtn" Text="AM"/>-->
         <!--<RadioButton x:Name="pmBtn" Text="PM"/>-->
 
+        <Grid x:Name="CheckBoxSubgrid"
+              Grid.Row="4"
+              Grid.Column="0"
+              Grid.ColumnSpan="6"
+              HorizontalOptions="CenterAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label Text="S" Grid.Column="0" HorizontalOptions="Center"/>
+            <Label Text="M" Grid.Column="1" HorizontalOptions="Center"/>
+            <Label Text="T" Grid.Column="2" HorizontalOptions="Center"/>
+            <Label Text="W" Grid.Column="3" HorizontalOptions="Center"/>
+            <Label Text="T" Grid.Column="4" HorizontalOptions="Center"/>
+            <Label Text="F" Grid.Column="5" HorizontalOptions="Center"/>
+            <Label Text="S" Grid.Column="6" HorizontalOptions="Center"/>
+            <Switch Grid.Row="1" Grid.Column="0" IsToggled="{Binding Path=SunCheck}"/>
+            <Switch Grid.Row="1" Grid.Column="1" IsToggled="{Binding Path=MonCheck}"/>
+            <Switch Grid.Row="1" Grid.Column="2" IsToggled="{Binding Path=TueCheck}"/>
+            <Switch Grid.Row="1" Grid.Column="3" IsToggled="{Binding Path=WedCheck}"/>
+            <Switch Grid.Row="1" Grid.Column="4" IsToggled="{Binding Path=ThuCheck}"/>
+            <Switch Grid.Row="1" Grid.Column="5" IsToggled="{Binding Path=FriCheck}"/>
+            <Switch Grid.Row="1" Grid.Column="6" IsToggled="{Binding Path=SatCheck}"/>
+        </Grid>
 
         <Button Text="Back"
                 Clicked="exit_Click" HorizontalOptions="Start"
-                Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"  Grid.RowSpan="1"/>
+                Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2"  Grid.RowSpan="1"/>
         <Button x:Name="doneBtn" Text="Done"  Clicked="exit_Click" Command="{Binding DoneCommand}"
-                        HorizontalOptions="End" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="1"/>
+                        HorizontalOptions="End" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="5" Grid.RowSpan="1"/>
     </Grid>
 </ContentPage>
