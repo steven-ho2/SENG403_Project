@@ -31,8 +31,25 @@ namespace Team4Clock
         private AlarmIO _alarmIO;
 
         private string _time;
+        private string _categoryID;
 
         public EventHandler TriggerAlarm;
+
+       
+        public string CategoryID
+        {
+            get
+            {
+                return this._categoryID;
+            }
+            set
+            {
+                if (_categoryID == value)
+                    return;
+                _categoryID = value;
+                OnPropertyChanged("CategoryID");
+            }
+        }
 
         public string Time
         {
@@ -200,10 +217,13 @@ namespace Team4Clock
         /// </summary>
         private void SnoozeAlarms()
         {
+            string[] words = _categoryID.Split(' ');
+            int x = Int32.Parse(words[0]);
+
             foreach (Alarm alarm in _alarmSet)
             {
                 if (alarm.ringing)
-                    alarm.Snooze();
+                    alarm.Snooze(x);
             }
         }
     }
