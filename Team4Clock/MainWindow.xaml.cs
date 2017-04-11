@@ -235,7 +235,6 @@ namespace Team4Clock
         private void stop_Click(object sender, RoutedEventArgs e)
         {
             _player.Stop();
-           comboBox.Visibility = Visibility.Hidden;
         }
         
         /// <summary>
@@ -243,7 +242,6 @@ namespace Team4Clock
         /// </summary>
         public void ShowWakeUpButtons()
         {
-           comboBox.Visibility = Visibility.Visible;
         }
 
         /// <summary>
