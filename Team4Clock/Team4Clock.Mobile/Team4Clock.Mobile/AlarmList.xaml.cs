@@ -9,12 +9,14 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Prism.Events;
 
 namespace Team4Clock.Mobile
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AlarmList : ContentPage
     {
+
         /// <summary>
         /// Temporary (?) constructor until AlarmUI controls are created for Xamarin.
         /// 
@@ -42,6 +44,16 @@ namespace Team4Clock.Mobile
             //Deselect Item
             ((ListView)sender).SelectedItem = null;
         }
+
+        protected override void OnDisappearing()
+        {
+            (BindingContext as AlarmListViewModel).UnsubscribeAll();
+        }
+
+        protected override void OnAppearing()
+        {
+            (BindingContext as AlarmListViewModel).SubscribeAll();
+        }
     }
 
 
@@ -57,22 +69,31 @@ namespace Team4Clock.Mobile
     /// </summary>
     class AlarmListViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<Alarm> Alarms { get; set; }
+        private ObservableCollection<Alarm> _alarms { get; set; }
 
-        public ObservableCollection<AlarmUI> AlarmUIs { get; set; }
+        public ObservableCollection<AlarmUIPresenter> AlarmUIViewModels { get; set; }
+
+        private Dictionary<Alarm, AlarmUIPresenter> _alarmMap = new Dictionary<Alarm, AlarmUIPresenter>();
+        private IEventAggregator _eventAggregator;
+        private bool _subscribed = false;
 
         public AlarmListViewModel(ObservableCollection<Alarm> alarms)
         {
-            Alarms = alarms;
+            _eventAggregator = ApplicationService.Instance.EventAggregator;
+            _alarms = alarms;
 
             RefreshDataCommand = new Command(
                 async () => await RefreshData());
 
-            AlarmUIs = new ObservableCollection<AlarmUI>();
-            foreach (Alarm alarm in Alarms)
+            AlarmUIViewModels = new ObservableCollection<AlarmUIPresenter>();
+            foreach (Alarm alarm in _alarms)
             {
-                AlarmUIs.Add(new AlarmUI());
+                AlarmUIPresenter presenter = new AlarmUIPresenter(alarm, ApplicationService.Instance.EventAggregator);
+                AlarmUIViewModels.Add(presenter);
+                _alarmMap.Add(alarm, presenter);
             }
+
+            SubscribeAll();
         }
 
         public ICommand RefreshDataCommand { get; }
@@ -98,6 +119,31 @@ namespace Team4Clock.Mobile
             }
         }
 
+        public void UnsubscribeAll()
+        {
+            if (_subscribed)
+            {
+                _eventAggregator.GetEvent<DeleteAlarmEvent>().Unsubscribe(AlarmRemovedEvent);
+                _subscribed = false;
+            }
+        }
+
+        public void SubscribeAll()
+        {
+            if (!_subscribed)
+            {
+                _eventAggregator.GetEvent<DeleteAlarmEvent>().Subscribe(AlarmRemovedEvent);
+                _subscribed = true;
+            }
+        }
+
+        void AlarmRemovedEvent(Alarm alarm)
+        {
+            Console.WriteLine("Received DeleteAlarmEvent for alarm time: " + alarm.time);
+            Console.WriteLine("Dictionary length = " + _alarmMap.Count);
+
+            AlarmUIViewModels.Remove(_alarmMap[alarm]);
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         void OnPropertyChanged([CallerMemberName]string propertyName = "") =>

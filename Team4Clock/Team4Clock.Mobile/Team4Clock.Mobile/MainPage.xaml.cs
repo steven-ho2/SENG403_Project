@@ -14,18 +14,30 @@ namespace Team4Clock.Mobile
 	{
         private IEventAggregator _eventAggregator;
 
-        private ObservableCollection<Alarm> _tempAlarmList = new ObservableCollection<Alarm>();
+        private ObservableCollection<Alarm> _alarmList = new ObservableCollection<Alarm>();
 
-		public MainPage()
+        // Sound data
+        private SoundPlayer _player = new SoundPlayer();
+        private string _soundLocation = @"PoliceSound.wav";
+
+        public MainPage()
 		{
             this._eventAggregator = ApplicationService.Instance.EventAggregator;
-            SubscribeToEvents();
+            
             this.BindingContext = new MainPresenter(ApplicationService.Instance.EventAggregator);
-			InitializeComponent();
+            SubscribeToEvents();
+            InitializeComponent();
 		}
 
         private void SubscribeToEvents()
         {
+            // This should never be null, but better safe than sorry...
+            MainPresenter viewModel = this.BindingContext as MainPresenter;
+            if (viewModel != null)
+            {
+                viewModel.TriggerAlarm += AlarmEvent;
+            }
+
             this._eventAggregator.GetEvent<NewAlarmEvent>().Subscribe((alarm) =>
             {
                 AddAlarm(alarm);
@@ -33,7 +45,7 @@ namespace Team4Clock.Mobile
 
             this._eventAggregator.GetEvent<DeleteAlarmEvent>().Subscribe((alarm) =>
             {
-                // placeholder
+                DeleteAlarm(alarm);
             });
 
 
@@ -41,23 +53,17 @@ namespace Team4Clock.Mobile
             {
                 // placeholder
             });
-
-            this._eventAggregator.GetEvent<RequestEditAlarmEvent>().Subscribe((alarm) =>
-            {
-                // placeholder
-            });
-
-            this._eventAggregator.GetEvent<SetAlarmsEvent>().Subscribe((alarmSet) =>
-            {
-                // placeholder
-            });
         }
 
         private void AddAlarm(Alarm alarm)
         {
-            _tempAlarmList.Add(alarm);
+            _alarmList.Add(alarm);
         }
 
+        private void DeleteAlarm(Alarm alarm)
+        {
+            _alarmList.Remove(alarm);
+        }
 
         private void SetAlarmBtn_Click(object sender, EventArgs e)
         {
@@ -79,8 +85,14 @@ namespace Team4Clock.Mobile
 
         private void ListAlarmView()
         {
-            AlarmList alarmList = new AlarmList(_tempAlarmList);
+            AlarmList alarmList = new AlarmList(_alarmList);
             Navigation.PushModalAsync(alarmList);
+
+        }
+
+        private void AlarmEvent(object sender, EventArgs e)
+        {
+            // PLACEHOLDER
         }
     }
 }

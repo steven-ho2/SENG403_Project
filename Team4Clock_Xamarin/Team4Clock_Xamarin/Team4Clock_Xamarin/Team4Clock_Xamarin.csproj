@@ -35,17 +35,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Alarm.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BasicAlarm.cs" />
-    <Compile Include="BoolInverterConverter.cs" />
-    <Compile Include="DelegateCommand.cs" />
     <Compile Include="DetailPage.xaml.cs">
       <DependentUpon>DetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EditAlarmWrapper.cs" />
     <Compile Include="ListAlarm.xaml.cs">
       <DependentUpon>ListAlarm.xaml</DependentUpon>
     </Compile>
@@ -57,7 +52,6 @@
     <Compile Include="SetAlarm.xaml.cs">
       <DependentUpon>SetAlarm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SetAlarmViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MainPage.xaml">

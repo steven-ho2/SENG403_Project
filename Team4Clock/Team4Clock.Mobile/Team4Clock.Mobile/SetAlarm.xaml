@@ -49,7 +49,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Label Text="AM" VerticalOptions="CenterAndExpand"  HorizontalOptions="Center" Grid.Column="0"/>
-            <Switch HorizontalOptions="Center" Grid.Column="1"/>
+            <Switch HorizontalOptions="Center" Grid.Column="1" IsToggled="{Binding Path=IsPm}"/>
             <Label Text="PM" VerticalOptions="CenterAndExpand"  HorizontalOptions="Center"  Grid.Column="2"/>
         </Grid>
         <!--<RadioButton x:Name="amBtn" Text="AM"/>-->
