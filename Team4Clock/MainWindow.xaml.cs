@@ -47,6 +47,9 @@ namespace Team4Clock
         public event PropertyChangedEventHandler PropertyChanged;
         private IEventAggregator _eventAggregator;
 
+        //Analog vs Digital --- Analog on = true, off = false
+        private bool clockDisplay = false;
+
         /// <summary>
         /// MainWindow constructor. Must be parameterless.
         /// 
@@ -60,7 +63,7 @@ namespace Team4Clock
             SubscribeToEvents();
 
             this.DataContext = new MainPresenter(ApplicationService.Instance.EventAggregator);
-
+         
             InitializeComponent();
             this.KeyUp += MainWindow_KeyUp;
 
@@ -70,6 +73,12 @@ namespace Team4Clock
             {
                 viewModel.TriggerAlarm += AlarmEvent;
             }
+
+            var comboBoxContent = new ObservableCollection<string>();
+            comboBoxContent.Add("5 seconds");
+            comboBoxContent.Add("10 seconds");
+            comboBoxContent.Add("15 seconds");
+            comboBox.ItemsSource = comboBoxContent;
         }
 
         /// <summary>
@@ -226,6 +235,7 @@ namespace Team4Clock
         private void stop_Click(object sender, RoutedEventArgs e)
         {
             _player.Stop();
+           comboBox.Visibility = Visibility.Hidden;
         }
         
         /// <summary>
@@ -233,6 +243,7 @@ namespace Team4Clock
         /// </summary>
         public void ShowWakeUpButtons()
         {
+           comboBox.Visibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -268,8 +279,20 @@ namespace Team4Clock
         /// <param name="e">Event args.</param>
         private void toggleBtn_Click(object sender, RoutedEventArgs e)
         {
-            Analog analog = new Analog(this);
-            Main.Children.Add(analog);
+            if (!clockDisplay)
+            {
+                TimeLabel.Visibility = Visibility.Hidden;
+                analogClock.Visibility = Visibility.Visible;
+                analogBtn.Content = "Digital";
+                clockDisplay = true;
+            }
+            else
+            {
+                TimeLabel.Visibility = Visibility.Visible;
+                analogClock.Visibility = Visibility.Hidden;
+                analogBtn.Content = "Analog";
+                clockDisplay = false;
+            }
         }
     }
 }
