@@ -27,7 +27,8 @@ namespace Team4Clock
         /// </summary>
         public SetAlarm()
         {
-            this.DataContext = new SetAlarmPresenter(ApplicationService.Instance.EventAggregator);
+            //this.DataContext = new SetAlarmPresenter(ApplicationService.Instance.EventAggregator);
+            this.DataContext = new HybridAlarmPresenter(ApplicationService.Instance.EventAggregator);
             InitializeComponent();
         }
 
@@ -37,7 +38,13 @@ namespace Team4Clock
         /// <param name="editAlarm">The alarm to be edited.</param>
         public SetAlarm(BasicAlarm editAlarm)
         {
-            this.DataContext = new SetAlarmPresenter(editAlarm, ApplicationService.Instance.EventAggregator);
+            //this.DataContext = new SetAlarmPresenter(editAlarm, ApplicationService.Instance.EventAggregator);
+            InitializeComponent();
+        }
+
+        public SetAlarm(HybridAlarm editAlarm)
+        {
+            this.DataContext = new HybridAlarmPresenter(editAlarm, ApplicationService.Instance.EventAggregator);
             InitializeComponent();
         }
 

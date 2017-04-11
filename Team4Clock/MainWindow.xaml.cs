@@ -149,10 +149,7 @@ namespace Team4Clock
         private void OpenEditAlarm(Alarm alarm)
         {
             Type alarmType = alarm.GetType();
-            if (alarmType == typeof(BasicAlarm))
-                SetAlarmView(alarm as BasicAlarm);
-            else
-                SetRepeatView(alarm as RepeatingAlarm);
+                SetAlarmView(alarm as HybridAlarm);
         }
 
         /// <summary>
@@ -160,7 +157,7 @@ namespace Team4Clock
         /// in Edit mode (if a BasicAlarm is passed).
         /// </summary>
         /// <param name="alarm">The alarm to edit. If null, then create a new alarm.</param>
-        private void SetAlarmView(BasicAlarm alarm = null)
+        private void SetAlarmView(HybridAlarm alarm = null)
         {
             SetAlarm setAlarm;
             if (alarm == null)
